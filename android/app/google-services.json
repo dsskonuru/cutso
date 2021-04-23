@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "610990198483",
+    "project_id": "cutso-meat-store",
+    "storage_bucket": "cutso-meat-store.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610990198483:android:78bac6270acbf40e300e26",
+        "android_client_info": {
+          "package_name": "com.dsskonuru.cutso"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "610990198483-6pp4umki0nmm1uhapo8jt0j982ek8mg1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQCyht0KJSNwaGk3b6dRtqigzjwld4wz0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "610990198483-6pp4umki0nmm1uhapo8jt0j982ek8mg1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
