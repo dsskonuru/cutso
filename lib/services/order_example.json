@@ -1,0 +1,112 @@
+{
+    "app_key": "f14qd3se9a6juzbmoit85c0nrvhykgwp",
+    "app_secret": "0ecb9930ec89b68dbc923d3ecedc43f37901cf61",
+    "access_token": "04fc7877ce7e5f771328b2a1434cb040ad1b2c0f",
+    "orderinfo": {
+  "OrderInfo": {
+    "Restaurant": {
+      "details": {
+        "res_name": "Demo Order Restaurant",
+        "address": "Address of the Shop Goes Here",
+        "contact_information": "0000000000 ",
+        "restID": "k13cv5ho"
+      }
+    },
+    "Customer": {
+      "details": {
+        "email": "demo@gmail.com",
+        "name": "Demo",
+        "address": "Demo, Demo road, road-123456",
+        "phone": "1234567890",
+        "locality": ""
+      }
+    },
+    "Order": {
+      "details": {
+        "orderID": "17022021",
+        "preorder_date": "2021-02-17",
+        "preorder_time": "18:52:31",
+        "minimum_order_amount": "0",
+        "delivery_charges": "0",
+        "order_type": "H",
+        "packing_charges": "0",
+        "advance_order": "n",
+        "payment_type": "COD",
+        "discount": null,
+        "discount_total": "0",
+        "description": "",
+        "discount_type": "",
+        "tax_total": "15.25",
+        "total": "110",
+        "created_on": "2021-02-17 18:52:31",
+        "callback_url": "//Need to required for the order Status"
+      }
+    },
+    "OrderItem": {
+      "details": [
+        [
+          {
+            "id": "10423499",
+            "name": "Choose Noodles Or Fried Rice (650 Ml) +  Veg In Hot & Garlic Sauce (250 Ml) + Soft Drink 250 Ml",
+            "price": "250",
+            "quantity": "1",
+            "description": "desc",
+            "AddonItem": {
+              "details": [
+                {
+                  "id": "9165",
+                  "name": "Today Special Sweet",
+                  "group_name": "",
+                  "price": "20",
+                  "group_id": "6136",
+                  "quantity": "1"
+                },
+                {
+                  "id": "9167",
+                  "name": "Salad",
+                  "group_name": "",
+                  "price": "5",
+                  "group_id": "6136",
+                  "quantity": "1"
+                },
+                {
+                  "id": "9059",
+                  "name": "Veg Schezwan Fried Rice",
+                  "group_name": "",
+                  "price": "10",
+                  "group_id": "6156",
+                  "quantity": "1"
+                },
+                {
+                  "id": "9061",
+                  "name": "Chicken Fried Rice",
+                  "group_name": "",
+                  "price": "20",
+                  "group_id": "6156",
+                  "quantity": "1"
+                }
+              ]
+            }
+          }
+        ]
+      ]
+    },
+    "Tax": {
+      "details": [
+        {
+          "id": 1714,
+          "title": "CGST",
+          "price": "2.5",
+          "type": "F"
+        },
+        {
+          "id": 1714,
+          "title": "SGST",
+          "price": "2.5",
+          "type": "F"
+        }
+      ]
+    }
+  }
+}}
+

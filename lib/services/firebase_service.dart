@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cutso/router/router.gr.dart';
+import '../router/router.gr.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -73,6 +73,5 @@ class FirebaseService {
         .catchError((error) => print("Failed to add user: $error"));
   }
 }
-
 
 //// LOLOLOLOLOL

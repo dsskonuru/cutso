@@ -1,10 +1,12 @@
-import 'package:cutso/router/router.gr.dart';
+import 'router/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:logging/logging.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  _setupLogging();
   runApp(
     ProviderScope(
       child: MyApp(),
@@ -72,4 +74,11 @@ class CutsoApp extends StatelessWidget {
       routeInformationParser: _appRouter.defaultRouteParser(),
     );
   }
+}
+
+void _setupLogging() {
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen((rec) {
+    print('${rec.level.name}: ${rec.time}: ${rec.message}');
+  });
 }

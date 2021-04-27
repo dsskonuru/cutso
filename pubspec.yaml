@@ -30,9 +30,9 @@ dependencies:
   firebase_auth: "^1.0.1"
   cloud_firestore: "^1.0.3"
   flutter_svg: ^0.20.0-nullsafety.3
-  freezed_annotation: ^0.14.1
   json_annotation: ^4.0.1
   rxdart: ^0.26.0
+  chopper:
   # location: ^4.1.1 # Add iOS permissions
   # google_maps_flutter: ^2.0.2 # setup required check pub
   
@@ -45,9 +45,8 @@ dev_dependencies:
     sdk: flutter
   auto_route_generator: 1.0.2
   build_runner: ^1.12.2 
-  freezed: ^0.14.1+1
   json_serializable: ^4.1.0
-  flutter_launcher_icons: ^0.9.0
+  chopper_generator:
   
 flutter_icons:
   android: "launcher_icon"

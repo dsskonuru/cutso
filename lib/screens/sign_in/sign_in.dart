@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cutso/router/router.gr.dart';
-import 'package:cutso/services/firebase_service.dart';
+import '../../router/router.gr.dart';
+import '../../services/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';

@@ -5,66 +5,71 @@
 // **************************************************************************
 
 import 'package:auto_route/auto_route.dart' as _i1;
-import 'package:cloud_firestore/cloud_firestore.dart' as _i11;
-import 'package:flutter/material.dart' as _i10;
+import 'package:cloud_firestore/cloud_firestore.dart' as _i12;
+import 'package:flutter/material.dart' as _i11;
 
-import '../screens/home/home_page.dart' as _i3;
-import '../screens/products/bd_page.dart' as _i7;
-import '../screens/products/chicken_page.dart' as _i4;
-import '../screens/products/ens_page.dart' as _i8;
-import '../screens/products/mutton_page.dart' as _i5;
-import '../screens/products/rtc_page.dart' as _i9;
-import '../screens/products/seafood_page.dart' as _i6;
-import '../screens/sign_in/sign_in.dart' as _i2;
+import '../screens/home/home_page.dart' as _i4;
+import '../screens/products/bd_page.dart' as _i8;
+import '../screens/products/chicken_page.dart' as _i5;
+import '../screens/products/ens_page.dart' as _i9;
+import '../screens/products/mutton_page.dart' as _i6;
+import '../screens/products/rtc_page.dart' as _i10;
+import '../screens/products/seafood_page.dart' as _i7;
+import '../screens/sign_in/sign_in.dart' as _i3;
+import '../services/petpooja_api_service.dart' as _i2;
 
 class AppRouter extends _i1.RootStackRouter {
   AppRouter();
 
   @override
   final Map<String, _i1.PageFactory> pagesMap = {
+    MyApiRoute.name: (entry) {
+      return _i1.MaterialPageX(entry: entry, child: _i2.MyApiPage());
+    },
     LoginRouter.name: (entry) {
       return _i1.MaterialPageX(
-          entry: entry, child: const _i2.LoginWrapperPage());
+          entry: entry, child: const _i3.LoginWrapperPage());
     },
     HomeRoute.name: (entry) {
       var args =
           entry.routeData.argsAs<HomeRouteArgs>(orElse: () => HomeRouteArgs());
       return _i1.MaterialPageX(
           entry: entry,
-          child: _i3.HomePage(key: args.key, userProfile: args.userProfile));
+          child: _i4.HomePage(key: args.key, userProfile: args.userProfile));
     },
     ChickenRoute.name: (entry) {
-      return _i1.MaterialPageX(entry: entry, child: _i4.ChickenPage());
+      return _i1.MaterialPageX(entry: entry, child: _i5.ChickenPage());
     },
     MuttonRoute.name: (entry) {
-      return _i1.MaterialPageX(entry: entry, child: _i5.MuttonPage());
+      return _i1.MaterialPageX(entry: entry, child: _i6.MuttonPage());
     },
     SeaFoodRoute.name: (entry) {
-      return _i1.MaterialPageX(entry: entry, child: _i6.SeaFoodPage());
+      return _i1.MaterialPageX(entry: entry, child: _i7.SeaFoodPage());
     },
     BestDealsRoute.name: (entry) {
-      return _i1.MaterialPageX(entry: entry, child: _i7.BestDealsPage());
+      return _i1.MaterialPageX(entry: entry, child: _i8.BestDealsPage());
     },
     EggsNSidesRoute.name: (entry) {
-      return _i1.MaterialPageX(entry: entry, child: _i8.EggsNSidesPage());
+      return _i1.MaterialPageX(entry: entry, child: _i9.EggsNSidesPage());
     },
     ReadyToCookRoute.name: (entry) {
-      return _i1.MaterialPageX(entry: entry, child: _i9.ReadyToCookPage());
+      return _i1.MaterialPageX(entry: entry, child: _i10.ReadyToCookPage());
     },
     MobileFormRoute.name: (entry) {
-      return _i1.MaterialPageX(entry: entry, child: _i2.MobileFormPage());
+      return _i1.MaterialPageX(entry: entry, child: _i3.MobileFormPage());
     },
     OtpFormRoute.name: (entry) {
-      return _i1.MaterialPageX(entry: entry, child: _i2.OtpFormPage());
+      return _i1.MaterialPageX(entry: entry, child: _i3.OtpFormPage());
     },
     RegistrationFormRoute.name: (entry) {
-      return _i1.MaterialPageX(entry: entry, child: _i2.RegistrationFormPage());
+      return _i1.MaterialPageX(entry: entry, child: _i3.RegistrationFormPage());
     }
   };
 
   @override
   List<_i1.RouteConfig> get routes => [
-        _i1.RouteConfig(LoginRouter.name, path: '/', children: [
+        _i1.RouteConfig(MyApiRoute.name, path: '/'),
+        _i1.RouteConfig(LoginRouter.name, path: '/login', children: [
           _i1.RouteConfig('#redirect',
               path: '', redirectTo: '/', fullMatch: true),
           _i1.RouteConfig(MobileFormRoute.name, path: ''),
@@ -83,15 +88,21 @@ class AppRouter extends _i1.RootStackRouter {
       ];
 }
 
+class MyApiRoute extends _i1.PageRouteInfo {
+  const MyApiRoute() : super(name, path: '/');
+
+  static const String name = 'MyApiRoute';
+}
+
 class LoginRouter extends _i1.PageRouteInfo {
   const LoginRouter({List<_i1.PageRouteInfo>? children})
-      : super(name, path: '/', initialChildren: children);
+      : super(name, path: '/login', initialChildren: children);
 
   static const String name = 'LoginRouter';
 }
 
 class HomeRoute extends _i1.PageRouteInfo<HomeRouteArgs> {
-  HomeRoute({_i10.Key? key, _i11.DocumentSnapshot? userProfile})
+  HomeRoute({_i11.Key? key, _i12.DocumentSnapshot? userProfile})
       : super(name,
             path: '/home',
             args: HomeRouteArgs(key: key, userProfile: userProfile));
@@ -102,9 +113,9 @@ class HomeRoute extends _i1.PageRouteInfo<HomeRouteArgs> {
 class HomeRouteArgs {
   const HomeRouteArgs({this.key, this.userProfile});
 
-  final _i10.Key? key;
+  final _i11.Key? key;
 
-  final _i11.DocumentSnapshot? userProfile;
+  final _i12.DocumentSnapshot? userProfile;
 }
 
 class ChickenRoute extends _i1.PageRouteInfo {

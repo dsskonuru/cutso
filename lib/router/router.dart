@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import '../services/petpooja_api_service.dart';
 
 import '../screens/home/home_page.dart';
 import '../screens/sign_in/sign_in.dart';
@@ -13,8 +14,9 @@ import '../screens/products/seafood_page.dart';
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
   routes: <AutoRoute>[
+    AutoRoute(path: '/', page: MyApiPage),
     AutoRoute(
-      path: '/', 
+      path: '/login',
       name: "LoginRouter",
       page: LoginWrapperPage,
       // guards: [AuthGuard],
