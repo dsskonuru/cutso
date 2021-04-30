@@ -86,10 +86,22 @@ class ModelConverter implements Converter {
 }
 
 final apiProvider = Provider.autoDispose<PostApiService>((ref) {
-  final PostApiService service = PostApiService.create();
-  ref.onDispose(() => service.client.dispose());
-  return service;
+  final PostApiService _service = PostApiService.create();
+  ref.onDispose(() => _service.client.dispose());
+  return _service;
 });
+
+class PostMenuNotifier extends ChangeNotifier {
+  PostMenu? _postMenu;
+  PostMenu? get postMenu => _postMenu;
+  List<String?> getItems(String patentCategoryId) =>
+      _postMenu!.getItems(patentCategoryId);
+  void setPostMenu(PostMenu postMenu) => _postMenu = postMenu;
+  List<String?> getParentCategoryIds() => _postMenu!.getParentCategoryIds();
+  List<String?> getCategoryIds() => _postMenu!.getCategoryIds();
+}
+
+final postMenuProvider = ChangeNotifierProvider((ref) => PostMenuNotifier());
 
 class MyApiPage extends StatelessWidget {
   @override
@@ -111,13 +123,16 @@ class MyApiPage extends StatelessWidget {
                       ),
                     );
                   }
-                  var cat = snapshot.data!.body.categories[0].toJson();
-                  // var myCat = PostMenu.fromJson(cat);
-                  // print(cat);
-
+                  context
+                      .read(postMenuProvider)
+                      .setPostMenu(snapshot.data!.body);
                   return Center(
                     child: Text(
-                      cat.toString(),
+                      context
+                          .read(postMenuProvider)
+                          .getItems("298")
+                          .toString(),
+                      // "LOL",
                       textAlign: TextAlign.center,
                       textScaleFactor: 1.3,
                     ),

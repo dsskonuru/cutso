@@ -50,6 +50,35 @@ class PostMenu {
   factory PostMenu.fromJson(Map<String, dynamic> json) =>
       _$PostMenuFromJson(json);
   Map<String, dynamic> toJson() => _$PostMenuToJson(this);
+
+  @override
+  String toString() {
+    return this.toJson().toString();
+  }
+
+  List<String?> getItems(String parentCategoryId) {
+    List<Category> _categories = this
+        .categories!
+        .where((category) => category.parentId == parentCategoryId)
+        .toList();
+    List<String?> _categoryIds =
+        _categories.map((category) => category.id).toList();
+    List<Item> _items = this
+        .items!
+        .where((item) => _categoryIds.contains(item.categoryId))
+        .toList();
+    return _items.map((e) => e.name).toList();
+    // .categories!0
+    // .where((category) => category.parentId == parentCategory.id).map((e) => e.id);
+  }
+
+  List<String?> getParentCategoryIds() {
+    return this.parentCategories!.map((e) => e.id).toList();
+  }
+
+  List<String?> getCategoryIds() {
+    return this.categories!.map((e) => e.id).toList();
+  }
 }
 
 @JsonSerializable(explicitToJson: true)

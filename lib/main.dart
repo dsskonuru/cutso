@@ -1,8 +1,12 @@
+import 'package:chopper/chopper.dart';
+
 import 'router/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:logging/logging.dart';
+
+import 'services/petpooja_api_service.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -69,10 +73,30 @@ class CutsoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerDelegate: _appRouter.delegate(),
-      routeInformationParser: _appRouter.defaultRouteParser(),
-    );
+    return Consumer(builder: (context, watch, child) {
+      PostApiService apiService = watch(apiProvider);
+      return FutureBuilder<Response>(
+          future: apiService.menuPost(menuBody),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(
+                    snapshot.error.toString(),
+                    textAlign: TextAlign.center,
+                    textScaleFactor: 1.3,
+                  ),
+                );
+              }
+              context.read(postMenuProvider).setPostMenu(snapshot.data!.body);
+              return MaterialApp.router(
+                routerDelegate: _appRouter.delegate(),
+                routeInformationParser: _appRouter.defaultRouteParser(),
+              );
+            }
+            return Center(child: CircularProgressIndicator());
+          });
+    });
   }
 }
 
