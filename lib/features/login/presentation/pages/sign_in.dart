@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 
-import '../../../../router/router.gr.dart';
+import '../../../../core/router/router.gr.dart';
 import '../../domain/repositories/firebase_service.dart';
 import '../widgets/sign_in_ui.dart';
 
@@ -155,7 +155,6 @@ class MobileFormPage extends StatelessWidget {
             }
           },
         ),
-        
         Text(
           "10-digit Mobile Number",
           style: TextStyle(

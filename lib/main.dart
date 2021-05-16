@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 
 import 'features/home/domain/repositories/petpooja_api_service.dart';
-import 'router/router.gr.dart';
+import 'core/router/router.gr.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
