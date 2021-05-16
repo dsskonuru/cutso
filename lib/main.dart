@@ -1,12 +1,11 @@
 import 'package:chopper/chopper.dart';
-
-import 'router/router.gr.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:logging/logging.dart';
 
-import 'services/petpooja_api_service.dart';
+import 'features/home/domain/repositories/petpooja_api_service.dart';
+import 'router/router.gr.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

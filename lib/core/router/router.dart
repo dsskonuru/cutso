@@ -1,15 +1,14 @@
 import 'package:auto_route/auto_route.dart';
-import '../services/petpooja_api_service.dart';
 
-import '../screens/home/home_page.dart';
-import '../screens/sign_in/sign_in.dart';
-
-import '../screens/products/bd_page.dart';
-import '../screens/products/chicken_page.dart';
-import '../screens/products/ens_page.dart';
-import '../screens/products/mutton_page.dart';
-import '../screens/products/rtc_page.dart';
-import '../screens/products/seafood_page.dart';
+import '../../features/home/domain/repositories/petpooja_api_service.dart';
+import '../../features/home/presentation/pages/home_page.dart';
+import '../../features/home/presentation/pages/products/bd_page.dart';
+import '../../features/home/presentation/pages/products/chicken_page.dart';
+import '../../features/home/presentation/pages/products/ens_page.dart';
+import '../../features/home/presentation/pages/products/mutton_page.dart';
+import '../../features/home/presentation/pages/products/rtc_page.dart';
+import '../../features/home/presentation/pages/products/seafood_page.dart';
+import '../../features/login/presentation/pages/sign_in.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',

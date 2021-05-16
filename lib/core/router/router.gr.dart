@@ -8,15 +8,19 @@ import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:cloud_firestore/cloud_firestore.dart' as _i12;
 import 'package:flutter/material.dart' as _i11;
 
-import '../screens/home/home_page.dart' as _i4;
-import '../screens/products/bd_page.dart' as _i8;
-import '../screens/products/chicken_page.dart' as _i5;
-import '../screens/products/ens_page.dart' as _i9;
-import '../screens/products/mutton_page.dart' as _i6;
-import '../screens/products/rtc_page.dart' as _i10;
-import '../screens/products/seafood_page.dart' as _i7;
-import '../screens/sign_in/sign_in.dart' as _i3;
-import '../services/petpooja_api_service.dart' as _i2;
+import '../../features/home/domain/repositories/petpooja_api_service.dart'
+    as _i2;
+import '../../features/home/presentation/pages/home_page.dart' as _i4;
+import '../../features/home/presentation/pages/products/bd_page.dart' as _i8;
+import '../../features/home/presentation/pages/products/chicken_page.dart'
+    as _i5;
+import '../../features/home/presentation/pages/products/ens_page.dart' as _i9;
+import '../../features/home/presentation/pages/products/mutton_page.dart'
+    as _i6;
+import '../../features/home/presentation/pages/products/rtc_page.dart' as _i10;
+import '../../features/home/presentation/pages/products/seafood_page.dart'
+    as _i7;
+import '../../features/login/presentation/pages/sign_in.dart' as _i3;
 
 class AppRouter extends _i1.RootStackRouter {
   AppRouter();
