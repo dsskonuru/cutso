@@ -5,11 +5,8 @@
 // **************************************************************************
 
 import 'package:auto_route/auto_route.dart' as _i1;
-import 'package:cloud_firestore/cloud_firestore.dart' as _i12;
-import 'package:flutter/material.dart' as _i11;
+import 'package:flutter/material.dart' as _i2;
 
-import '../../features/home/domain/repositories/petpooja_api_service.dart'
-    as _i2;
 import '../../features/home/presentation/pages/home_page.dart' as _i4;
 import '../../features/home/presentation/pages/products/bd_page.dart' as _i8;
 import '../../features/home/presentation/pages/products/chicken_page.dart'
@@ -23,57 +20,71 @@ import '../../features/home/presentation/pages/products/seafood_page.dart'
 import '../../features/login/presentation/pages/sign_in.dart' as _i3;
 
 class AppRouter extends _i1.RootStackRouter {
-  AppRouter();
+  AppRouter([_i2.GlobalKey<_i2.NavigatorState>? navigatorKey])
+      : super(navigatorKey);
 
   @override
   final Map<String, _i1.PageFactory> pagesMap = {
-    MyApiRoute.name: (entry) {
-      return _i1.MaterialPageX(entry: entry, child: _i2.MyApiPage());
-    },
-    LoginRouter.name: (entry) {
-      return _i1.MaterialPageX(
-          entry: entry, child: const _i3.LoginWrapperPage());
-    },
-    HomeRoute.name: (entry) {
-      var args =
-          entry.routeData.argsAs<HomeRouteArgs>(orElse: () => HomeRouteArgs());
-      return _i1.MaterialPageX(
-          entry: entry,
-          child: _i4.HomePage(key: args.key, userProfile: args.userProfile));
-    },
-    ChickenRoute.name: (entry) {
-      return _i1.MaterialPageX(entry: entry, child: _i5.ChickenPage());
-    },
-    MuttonRoute.name: (entry) {
-      return _i1.MaterialPageX(entry: entry, child: _i6.MuttonPage());
-    },
-    SeaFoodRoute.name: (entry) {
-      return _i1.MaterialPageX(entry: entry, child: _i7.SeaFoodPage());
-    },
-    BestDealsRoute.name: (entry) {
-      return _i1.MaterialPageX(entry: entry, child: _i8.BestDealsPage());
-    },
-    EggsNSidesRoute.name: (entry) {
-      return _i1.MaterialPageX(entry: entry, child: _i9.EggsNSidesPage());
-    },
-    ReadyToCookRoute.name: (entry) {
-      return _i1.MaterialPageX(entry: entry, child: _i10.ReadyToCookPage());
-    },
-    MobileFormRoute.name: (entry) {
-      return _i1.MaterialPageX(entry: entry, child: _i3.MobileFormPage());
-    },
-    OtpFormRoute.name: (entry) {
-      return _i1.MaterialPageX(entry: entry, child: _i3.OtpFormPage());
-    },
-    RegistrationFormRoute.name: (entry) {
-      return _i1.MaterialPageX(entry: entry, child: _i3.RegistrationFormPage());
-    }
+    LoginRouter.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return const _i3.LoginWrapperPage();
+        }),
+    HomeRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return const _i4.HomePage();
+        }),
+    ChickenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i5.ChickenPage();
+        }),
+    MuttonRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i6.MuttonPage();
+        }),
+    SeaFoodRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i7.SeaFoodPage();
+        }),
+    BestDealsRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i8.BestDealsPage();
+        }),
+    EggsNSidesRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i9.EggsNSidesPage();
+        }),
+    ReadyToCookRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i10.ReadyToCookPage();
+        }),
+    MobileFormRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i3.MobileFormPage();
+        }),
+    OtpFormRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i3.OtpFormPage();
+        }),
+    RegistrationFormRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i3.RegistrationFormPage();
+        })
   };
 
   @override
   List<_i1.RouteConfig> get routes => [
-        _i1.RouteConfig(MyApiRoute.name, path: '/'),
-        _i1.RouteConfig(LoginRouter.name, path: '/login', children: [
+        _i1.RouteConfig(LoginRouter.name, path: '/', children: [
           _i1.RouteConfig('#redirect',
               path: '', redirectTo: '/', fullMatch: true),
           _i1.RouteConfig(MobileFormRoute.name, path: ''),
@@ -92,34 +103,17 @@ class AppRouter extends _i1.RootStackRouter {
       ];
 }
 
-class MyApiRoute extends _i1.PageRouteInfo {
-  const MyApiRoute() : super(name, path: '/');
-
-  static const String name = 'MyApiRoute';
-}
-
 class LoginRouter extends _i1.PageRouteInfo {
   const LoginRouter({List<_i1.PageRouteInfo>? children})
-      : super(name, path: '/login', initialChildren: children);
+      : super(name, path: '/', initialChildren: children);
 
   static const String name = 'LoginRouter';
 }
 
-class HomeRoute extends _i1.PageRouteInfo<HomeRouteArgs> {
-  HomeRoute({_i11.Key? key, _i12.DocumentSnapshot? userProfile})
-      : super(name,
-            path: '/home',
-            args: HomeRouteArgs(key: key, userProfile: userProfile));
+class HomeRoute extends _i1.PageRouteInfo {
+  const HomeRoute() : super(name, path: '/home');
 
   static const String name = 'HomeRoute';
-}
-
-class HomeRouteArgs {
-  const HomeRouteArgs({this.key, this.userProfile});
-
-  final _i11.Key? key;
-
-  final _i12.DocumentSnapshot? userProfile;
 }
 
 class ChickenRoute extends _i1.PageRouteInfo {

@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 
-import '../../features/home/domain/repositories/petpooja_api_service.dart';
+// import '../../features/home/domain/repositories/petpooja_api_service.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/home/presentation/pages/products/bd_page.dart';
 import '../../features/home/presentation/pages/products/chicken_page.dart';
@@ -13,9 +13,9 @@ import '../../features/login/presentation/pages/sign_in.dart';
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
   routes: <AutoRoute>[
-    AutoRoute(path: '/', page: MyApiPage),
+    // AutoRoute(path: '/', page: MyApiPage),
     AutoRoute(
-      path: '/login',
+      path: '/',
       name: "LoginRouter",
       page: LoginWrapperPage,
       // guards: [AuthGuard],

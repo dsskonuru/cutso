@@ -31,8 +31,7 @@ class FirebaseService {
             (DocumentSnapshot documentSnapshot) {
               if (documentSnapshot.exists) {
                 print('Document data: ${documentSnapshot.data()}');
-                context.router.root
-                    .navigate(HomeRoute(userProfile: documentSnapshot));
+                context.router.root.navigate(HomeRoute());
               } else {
                 print('Document does not exist on the database');
                 context.router.navigate(RegistrationFormRoute());

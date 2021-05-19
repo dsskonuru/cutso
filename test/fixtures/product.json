@@ -1,0 +1,22 @@
+{
+    {
+        "availability": true,
+        "category": "Sea Food",
+        "description": "Murrel / Maral / Motta",
+        "discounted_price": 100,
+        "name": "Koramennu",
+        "price": 200,
+        "sub_category": "Fresh Water",
+        "tags": ""
+    },
+    {
+        "availability": true,
+        "category": "Bird",
+        "description": "",
+        "discounted_price": 100,
+        "name": "Biryani Cut",
+        "price": 200,
+        "sub_category": "Chicken",
+        "tags": "",
+    }
+}

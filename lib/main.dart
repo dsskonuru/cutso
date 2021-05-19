@@ -1,10 +1,8 @@
-import 'package:chopper/chopper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 
-import 'features/home/domain/repositories/petpooja_api_service.dart';
 import 'core/router/router.gr.dart';
 
 void main() {
@@ -72,30 +70,10 @@ class CutsoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(builder: (context, watch, child) {
-      PostApiService apiService = watch(apiProvider);
-      return FutureBuilder<Response>(
-          future: apiService.menuPost(menuBody),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text(
-                    snapshot.error.toString(),
-                    textAlign: TextAlign.center,
-                    textScaleFactor: 1.3,
-                  ),
-                );
-              }
-              context.read(postMenuProvider).setPostMenu(snapshot.data!.body);
-              return MaterialApp.router(
+    return MaterialApp.router(
                 routerDelegate: _appRouter.delegate(),
                 routeInformationParser: _appRouter.defaultRouteParser(),
               );
-            }
-            return Center(child: CircularProgressIndicator());
-          });
-    });
   }
 }
 

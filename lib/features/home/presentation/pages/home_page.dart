@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../widgets/tiles.dart';
+import '../widgets/home-tiles.dart';
 
 class CartNotifier extends ChangeNotifier {
   int _value = 0;
@@ -17,9 +17,9 @@ class CartNotifier extends ChangeNotifier {
 final cartProvider = ChangeNotifierProvider((ref) => CartNotifier());
 
 class HomePage extends StatefulWidget {
-  final DocumentSnapshot? userProfile;
+  // final DocumentSnapshot? userProfile;
 
-  const HomePage({Key? key, this.userProfile}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
