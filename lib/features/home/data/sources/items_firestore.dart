@@ -4,15 +4,12 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
-// import '../models/item_model.dart';
 
 abstract class ItemsDataSource {
   Future<Either<Failure, List<ItemModel>>> getItems();
 }
 
 class ItemsFirestore implements ItemsDataSource {
-  CollectionReference items = FirebaseFirestore.instance.collection('items');
-
   @override
   Future<Either<Failure, List<ItemModel>>> getItems() async {
     try {
@@ -21,7 +18,8 @@ class ItemsFirestore implements ItemsDataSource {
           .collection('items')
           .get()
           .then((QuerySnapshot<Map<String, dynamic>> querySnapshot) {
-        querySnapshot.docs.forEach((QueryDocumentSnapshot<Map<String, dynamic>> item) {
+        querySnapshot.docs
+            .forEach((QueryDocumentSnapshot<Map<String, dynamic>> item) {
           items.add(ItemModel.fromJson(item.data()));
         });
       });

@@ -8,7 +8,7 @@ part of 'item_model.dart';
 
 ItemModel _$ItemModelFromJson(Map<String, dynamic> json) {
   return ItemModel(
-    document_id: json['document_id'] as int?,
+    id: json['id'] as int?,
     name: json['name'] as String?,
     category: json['category'] as String?,
     sub_category: json['sub_category'] as String?,
@@ -21,7 +21,7 @@ ItemModel _$ItemModelFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$ItemModelToJson(ItemModel instance) => <String, dynamic>{
-      'document_id': instance.document_id,
+      'id': instance.id,
       'name': instance.name,
       'category': instance.category,
       'sub_category': instance.sub_category,

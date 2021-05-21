@@ -1,7 +1,34 @@
 import 'package:equatable/equatable.dart';
 
+const Map<String, Map<String, dynamic>> categories = {
+  "sea-food": {
+    "name": "Sea Food",
+    "sub_categories": ['Fresh Water', 'Marine Fish', 'Shell Fish', 'Fillets'],
+  },
+  "bird": {
+    "name": "Bird",
+    "sub_categories": ['Chicken', 'Desi Chicken', 'Other Birds'],
+  },
+  "mutton": {
+    "name": "Mutton",
+    "sub_categories": ['Goat', 'Lamb'],
+  },
+  "eggs-n-sides": {
+    "name": "Eggs & Sides",
+    "sub_categories": [],
+  },
+  "ready-to-cook": {
+    "name": "Ready to Cook",
+    "sub_categories": [],
+  },
+  "best-deals": {
+    "name": "Best Deals",
+    "sub_categories": [],
+  },
+};
+
 class Item extends Equatable {
-  final int? document_id;
+  final int? id;
   final String? name;
   final String? category;
   final String? sub_category;
@@ -12,7 +39,7 @@ class Item extends Equatable {
   final String? tags;
 
   Item({
-    required this.document_id,
+    required this.id,
     required this.name,
     required this.category,
     required this.sub_category,

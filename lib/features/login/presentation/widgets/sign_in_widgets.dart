@@ -1,34 +1,14 @@
+import '../provider/animation_provider.dart';
+import '../provider/form_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pinput/pin_put/pin_put.dart';
 
 enum SignInPageState {
   MOBILE_NUMBER_FORM,
   OTP_FORM,
   REGISTER_FORM,
 }
-
-class AnimateNotifier extends ChangeNotifier {
-  bool _animate = false;
-  double _logoHeight = 0;
-  SignInPageState _state = SignInPageState.MOBILE_NUMBER_FORM;
-
-  SignInPageState get state => _state;
-  bool get animate => _animate;
-  double get logoHeight => _logoHeight;
-
-  void setAnimation(bool b) {
-    _animate = b;
-    _logoHeight = _animate ? -200 : 0;
-    notifyListeners();
-  }
-
-  void setLoginState(SignInPageState state) {
-    _state = state;
-    notifyListeners();
-  }
-}
-
-final animationProvider = ChangeNotifierProvider((ref) => AnimateNotifier());
 
 class Logo extends StatelessWidget {
   @override
@@ -43,9 +23,9 @@ class Logo extends StatelessWidget {
             duration: const Duration(milliseconds: 450),
             curve: Curves.easeIn,
             transform:
-                Matrix4.translationValues(0, animateNotifier._logoHeight, 0),
+                Matrix4.translationValues(0, animateNotifier.logoHeight, 0),
             child: Image(
-              height: animateNotifier._animate ? 100 : 200,
+              height: animateNotifier.animate ? 100 : 200,
               image: const AssetImage('assets/images/logo-white.png'),
             ),
           ),
@@ -70,7 +50,7 @@ class BottomAnimation extends StatelessWidget {
         return AnimatedPositioned(
           duration: const Duration(milliseconds: 500),
           curve: Curves.easeIn,
-          top: animateNotifier._animate
+          top: animateNotifier.animate
               ? screenHeight * 0.7
               : screenHeight * 0.5,
           child: CustomPaint(
@@ -98,7 +78,7 @@ class TopAnimation extends StatelessWidget {
         return AnimatedPositioned(
           duration: const Duration(milliseconds: 500),
           curve: Curves.easeIn,
-          bottom: animateNotifier._animate
+          bottom: animateNotifier.animate
               ? screenHeight * 0.75
               : screenHeight * 0.5,
           child: CustomPaint(
@@ -201,4 +181,41 @@ class BottomPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter old) => true;
+}
+
+// Pin Input Field
+
+
+class PinInputField extends StatefulWidget {
+  @override
+  _PinInputFieldState createState() => _PinInputFieldState();
+}
+
+class _PinInputFieldState extends State<PinInputField> {
+  final _pinController = TextEditingController();
+  final BoxDecoration pinPutDecoration = BoxDecoration(
+    color: const Color(0x00ff6f00),
+    borderRadius: BorderRadius.circular(10.0),
+    border: Border.all(
+      color: Colors.white,
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return PinPut(
+      eachFieldWidth: 42.0,
+      eachFieldHeight: 42.0,
+      fieldsCount: 6,
+      fieldsAlignment: MainAxisAlignment.spaceEvenly,
+      submittedFieldDecoration: pinPutDecoration,
+      selectedFieldDecoration: pinPutDecoration,
+      followingFieldDecoration: pinPutDecoration,
+      pinAnimationType: PinAnimationType.scale,
+      textStyle: const TextStyle(color: Colors.white, fontSize: 20.0),
+      controller: _pinController,
+      onSubmit: (_) =>
+          context.read(formProvider).setSmsCode(_pinController.text),
+    );
+  }
 }

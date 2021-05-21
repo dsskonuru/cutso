@@ -7,7 +7,7 @@ import '../../../../fixtures/fixture_reader.dart';
 
 void main() {
   final tItem = ItemModel(
-    document_id: 101001,
+      id: 101001,
       name: "Koramennu",
       category: "Sea Food",
       sub_category: "Fresh Water",

@@ -7,16 +7,12 @@
 import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i2;
 
+import '../../features/home/presentation/pages/category_page.dart' as _i5;
 import '../../features/home/presentation/pages/home_page.dart' as _i4;
-import '../../features/home/presentation/pages/products/bd_page.dart' as _i8;
-import '../../features/home/presentation/pages/products/chicken_page.dart'
-    as _i5;
-import '../../features/home/presentation/pages/products/ens_page.dart' as _i9;
-import '../../features/home/presentation/pages/products/mutton_page.dart'
-    as _i6;
-import '../../features/home/presentation/pages/products/rtc_page.dart' as _i10;
-import '../../features/home/presentation/pages/products/seafood_page.dart'
-    as _i7;
+import '../../features/login/presentation/pages/mobile_form_page.dart' as _i6;
+import '../../features/login/presentation/pages/otp_form_page.dart' as _i7;
+import '../../features/login/presentation/pages/registration_form_page.dart'
+    as _i8;
 import '../../features/login/presentation/pages/sign_in.dart' as _i3;
 
 class AppRouter extends _i1.RootStackRouter {
@@ -35,50 +31,29 @@ class AppRouter extends _i1.RootStackRouter {
         builder: (_) {
           return const _i4.HomePage();
         }),
-    ChickenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+    CategoryRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
-        builder: (_) {
-          return _i5.ChickenPage();
-        }),
-    MuttonRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
-        routeData: routeData,
-        builder: (_) {
-          return _i6.MuttonPage();
-        }),
-    SeaFoodRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
-        routeData: routeData,
-        builder: (_) {
-          return _i7.SeaFoodPage();
-        }),
-    BestDealsRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
-        routeData: routeData,
-        builder: (_) {
-          return _i8.BestDealsPage();
-        }),
-    EggsNSidesRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
-        routeData: routeData,
-        builder: (_) {
-          return _i9.EggsNSidesPage();
-        }),
-    ReadyToCookRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
-        routeData: routeData,
-        builder: (_) {
-          return _i10.ReadyToCookPage();
+        builder: (data) {
+          final pathParams = data.pathParams;
+          final args = data.argsAs<CategoryRouteArgs>(
+              orElse: () => CategoryRouteArgs(
+                  category: pathParams.optString('category')));
+          return _i5.CategoryPage(category: args.category, key: args.key);
         }),
     MobileFormRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i3.MobileFormPage();
+          return _i6.MobileFormPage();
         }),
     OtpFormRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i3.OtpFormPage();
+          return _i7.OtpFormPage();
         }),
     RegistrationFormRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i3.RegistrationFormPage();
+          return _i8.RegistrationFormPage();
         })
   };
 
@@ -92,12 +67,7 @@ class AppRouter extends _i1.RootStackRouter {
           _i1.RouteConfig(RegistrationFormRoute.name, path: 'registration')
         ]),
         _i1.RouteConfig(HomeRoute.name, path: '/home'),
-        _i1.RouteConfig(ChickenRoute.name, path: '/chicken'),
-        _i1.RouteConfig(MuttonRoute.name, path: '/mutton'),
-        _i1.RouteConfig(SeaFoodRoute.name, path: '/sea-food'),
-        _i1.RouteConfig(BestDealsRoute.name, path: '/bd'),
-        _i1.RouteConfig(EggsNSidesRoute.name, path: '/ens'),
-        _i1.RouteConfig(ReadyToCookRoute.name, path: '/rtc'),
+        _i1.RouteConfig(CategoryRoute.name, path: '/category'),
         _i1.RouteConfig('*#redirect',
             path: '*', redirectTo: '/', fullMatch: true)
       ];
@@ -116,40 +86,21 @@ class HomeRoute extends _i1.PageRouteInfo {
   static const String name = 'HomeRoute';
 }
 
-class ChickenRoute extends _i1.PageRouteInfo {
-  const ChickenRoute() : super(name, path: '/chicken');
+class CategoryRoute extends _i1.PageRouteInfo<CategoryRouteArgs> {
+  CategoryRoute({String? category, _i2.Key? key})
+      : super(name,
+            path: '/category',
+            args: CategoryRouteArgs(category: category, key: key));
 
-  static const String name = 'ChickenRoute';
+  static const String name = 'CategoryRoute';
 }
 
-class MuttonRoute extends _i1.PageRouteInfo {
-  const MuttonRoute() : super(name, path: '/mutton');
+class CategoryRouteArgs {
+  const CategoryRouteArgs({this.category, this.key});
 
-  static const String name = 'MuttonRoute';
-}
+  final String? category;
 
-class SeaFoodRoute extends _i1.PageRouteInfo {
-  const SeaFoodRoute() : super(name, path: '/sea-food');
-
-  static const String name = 'SeaFoodRoute';
-}
-
-class BestDealsRoute extends _i1.PageRouteInfo {
-  const BestDealsRoute() : super(name, path: '/bd');
-
-  static const String name = 'BestDealsRoute';
-}
-
-class EggsNSidesRoute extends _i1.PageRouteInfo {
-  const EggsNSidesRoute() : super(name, path: '/ens');
-
-  static const String name = 'EggsNSidesRoute';
-}
-
-class ReadyToCookRoute extends _i1.PageRouteInfo {
-  const ReadyToCookRoute() : super(name, path: '/rtc');
-
-  static const String name = 'ReadyToCookRoute';
+  final _i2.Key? key;
 }
 
 class MobileFormRoute extends _i1.PageRouteInfo {

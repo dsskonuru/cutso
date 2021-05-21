@@ -7,7 +7,7 @@ part 'item_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class ItemModel extends Item {
   ItemModel(
-      {required int? document_id,
+      {required int? id,
       required String? name,
       required String? category,
       required String? sub_category,
@@ -17,7 +17,7 @@ class ItemModel extends Item {
       required String? price,
       required String? tags})
       : super(
-            document_id: document_id,
+            id: id,
             name: name,
             category: category,
             sub_category: sub_category,

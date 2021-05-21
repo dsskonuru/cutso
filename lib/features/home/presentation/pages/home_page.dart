@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../widgets/home-tiles.dart';
+import '../widgets/category-tiles.dart';
 
 class CartNotifier extends ChangeNotifier {
   int _value = 0;
@@ -47,16 +47,16 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Container(
           child: Padding(
-            padding: const EdgeInsets.all(5.0),
+            padding: const EdgeInsets.all(8.0),
             child: GridView.count(
               crossAxisCount: 2,
               children: [
-                ChickenWidget(),
-                MuttonWidget(),
-                SeaFoodWidget(),
-                ReadyToCookWidget(),
-                EggsNSidesWidget(),
-                BestDealsWidget(),
+                CategoryWidget(item_category: 'bird'),
+                CategoryWidget(item_category: 'mutton'),
+                CategoryWidget(item_category: 'sea-food'),
+                CategoryWidget(item_category: 'eggs-n-sides'),
+                CategoryWidget(item_category: 'ready-to-cook'),
+                CategoryWidget(item_category: 'best-deals'),
               ],
               crossAxisSpacing: 5,
               mainAxisSpacing: 5,
