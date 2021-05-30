@@ -7,7 +7,8 @@
         "name": "Koramennu",
         "price": 200,
         "sub_category": "Fresh Water",
-        "tags": ""
+        "sizes": "Small, Medium, Larga",
+        "preferred_pieces": "",
     },
     {
         "availability": true,
@@ -17,6 +18,7 @@
         "name": "Biryani Cut",
         "price": 200,
         "sub_category": "Chicken",
-        "tags": "",
+        "sizes": "Small, Medium, Larga",
+        "preferred_pieces": "",
     }
 }

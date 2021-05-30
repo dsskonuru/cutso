@@ -1,97 +1,105 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../data/models/user_model.dart';
+import '../../../../core/router/router.gr.dart';
 import '../provider/form_provider.dart';
-import '../provider/user_firestore_provider.dart';
 
-class RegistrationFormPage extends StatelessWidget {
+class RegistrationFormPage extends StatefulWidget {
+  @override
+  _RegistrationFormPageState createState() => _RegistrationFormPageState();
+}
+
+class _RegistrationFormPageState extends State<RegistrationFormPage> {
+  GlobalKey<FormState> _registrationForm1Key = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const SizedBox(height: 24),
-        const Text(
-          "REGISTRATION",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            letterSpacing: 2.0,
-          ),
-        ),
-        const SizedBox(height: 12),
-        Padding(
-          padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-          child: TextFormField(
-            style: TextStyle(color: Colors.white),
-            decoration: const InputDecoration(
-              floatingLabelBehavior: FloatingLabelBehavior.auto,
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 5),
-              ),
-              labelText: 'Name',
-              labelStyle: TextStyle(color: Colors.white),
-              hintStyle: TextStyle(color: Colors.white),
+    return Form(
+      key: _registrationForm1Key,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(height: 54),
+          const Text(
+            "REGISTRATION",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              letterSpacing: 2.00,
             ),
-            autocorrect: false,
-            onChanged: (name) => context.read(formProvider).setName(name),
           ),
-        ),
-        const SizedBox(height: 12),
-        Padding(
-          padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-          child: TextFormField(
-            style: TextStyle(color: Colors.white),
-            decoration: const InputDecoration(
-              floatingLabelBehavior: FloatingLabelBehavior.auto,
-              border: OutlineInputBorder(
-                gapPadding: 8.0,
-                borderSide: BorderSide(color: Colors.white, width: 5),
+          Padding(
+            padding:
+                const EdgeInsets.only(left: 12.00, right: 12.00, top: 12.00),
+            child: TextFormField(
+              style: TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                floatingLabelBehavior: FloatingLabelBehavior.auto,
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white, width: 5),
+                ),
+                labelText: 'Name',
+                labelStyle: TextStyle(color: Colors.white),
+                hintStyle: TextStyle(color: Colors.white),
               ),
-              labelText: 'Email',
-              labelStyle: TextStyle(color: Colors.white),
-              hintStyle: TextStyle(color: Colors.white),
+              autocorrect: false,
+              onChanged: (name) => context.read(formProvider).setName(name),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter some text';
+                }
+                return null;
+              },
             ),
-            autocorrect: false,
-            onChanged: (email) => context.read(formProvider).setEmail(email),
-            validator: (email) {
-              bool emailValid = RegExp(
-                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                  .hasMatch(email.toString());
-              if (!emailValid) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Invalid Email Address")));
-              }
-            },
           ),
-        ),
-        const SizedBox(height: 12),
-        Consumer(builder: (context, watch, child) {
-          return ElevatedButton(
+          Padding(
+            padding:
+                const EdgeInsets.only(left: 12.00, right: 12.00, top: 12.00),
+            child: TextFormField(
+              style: TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                floatingLabelBehavior: FloatingLabelBehavior.auto,
+                border: OutlineInputBorder(
+                  gapPadding: 8.00,
+                  borderSide: BorderSide(color: Colors.white, width: 5),
+                ),
+                labelText: 'Email',
+                labelStyle: TextStyle(color: Colors.white),
+                hintStyle: TextStyle(color: Colors.white),
+              ),
+              autocorrect: false,
+              onChanged: (email) => context.read(formProvider).setEmail(email),
+              validator: (email) {
+                bool emailValid = RegExp(
+                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                    .hasMatch(email.toString());
+                if (!emailValid) {
+                  return "Invalid Email Address";
+                }
+                return null;
+              },
+            ),
+          ),
+          const SizedBox(height: 12),
+          ElevatedButton(
             onPressed: () async {
-              await context.read(userProvider).registerUser(UserModel(
-                    uid: context.read(formProvider).uid,
-                    full_name: context.read(formProvider).name,
-                    phone: context.read(formProvider).phoneNo,
-                    email: context.read(formProvider).email,
-                    addresses: null,
-                    cart: null,
-                  ));
+              if (_registrationForm1Key.currentState!.validate())
+                await context.router.navigate(RegistrationForm2Route());
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
             ),
             child: const Text(
-              "Submit",
+              "Continue",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,
               ),
             ),
-          );
-        }),
-      ],
+          ),
+        ],
+      ),
     );
   }
 }

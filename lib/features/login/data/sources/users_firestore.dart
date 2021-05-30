@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/router/router.gr.dart';
 import '../../domain/entities/user.dart';
@@ -13,95 +12,145 @@ import '../../presentation/provider/form_provider.dart';
 import '../models/user_model.dart';
 
 abstract class UserDataSource {
-  Future<Either<Failure, UserModel?>> getUser(String uid);
-  Future<Either<Failure, UserModel>> registerUser(UserModel user);
-  Future<void> signOut();
-  Future<void> signIn(AuthCredential authCredential);
-  Future<void> signInWithOTP(String smsCode, String verfId);
-  Future<void> updateUserCart(Cart cart);
+  Future<Either<ServerFailure, void>> registerUser(UserModel user);
+  Future<Either<ServerFailure, void>> signIn(AuthCredential authCredential);
+  Future<Either<ServerFailure, void>> signInWithOTP(
+      String smsCode, String verfId);
+  Future<Either<ServerFailure, UserModel>> getUser(String uid);
+  Future<Either<ServerFailure, Cart>> getCart();
+  Future<Either<ServerFailure, void>> updateCart(Cart cart);
+  Future<Either<ServerFailure, void>> signOut();
+  Future<Either<ServerFailure, void>> handleAuth(BuildContext context);
 }
 
 class UserFirestore implements UserDataSource {
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
+  final _usersRef = FirebaseFirestore.instance
+      .collection('users')
+      .withConverter<UserModel>(
+        fromFirestore: (snapshot, _) => UserModel.fromJson(snapshot.data()!),
+        toFirestore: (movie, _) => movie.toJson(),
+      );
+
   UserModel? _user;
-
-  bool isLoading = true;
-
-  FirebaseAuth get auth => _auth;
-  FirebaseFirestore get firestore => _firestore;
   UserModel? get user => _user;
+  void setUser(UserModel? user) => _user = user;
+
+  Cart _cart = Cart.empty();
+  Cart get cart => _cart;
+  void setCart(Cart cart) => _cart = cart;
 
   @override
-  Future<void> signIn(AuthCredential authCreds) async =>
-      _auth.signInWithCredential(authCreds);
-
-  @override
-  Future<void> signInWithOTP(String smsCode, String verfId) async {
-    AuthCredential authCreds =
-        PhoneAuthProvider.credential(verificationId: verfId, smsCode: smsCode);
-    signIn(authCreds);
-  }
-
-  @override
-  Future<Either<Failure, UserModel?>> getUser(String uid) async {
+  Future<Either<ServerFailure, UserModel>> registerUser(UserModel user) async {
     try {
-      UserModel? user;
-      _firestore
-          .collection('users')
-          .doc(uid)
-          .snapshots()
-          .listen((DocumentSnapshot<Map<String, dynamic>> documentSnapshot) {
-        user = UserModel.fromJson(documentSnapshot.data()!);
-      });
+      await _usersRef.doc(user.uid).set(user);
+      debugPrint(user.toJson().toString());
       return Right(user);
-    } on ServerException {
+    } on Exception {
       return Left(ServerFailure());
     }
   }
 
   @override
-  Future<Either<Failure, UserModel>> registerUser(UserModel user) async {
+  Future<Either<ServerFailure, void>> signIn(AuthCredential authCreds) async {
     try {
-      _firestore..collection('users').doc(user.uid).set(user.toJson());
-      return Right(user);
-    } on ServerException {
+      await _auth.signInWithCredential(authCreds);
+      return Right(null);
+    } on Exception {
       return Left(ServerFailure());
     }
   }
 
   @override
-  Future<void> signOut() async => _auth.signOut();
-
-  // Handles Auth
-  Future<void> handleAuth(BuildContext context) async {
-    _auth.authStateChanges().listen(
-      (user) async {
-        if (user == null) {
-          debugPrint('User is currently signed out!');
-          context.router.root.navigate(LoginRouter());
-        } else {
-          context.read(formProvider).setUid(user.uid);
-          _firestore.collection('users').doc(user.uid).get().then(
-            (DocumentSnapshot<Map<String, dynamic>> documentSnapshot) {
-              if (documentSnapshot.exists) {
-                print(documentSnapshot.data()!);
-                _user = UserModel.fromJson(documentSnapshot.data()!);
-                print('Document data: ${documentSnapshot.data()}');
-                context.router.root.navigate(HomeRoute());
-              } else {
-                context.read(formProvider).setUid(user.uid);
-                print('Document does not exist on the database');
-                context.router.navigate(RegistrationFormRoute());
-              }
-            },
-          );
-        }
-      },
-    );
+  Future<Either<ServerFailure, void>> signInWithOTP(
+      String smsCode, String verfId) async {
+    try {
+      AuthCredential authCreds = PhoneAuthProvider.credential(
+          verificationId: verfId, smsCode: smsCode);
+      Either<ServerFailure, void> signInOrFailure = await signIn(authCreds);
+      if (signInOrFailure.isRight())
+        return Right(null);
+      else
+        return Left(ServerFailure());
+    } on Exception {
+      return Left(ServerFailure());
+    }
   }
 
   @override
-  Future<void> updateUserCart(Cart cart) async =>
-      _firestore.collection('users').doc(user!.uid).set(cart.toJson());
+  Future<Either<ServerFailure, UserModel>> getUser(String uid) async {
+    try {
+      _user =
+          await _usersRef.doc(uid).get().then((snapshot) => snapshot.data()!);
+      return Right(_user!);
+    } on Exception {
+      return Left(ServerFailure());
+    }
+  }
+
+  Future<Either<ServerFailure, Cart>> getCart() async {
+    try {
+      if (_user == null) return Right(Cart.empty());
+      _cart = _user!.cart;
+      return Right(_cart);
+    } on Exception {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<ServerFailure, void>> updateCart(Cart cart) async {
+    try {
+      _cart = cart;
+      _usersRef.doc(_user!.uid).update({'cart': cart.toJson()});
+      return Right(null);
+    } on Exception {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<ServerFailure, void>> signOut() async {
+    try {
+      await _auth.signOut();
+      setUser(null);
+      return Right(null);
+    } on Exception {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<ServerFailure, void>> handleAuth(BuildContext context) async {
+    try {
+      _auth.authStateChanges().listen(
+        (authUser) async {
+          if (authUser == null) {
+            debugPrint('User is currently signed out!');
+            context.router.root.navigate(LoginRouter());
+          } else {
+            context.read(formProvider).setUid(authUser.uid);
+            await _usersRef.doc(authUser.uid).get().then(
+              (DocumentSnapshot<UserModel> userSnapshot) async {
+                if (userSnapshot.exists) {
+                  setUser(userSnapshot.data()!);
+                  setCart(_user!.cart);
+                  debugPrint(_user!.uid + _user!.full_name);
+                  await context.router.root.navigate(HomeRoute());
+                } else {
+                  debugPrint('User requires registration');
+                  await context.router.navigate(RegistrationFormRoute());
+                }
+              },
+            );
+          }
+        },
+      );
+      return Right(null);
+    } on Exception {
+      return Left(ServerFailure());
+    }
+  }
 }
+
+// TODO: Setup Phone Auth for iOS

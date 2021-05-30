@@ -27,16 +27,36 @@ const Map<String, Map<String, dynamic>> categories = {
   },
 };
 
+String getCategoryFromId(int itemId) {
+  switch (itemId ~/ 100000) {
+    case 1:
+      return "sea-food";
+    case 2:
+      return "bird";
+    case 3:
+      return 'mutton';
+    case 4:
+      return 'eggs-n-sides';
+    case 5:
+      return 'ready-to-cook';
+    case 6:
+      return 'best-deals';
+    default:
+      return 'bird';
+  }
+}
+
 class Item extends Equatable {
-  final int? id;
-  final String? name;
-  final String? category;
-  final String? sub_category;
+  final int id;
+  final String name;
+  final String category;
+  final String sub_category;
   final String? description;
-  final bool? availability;
+  final bool availability;
   final String? discounted_price;
-  final String? price;
-  final String? tags;
+  final String price;
+  final String? sizes;
+  final String? preferred_pieces;
 
   Item({
     required this.id,
@@ -47,11 +67,9 @@ class Item extends Equatable {
     required this.availability,
     required this.discounted_price,
     required this.price,
-    required this.tags,
+    required this.sizes,
+    required this.preferred_pieces,
   });
-
-  @override
-  bool get stringify => true;
 
   @override
   List<Object?> get props => [
@@ -62,6 +80,7 @@ class Item extends Equatable {
         availability,
         discounted_price,
         price,
-        tags,
+        sizes,
+        preferred_pieces,
       ];
 }

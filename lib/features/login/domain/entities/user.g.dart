@@ -6,36 +6,48 @@ part of 'user.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Cart _$CartFromJson(Map<String, dynamic> json) {
-  return Cart(
-    applicableItemIds: (json['applicableItemIds'] as List<dynamic>)
-        .map((e) => e as int)
-        .toList(),
-    uid: json['uid'] as String,
-    value: (json['value'] as num).toDouble(),
-  );
-}
-
-Map<String, dynamic> _$CartToJson(Cart instance) => <String, dynamic>{
-      'applicableItemIds': instance.applicableItemIds,
-      'uid': instance.uid,
-      'value': instance.value,
-    };
-
 Address _$AddressFromJson(Map<String, dynamic> json) {
   return Address(
-    name: json['name'] as String?,
-    location: Address._fromJsonGeoPoint(json['location'] as GeoPoint?),
-    line1: json['line1'] as String?,
-    line2: json['line2'] as String?,
-    landmark: json['landmark'] as String?,
+    name: json['name'] as String,
+    location: Address._fromJsonGeoPoint(json['location'] as GeoPoint),
+    line: json['line'] as String,
+    landmark: json['landmark'] as String,
   );
 }
 
 Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
       'name': instance.name,
-      'location': Address._toJsonGeoPoint(instance.location),
-      'line1': instance.line1,
-      'line2': instance.line2,
+      'line': instance.line,
       'landmark': instance.landmark,
+      'location': Address._toJsonGeoPoint(instance.location),
+    };
+
+Cart _$CartFromJson(Map<String, dynamic> json) {
+  return Cart(
+    orderItems: (json['orderItems'] as List<dynamic>)
+        .map((e) => OrderItem.fromJson(e as Map<String, dynamic>))
+        .toList(),
+  );
+}
+
+Map<String, dynamic> _$CartToJson(Cart instance) => <String, dynamic>{
+      'orderItems': instance.orderItems.map((e) => e.toJson()).toList(),
+    };
+
+OrderItem _$OrderItemFromJson(Map<String, dynamic> json) {
+  return OrderItem(
+    itemId: json['itemId'] as int,
+    quantity: (json['quantity'] as num).toDouble(),
+    tags: (json['tags'] as List<dynamic>).map((e) => e as String).toSet(),
+    guidelines: json['guidelines'] as String?,
+    price: (json['price'] as num).toDouble(),
+  );
+}
+
+Map<String, dynamic> _$OrderItemToJson(OrderItem instance) => <String, dynamic>{
+      'itemId': instance.itemId,
+      'quantity': instance.quantity,
+      'tags': instance.tags.toList(),
+      'guidelines': instance.guidelines,
+      'price': instance.price,
     };

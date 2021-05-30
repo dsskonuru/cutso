@@ -7,18 +7,18 @@ part 'user_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class UserModel extends User {
   UserModel({
-    required String? uid,
-    required String? full_name,
-    required int? phone,
-    required String? email,
-    required List<Address>? addresses,
-    required Cart? cart,
+    required String uid,
+    required String full_name,
+    required int phone,
+    required String email,
+    required Address address,
+    required Cart cart,
   }) : super(
           uid: uid,
           full_name: full_name,
           phone: phone,
           email: email,
-          addresses: addresses,
+          address: address,
           cart: cart,
         );
 

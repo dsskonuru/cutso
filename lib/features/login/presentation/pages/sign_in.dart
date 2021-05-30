@@ -27,7 +27,7 @@ class LoginWrapperPage extends StatelessWidget {
 }
 
 Future<void> verifyPhone(BuildContext context, String phoneNo) async =>
-    await context.read(userProvider).auth.verifyPhoneNumber(
+    await FirebaseAuth.instance.verifyPhoneNumber(
           phoneNumber: phoneNo,
           verificationCompleted: (AuthCredential authCredential) {
             context.read(userProvider).signIn(authCredential);

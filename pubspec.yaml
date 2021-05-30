@@ -21,6 +21,7 @@ dependencies:
   flutter_riverpod: ^0.14.0+3
   flutter_svg: ^0.22.0
   json_annotation: ^4.0.1
+  location: ^4.1.1
   pinput: ^1.2.0
   rxdart: ^0.27.0
 
@@ -51,7 +52,6 @@ flutter:
     - assets/vectors/eggs-n-sides.svg
     - assets/vectors/ready-to-cook.svg
     - assets/vectors/mutton.svg
-
     # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

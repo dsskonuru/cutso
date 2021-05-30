@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../widgets/category-tiles.dart';
+import '../../../../core/router/router.gr.dart';
+import '../widgets/category_tiles.dart';
 
 class CartNotifier extends ChangeNotifier {
   int _value = 0;
@@ -36,18 +38,22 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.white,
         leading: Icon(
           Icons.menu,
-          size: 30.0,
+          size: 30.00,
           color: Colors.amber,
         ),
         title: Image(
-          height: 36.0,
+          height: 36.00,
           image: AssetImage('assets/images/cutso-text-small.png'),
         ),
+      ),
+      floatingActionButton: FloatingActionButton( 
+        onPressed: () => context.router.navigate(CartRoute()),
+        child: Icon(Icons.shopping_cart_rounded),
       ),
       body: SafeArea(
         child: Container(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.00),
             child: GridView.count(
               crossAxisCount: 2,
               children: [

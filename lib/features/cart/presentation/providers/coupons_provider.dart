@@ -6,6 +6,6 @@ import '../../data/models/coupon_model.dart';
 import '../../data/sources/coupons_firestore.dart';
 
 final couponsProvider =
-    FutureProvider<Either<Failure, List<CouponModel>>>((ref) async {
+    FutureProvider<Either<ServerFailure, List<CouponModel>>>((ref) async {
   return await CouponsFirestore().getCoupons();
 });

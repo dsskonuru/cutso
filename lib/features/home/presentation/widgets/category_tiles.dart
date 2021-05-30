@@ -13,8 +13,8 @@ class CategoryWidget extends StatelessWidget {
     return Column(
       children: [
         InkWell(
-          onTap: () =>
-              AutoRouter.of(context).push(CategoryRoute(category: item_category)),
+          onTap: () => AutoRouter.of(context)
+              .push(CategoryRoute(category: item_category)),
           child: Center(
             child: Container(
               height: 120,
@@ -41,7 +41,7 @@ class CategoryWidget extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 10.0,
+          height: 10.00,
         ),
         Center(
           child: Text(item_category.toUpperCase().split("-").join(" ")),

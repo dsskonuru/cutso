@@ -1,30 +1,47 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cutso/features/home/data/models/item_model.dart';
 import 'package:dartz/dartz.dart';
 
-import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
+import '../models/item_model.dart';
 
 abstract class ItemsDataSource {
-  Future<Either<Failure, List<ItemModel>>> getItems();
+  Future<Either<ServerFailure, List<ItemModel>>> getItems();
+  Future<Either<ServerFailure, ItemModel>> getItem(int itemId);
 }
 
 class ItemsFirestore implements ItemsDataSource {
+  final _itemsRef = FirebaseFirestore.instance
+      .collection('items')
+      .withConverter<ItemModel>(
+        fromFirestore: (snapshot, _) => ItemModel.fromJson(snapshot.data()!),
+        toFirestore: (movie, _) => movie.toJson(),
+      );
+
   @override
-  Future<Either<Failure, List<ItemModel>>> getItems() async {
+  Future<Either<ServerFailure, List<ItemModel>>> getItems() async {
     try {
-      List<ItemModel> items = [];
-      await FirebaseFirestore.instance
-          .collection('items')
-          .get()
-          .then((QuerySnapshot<Map<String, dynamic>> querySnapshot) {
-        querySnapshot.docs
-            .forEach((QueryDocumentSnapshot<Map<String, dynamic>> item) {
-          items.add(ItemModel.fromJson(item.data()));
+      List<ItemModel> _items = [];
+      await _itemsRef.get().then((QuerySnapshot<ItemModel> itemQuerySnapshot) {
+        itemQuerySnapshot.docs.forEach(
+            (QueryDocumentSnapshot<ItemModel> itemQueryDocumentSnapshot) {
+          _items.add(itemQueryDocumentSnapshot.data());
         });
       });
-      return Right(items);
-    } on ServerException {
+      return Right(_items);
+    } on Exception {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<ServerFailure, ItemModel>> getItem(int itemId) async {
+    try {
+      late ItemModel _item;
+      await _itemsRef.doc(itemId.toString()).get().then(
+          (DocumentSnapshot<ItemModel> itemDocumentSnapshot) =>
+              _item = itemDocumentSnapshot.data()!);
+      return Right(_item);
+    } on Exception {
       return Left(ServerFailure());
     }
   }

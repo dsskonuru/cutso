@@ -1,14 +1,9 @@
-import '../provider/animation_provider.dart';
-import '../provider/form_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 
-enum SignInPageState {
-  MOBILE_NUMBER_FORM,
-  OTP_FORM,
-  REGISTER_FORM,
-}
+import '../provider/animation_provider.dart';
+import '../provider/form_provider.dart';
 
 class Logo extends StatelessWidget {
   @override
@@ -50,9 +45,8 @@ class BottomAnimation extends StatelessWidget {
         return AnimatedPositioned(
           duration: const Duration(milliseconds: 500),
           curve: Curves.easeIn,
-          top: animateNotifier.animate
-              ? screenHeight * 0.7
-              : screenHeight * 0.5,
+          top:
+              animateNotifier.animate ? screenHeight * 0.8 : screenHeight * 0.5,
           child: CustomPaint(
             size: Size(screenWidth, screenHeight / 2),
             painter: BottomPainter(),
@@ -110,8 +104,8 @@ class LoginBottomPainter extends CustomPainter {
       ).createShader(Rect.fromLTRB(0, 0, width, height));
 
     final Path bottomOval = Path();
-    bottomOval.addRect(Rect.fromLTWH(0.0, 0.0, width, height));
-    bottomOval.quadraticBezierTo(width * 0.5, height * 0.3, width, 0.0);
+    bottomOval.addRect(Rect.fromLTWH(0.00, 0.00, width, height));
+    bottomOval.quadraticBezierTo(width * 0.5, height * 0.3, width, 0.00);
     canvas.drawPath(bottomOval, paint);
   }
 
@@ -136,7 +130,7 @@ class LoginTopPainter extends CustomPainter {
       ).createShader(Rect.fromLTRB(0, 0, width, height));
 
     final Path topOval = Path();
-    topOval.addRect(Rect.fromLTRB(0.0, 0.0, width, height));
+    topOval.addRect(Rect.fromLTRB(0.00, 0.00, width, height));
     topOval.moveTo(0, height);
     topOval.quadraticBezierTo(width * 0.5, height * 1.3, width, height);
     canvas.drawPath(topOval, paint);
@@ -154,7 +148,7 @@ class TopPainter extends CustomPainter {
     final Paint paint = Paint();
 
     final Path topOval = Path();
-    topOval.addRect(Rect.fromLTRB(0.0, 0.0, width, height));
+    topOval.addRect(Rect.fromLTRB(0.00, 0.00, width, height));
     topOval.moveTo(0, height);
     topOval.quadraticBezierTo(width * 0.5, height * 1.3, width, height);
     paint.color = const Color(0xffff6f00);
@@ -173,8 +167,8 @@ class BottomPainter extends CustomPainter {
 
     final Paint paint = Paint();
     final Path bottomOval = Path();
-    bottomOval.addRect(Rect.fromLTWH(0.0, 0.0, width, height));
-    bottomOval.quadraticBezierTo(width * 0.5, height * 0.3, width, 0.0);
+    bottomOval.addRect(Rect.fromLTWH(0.00, 0.00, width, height));
+    bottomOval.quadraticBezierTo(width * 0.5, height * 0.3, width, 0.00);
     paint.color = const Color(0xffff6f00);
     canvas.drawPath(bottomOval, paint);
   }
@@ -185,17 +179,15 @@ class BottomPainter extends CustomPainter {
 
 // Pin Input Field
 
-
 class PinInputField extends StatefulWidget {
   @override
   _PinInputFieldState createState() => _PinInputFieldState();
 }
 
 class _PinInputFieldState extends State<PinInputField> {
-  final _pinController = TextEditingController();
   final BoxDecoration pinPutDecoration = BoxDecoration(
     color: const Color(0x00ff6f00),
-    borderRadius: BorderRadius.circular(10.0),
+    borderRadius: BorderRadius.circular(10.00),
     border: Border.all(
       color: Colors.white,
     ),
@@ -204,18 +196,22 @@ class _PinInputFieldState extends State<PinInputField> {
   @override
   Widget build(BuildContext context) {
     return PinPut(
-      eachFieldWidth: 42.0,
-      eachFieldHeight: 42.0,
+      eachFieldWidth: 42.00,
+      eachFieldHeight: 42.00,
       fieldsCount: 6,
       fieldsAlignment: MainAxisAlignment.spaceEvenly,
       submittedFieldDecoration: pinPutDecoration,
       selectedFieldDecoration: pinPutDecoration,
       followingFieldDecoration: pinPutDecoration,
       pinAnimationType: PinAnimationType.scale,
-      textStyle: const TextStyle(color: Colors.white, fontSize: 20.0),
-      controller: _pinController,
-      onSubmit: (_) =>
-          context.read(formProvider).setSmsCode(_pinController.text),
+      textStyle: const TextStyle(color: Colors.white, fontSize: 20.00),
+      onChanged: (pin) => context.read(formProvider).setSmsCode(pin),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please provide the PIN';
+        }
+        return null;
+      },
     );
   }
 }

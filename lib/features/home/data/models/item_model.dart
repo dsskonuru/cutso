@@ -7,15 +7,16 @@ part 'item_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class ItemModel extends Item {
   ItemModel(
-      {required int? id,
-      required String? name,
-      required String? category,
-      required String? sub_category,
+      {required int id,
+      required String name,
+      required String category,
+      required String sub_category,
       required String? description,
-      required bool? availability,
+      required bool availability,
       required String? discounted_price,
-      required String? price,
-      required String? tags})
+      required String price,
+      required String? sizes,
+      required String? preferred_pieces})
       : super(
             id: id,
             name: name,
@@ -25,7 +26,8 @@ class ItemModel extends Item {
             availability: availability,
             discounted_price: discounted_price,
             price: price,
-            tags: tags);
+            sizes: sizes,
+            preferred_pieces: preferred_pieces);
 
   factory ItemModel.fromJson(Map<String, dynamic> json) =>
       _$ItemModelFromJson(json);
