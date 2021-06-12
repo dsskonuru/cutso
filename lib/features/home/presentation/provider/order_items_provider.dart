@@ -1,14 +1,19 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../login/domain/entities/user.dart';
+import '../../../login/data/models/order_item.dart';
+
+final orderItemProvider =
+    ChangeNotifierProvider.autoDispose((ref) => OrderItemNotifier());
 
 class OrderItemNotifier extends ChangeNotifier {
+  //TODO: create orders page
   int? _itemId;
   double _quantity = 0.5;
   Set<String> _tags = {}; // includes sizes and preferences
   String? _guidelines;
   double? _price;
+  bool _orderItemSet = false;
 
   int? get itemId => _itemId;
   double get quantity => _quantity;
@@ -23,6 +28,26 @@ class OrderItemNotifier extends ChangeNotifier {
       guidelines: _guidelines,
       price: _price!);
 
+  void setOrderItem(OrderItem orderItem) {
+    if (!_orderItemSet) {
+      _itemId = orderItem.itemId;
+      _quantity = orderItem.quantity;
+      _tags = orderItem.tags;
+      _guidelines = orderItem.guidelines;
+      _price = orderItem.price;
+      _orderItemSet = true;
+    }
+  }
+
+  // void resetOrderItem() {
+  //   _itemId = null;
+  //   _quantity = 0.5;
+  //   _tags = {};
+  //   _guidelines = null;
+  //   _price = null;
+  //   _orderItemSet = false;
+  // }
+
   void setitemId(int itemId) {
     _itemId = itemId;
     notifyListeners();
@@ -30,17 +55,17 @@ class OrderItemNotifier extends ChangeNotifier {
 
   void setQuantity(double quantity) {
     _quantity = quantity;
+    debugPrint(_quantity.toString());
     notifyListeners();
   }
 
   void incrementQuantity([double? amount]) {
-    _quantity += amount ?? 0.5;
-    notifyListeners();
+    final double _inc = amount ?? 0.5;
+    setQuantity(_quantity + _inc);
   }
 
   void decrementQuantity() {
-    _quantity -= 0.5;
-    notifyListeners();
+    setQuantity(_quantity - 0.5);
   }
 
   void addTags(List<String> tags) {
@@ -57,15 +82,4 @@ class OrderItemNotifier extends ChangeNotifier {
     _price = price;
     notifyListeners();
   }
-
-  void setOrderItem(OrderItem orderItem) {
-    _itemId = orderItem.itemId;
-    _quantity = orderItem.quantity;
-    _tags = orderItem.tags;
-    _guidelines = orderItem.guidelines;
-    _price = orderItem.price;
-    notifyListeners();
-  }
 }
-
-final orderItemProvider = ChangeNotifierProvider((ref) => OrderItemNotifier());

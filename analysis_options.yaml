@@ -1,5 +1,21 @@
+include: package:lint/analysis_options.yaml
+
+linter:
+  rules:
+    parameter_assignments: true
+    sort_pub_dependencies: false
+
 analyzer:
   exclude:
     - "**/*.g.dart"
-    - "**/*.freezed.dart"
     - "**/*.gr.dart"
+    - "**/*.freezed.dart"
+    - "**/*.config.dart"
+    - lib/generated_plugin_registrant.dart
+    # - test/**
+
+  errors:
+    missing_return: error
+    missing_required_param: error
+    parameter_assignments: error
+    must_be_immutable: error

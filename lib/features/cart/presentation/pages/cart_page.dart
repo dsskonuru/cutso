@@ -1,6 +1,17 @@
+import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:cutso/core/providers/firebase_provider.dart';
+import 'package:cutso/core/theme/theme_data.dart';
+import 'package:cutso/features/login/data/models/cart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import '../../../../core/router/router.gr.dart';
 
+import '../../../login/presentation/provider/user_actions_provider.dart';
 import '../widgets/address_card.dart';
 import '../widgets/order_summary.dart';
 import '../widgets/payment_card.dart';
@@ -8,7 +19,7 @@ import '../widgets/price_card.dart';
 
 class CartPage extends StatefulWidget {
   @override
-  _CartPageState createState() => _CartPageState();
+  State<CartPage> createState() => _CartPageState();
 }
 
 class _CartPageState extends State<CartPage> {
@@ -22,67 +33,111 @@ class _CartPageState extends State<CartPage> {
               Stack(
                 children: [
                   IconButton(
-                    onPressed: () => AutoRouter.of(context).pop(),
-                    icon: Icon(Icons.arrow_back_rounded),
+                    onPressed: () => context.router.pop(),
+                    icon: const Icon(Icons.arrow_back_rounded),
                   ),
                   Center(
                     child: Text(
                       'Checkout',
-                      style: TextStyle(
-                        fontSize: 24.00,
-                      ),
+                      style: Theme.of(context).textTheme.headline6,
                     ),
                   ),
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.w),
                 child: Text(
                   'Order Summary',
-                  style: TextStyle(
-                    fontSize: 18.00,
-                    fontStyle: FontStyle.italic,
-                  ),
+                  style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),
               OrderSummary(),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.w),
                 child: Text(
                   'Address Details',
-                  style: TextStyle(
-                    fontSize: 18.00,
-                    fontStyle: FontStyle.italic,
-                  ),
+                  style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),
               AddressCard(),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.w),
                 child: Text(
                   'Price Details',
-                  style: TextStyle(
-                    fontSize: 18.00,
-                    fontStyle: FontStyle.italic,
-                  ),
+                  style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),
               PriceCard(),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.symmetric(vertical: 8.w),
                 child: Text(
                   'Payment Details',
-                  style: TextStyle(
-                    fontSize: 18.00,
-                    fontStyle: FontStyle.italic,
-                  ),
+                  style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),
               PaymentCard(),
-              ElevatedButton(
-                onPressed: () => debugPrint('order placed'),
-                child: Text('Place Order'),
+              Consumer(
+                builder: (context, watch, child) {
+                  return ArgonButton(
+                    height: 9.w,
+                    width: 36.w,
+                    color: kOrange,
+                    borderRadius: 0.5.w,
+                    loader: Container(
+                      padding: const EdgeInsets.all(10),
+                      child: const SpinKitRotatingCircle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    onTap: (startLoading, stopLoading, btnState) async {
+                      if (btnState == ButtonState.Idle) {
+                        startLoading();
+                        final cart = watch(userActionsProvider).cart;
+                        if (cart.orderItems.isNotEmpty) {
+                          final orderRunner =
+                              await watch(userActionsProvider).placeOrder(cart);
+                          orderRunner.fold(
+                            (failure) {
+                              watch(crashlyticsProvider)
+                                  .log(failure.messsage.toString());
+                              showTopSnackBar(
+                                context,
+                                const CustomSnackBar.error(
+                                  message:
+                                      "We're unable to place the order, please try again later",
+                                ),
+                              );
+                            },
+                            (_) {
+                              setState(() {});
+                              showTopSnackBar(
+                                context,
+                                const CustomSnackBar.success(
+                                  message: "Order was placed successfully !",
+                                ),
+                              );
+                              watch(userActionsProvider)
+                                  .updateCart(Cart.empty());
+                            },
+                          );
+                          stopLoading();
+                        } else {
+                          await context.router.navigate(const HomeRoute());
+                          stopLoading();
+                        }
+                      }
+                    },
+                    // color: Color(0xFF7866FE),
+                    child: Text(
+                      'Place Order',
+                      style: Theme.of(context).textTheme.button,
+                    ),
+                  );
+                },
               ),
+              SizedBox(
+                height: 8.w,
+              )
             ],
           ),
         ),

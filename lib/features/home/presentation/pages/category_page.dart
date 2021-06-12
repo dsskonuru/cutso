@@ -8,53 +8,52 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/router/router.gr.dart';
-import '../../data/models/item_model.dart';
-import '../../domain/entities/item.dart';
+import '../../data/models/item.dart';
 import '../provider/items_provider.dart';
 
 class CategoryListView extends StatelessWidget {
   final String category;
-  CategoryListView({required this.category});
+  const CategoryListView({required this.category});
 
   @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, watch, child) {
-        Future<dz.Either<ServerFailure, List<ItemModel>>> futureItems =
+        final Future<dz.Either<ServerFailure, List<Item>>> futureItems =
             watch(itemsProvider).getItems();
-        return FutureBuilder<dz.Either<ServerFailure, List<ItemModel>>>(
+        return FutureBuilder<dz.Either<ServerFailure, List<Item>>>(
             future: futureItems,
             builder: (BuildContext context,
-                AsyncSnapshot<dz.Either<ServerFailure, List<ItemModel>>>
+                AsyncSnapshot<dz.Either<ServerFailure, List<Item>>>
                     snapshot) {
               late Widget _widget;
               if (snapshot.hasData) {
                 _widget = snapshot.data!.fold(
-                    (failure) => Center(child: const Text('Server Problem')),
+                    (failure) => const Center(child: Text('Server Problem')),
                     (items) {
                   // _function to displayItems
-                  List<Widget> _displayItems(String item_sub_category) {
+                  List<Widget> _displayItems(String itemSubCategory) {
                     return [
                       Center(
                         child: Padding(
                           padding: const EdgeInsets.all(8.00),
                           child: Text(
-                            item_sub_category.toUpperCase(),
-                            style: TextStyle(fontSize: 16.00),
+                            itemSubCategory.toUpperCase(),
+                            style: const TextStyle(fontSize: 16.00),
                           ),
                         ),
                       ),
-                      for (ItemModel item in items.where(
-                          (item) => item.sub_category == item_sub_category))
+                      for (Item item in items
+                          .where((item) => item.subCategory == itemSubCategory))
                         ListTile(
                           title: Text(
                             item.name,
-                            style: TextStyle(fontWeight: FontWeight.w500),
+                            style: const TextStyle(fontWeight: FontWeight.w500),
                           ),
                           subtitle: (item.description!.isNotEmpty)
                               ? Text(
                                   item.description!,
-                                  style: TextStyle(fontSize: 12),
+                                  style: const TextStyle(fontSize: 12),
                                 )
                               : null,
                           enabled: item.availability,
@@ -62,28 +61,26 @@ class CategoryListView extends StatelessWidget {
                             width: 50,
                             height: 50,
                             decoration: BoxDecoration(
-                              boxShadow: [
+                              boxShadow: const [
                                 BoxShadow(
                                     color: Color.fromRGBO(0, 0, 0, 0.3),
-                                    offset: Offset(0, 0),
                                     blurRadius: 10)
                               ],
                               border: Border.all(
-                                color: Color.fromRGBO(255, 255, 255, 1),
-                                width: 1,
+                                color: const Color.fromRGBO(255, 255, 255, 1),
                               ),
-                              image: DecorationImage(
+                              image: const DecorationImage(
                                   image: AssetImage('assets/images/meat.png'),
                                   fit: BoxFit.cover),
-                              borderRadius:
-                                  BorderRadius.all(Radius.elliptical(50, 50)),
+                              borderRadius: const BorderRadius.all(
+                                  Radius.elliptical(50, 50)),
                             ),
                           ),
                           trailing: SizedBox(
                             width: 100,
                             child: Row(
                               children: [
-                                Text(
+                                const Text(
                                   "500gm",
                                   style: TextStyle(
                                     fontStyle: FontStyle.italic,
@@ -91,32 +88,30 @@ class CategoryListView extends StatelessWidget {
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 12,
                                 ),
-                                (item.discounted_price!.isNotEmpty)
-                                    ? Column(
+                                if (item.discountedPrice!.isNotEmpty) Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            "\$" + item.discounted_price!,
-                                            style: TextStyle(
+                                            "\$${item.discountedPrice!}",
+                                            style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 16),
                                           ),
                                           Text(
-                                            "\$" + item.price,
-                                            style: TextStyle(
+                                            "\$${item.price}",
+                                            style: const TextStyle(
                                                 decoration:
                                                     TextDecoration.lineThrough,
                                                 fontSize: 10.00),
                                           )
                                         ],
-                                      )
-                                    : Text(
-                                        "\$" + item.price,
-                                        style: TextStyle(
+                                      ) else Text(
+                                        "\$${item.price}",
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16),
                                       )
@@ -124,7 +119,7 @@ class CategoryListView extends StatelessWidget {
                             ),
                           ),
                           onTap: () async {
-                            return await context.router.navigate(ItemRoute(
+                            return context.router.navigate(ItemRoute(
                                 itemJson: json.encode(item.toJson())));
                           },
                         ),
@@ -134,15 +129,15 @@ class CategoryListView extends StatelessWidget {
                   return Expanded(
                     child: ListView(
                       children: [
-                        for (String item_sub_category
+                        for (String itemSubCategory
                             in categories[category]!["sub_categories"])
-                          ..._displayItems(item_sub_category)
+                          ..._displayItems(itemSubCategory)
                       ],
                     ),
                   );
                 });
               } else {
-                _widget = Center(
+                _widget = const Center(
                   child: CircularProgressIndicator.adaptive(),
                 );
               }
@@ -174,7 +169,7 @@ class _CategoryPageState extends State<CategoryPage> {
               children: [
                 IconButton(
                   onPressed: () => AutoRouter.of(context).pop(),
-                  icon: Icon(Icons.arrow_back_rounded),
+                  icon: const Icon(Icons.arrow_back_rounded),
                 ),
                 Center(
                   child: Column(
@@ -182,7 +177,7 @@ class _CategoryPageState extends State<CategoryPage> {
                       Container(
                         height: 100,
                         width: 100,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                         ),
                         alignment: Alignment.center,
@@ -191,7 +186,8 @@ class _CategoryPageState extends State<CategoryPage> {
                           child: SvgPicture.asset(
                               'assets/vectors/${widget.category}.svg',
                               semanticsLabel:
-                                  categories[widget.category]!["name"]),
+                                  categories[widget.category]!["name"]
+                                      as String),
                         ),
                       ),
                     ],
@@ -199,7 +195,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 ),
               ],
             ),
-            Divider(),
+            const Divider(),
             CategoryListView(category: widget.category!),
           ],
         ),

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../core/router/router.gr.dart';
 import '../widgets/category_tiles.dart';
@@ -36,37 +37,35 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.white,
-        leading: Icon(
+        leading: const Icon(
           Icons.menu,
           size: 30.00,
           color: Colors.amber,
         ),
-        title: Image(
+        title: const Image(
           height: 36.00,
           image: AssetImage('assets/images/cutso-text-small.png'),
         ),
       ),
-      floatingActionButton: FloatingActionButton( 
-        onPressed: () => context.router.navigate(CartRoute()),
-        child: Icon(Icons.shopping_cart_rounded),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.router.navigate(const CartRoute()),
+        child: const Icon(Icons.shopping_cart_rounded),
       ),
       body: SafeArea(
-        child: Container(
-          child: Padding(
-            padding: const EdgeInsets.all(8.00),
-            child: GridView.count(
-              crossAxisCount: 2,
-              children: [
-                CategoryWidget(item_category: 'bird'),
-                CategoryWidget(item_category: 'mutton'),
-                CategoryWidget(item_category: 'sea-food'),
-                CategoryWidget(item_category: 'eggs-n-sides'),
-                CategoryWidget(item_category: 'ready-to-cook'),
-                CategoryWidget(item_category: 'best-deals'),
-              ],
-              crossAxisSpacing: 5,
-              mainAxisSpacing: 5,
-            ),
+        child: Padding(
+          padding: EdgeInsets.all(4.w),
+          child: GridView.count(
+            crossAxisCount: 2,
+            // crossAxisSpacing: 5,
+            // mainAxisSpacing: 5,
+            children: const [
+              CategoryWidget(itemCategory: 'bird'),
+              CategoryWidget(itemCategory: 'mutton'),
+              CategoryWidget(itemCategory: 'sea-food'),
+              CategoryWidget(itemCategory: 'eggs-n-sides'),
+              CategoryWidget(itemCategory: 'ready-to-cook'),
+              CategoryWidget(itemCategory: 'best-deals'),
+            ],
           ),
         ),
       ),

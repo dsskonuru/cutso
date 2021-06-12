@@ -1,12 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../core/router/router.gr.dart';
 
 class CategoryWidget extends StatelessWidget {
-  final String item_category;
-  CategoryWidget({required this.item_category});
+  final String itemCategory;
+  const CategoryWidget({required this.itemCategory});
 
   @override
   Widget build(BuildContext context) {
@@ -14,18 +15,18 @@ class CategoryWidget extends StatelessWidget {
       children: [
         InkWell(
           onTap: () => AutoRouter.of(context)
-              .push(CategoryRoute(category: item_category)),
+              .push(CategoryRoute(category: itemCategory)),
           child: Center(
             child: Container(
-              height: 120,
-              width: 120,
+              height: 30.w,
+              width: 30.w,
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 5,
                     blurRadius: 7,
-                    offset: Offset(0, 3),
+                    offset: const Offset(0, 3),
                   ),
                 ],
                 color: Colors.orange,
@@ -33,18 +34,23 @@ class CategoryWidget extends StatelessWidget {
               ),
               alignment: Alignment.center,
               child: Hero(
-                tag: item_category,
-                child: SvgPicture.asset('assets/vectors/$item_category.svg',
-                    semanticsLabel: item_category),
+                tag: itemCategory,
+                child: SvgPicture.asset(
+                  'assets/vectors/$itemCategory.svg',
+                  semanticsLabel: itemCategory,
+                ),
               ),
             ),
           ),
         ),
         SizedBox(
-          height: 10.00,
+          height: 2.h,
         ),
         Center(
-          child: Text(item_category.toUpperCase().split("-").join(" ")),
+          child: Text(
+            itemCategory.toUpperCase().split("-").join(" "),
+            style: Theme.of(context).textTheme.overline,
+          ),
         ),
       ],
     );

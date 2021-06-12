@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MultiSelectChip extends StatefulWidget {
   final List<String> tagsList;
   final Function(List<String>)? onSelectionChanged;
-  MultiSelectChip(this.tagsList, {this.onSelectionChanged});
+  const MultiSelectChip(this.tagsList, {this.onSelectionChanged});
   @override
   _MultiSelectChipState createState() => _MultiSelectChipState();
 }
@@ -11,9 +11,9 @@ class MultiSelectChip extends StatefulWidget {
 class _MultiSelectChipState extends State<MultiSelectChip> {
   List<String> selectedChoices = [];
 
-  _buildChoiceList() {
-    List<Widget> choices = [];
-    widget.tagsList.forEach((item) {
+  List<Widget> _buildChoiceList() {
+    final List<Widget> choices = [];
+    for (final item in widget.tagsList) {
       choices.add(Container(
         padding: const EdgeInsets.all(2.00),
         child: ChoiceChip(
@@ -29,7 +29,7 @@ class _MultiSelectChipState extends State<MultiSelectChip> {
           },
         ),
       ));
-    });
+    }
     return choices;
   }
 
@@ -44,15 +44,15 @@ class _MultiSelectChipState extends State<MultiSelectChip> {
 class SelectChip extends StatefulWidget {
   final List<String> keys;
   final Function(String)? onSelection;
-  SelectChip(this.keys, {this.onSelection});
+  const SelectChip(this.keys, {this.onSelection});
   @override
   _SelectChipState createState() => _SelectChipState();
 }
 
 class _SelectChipState extends State<SelectChip> {
-  _buildChoiceList() {
-    List<Widget> choices = [];
-    widget.keys.forEach((key) {
+  List<Widget> _buildChoiceList() {
+    final List<Widget> choices = [];
+    for (final key in widget.keys) {
       choices.add(Container(
         padding: const EdgeInsets.all(2.00),
         child: ActionChip(
@@ -60,7 +60,7 @@ class _SelectChipState extends State<SelectChip> {
           onPressed: () => widget.onSelection!(key),
         ),
       ));
-    });
+    }
     return choices;
   }
 
@@ -74,29 +74,30 @@ class _SelectChipState extends State<SelectChip> {
 
 class DisplayChip extends StatefulWidget {
   final List<String> tagsList;
-  DisplayChip(this.tagsList);
+  const DisplayChip(this.tagsList);
 
   @override
   State<DisplayChip> createState() => _DisplayChipState();
 }
 
 class _DisplayChipState extends State<DisplayChip> {
-  _buildChoiceList() {
-    List<Widget> chips = [];
-    widget.tagsList.forEach((tag) {
+  List<Widget> _buildChoiceList() {
+    final List<Widget> chips = [];
+    for (final tag in widget.tagsList) {
       chips.add(Container(
         padding: const EdgeInsets.all(2.00),
         child: Chip(
           label: Text(tag),
         ),
       ));
-    });
+    }
     return chips;
   }
 
   @override
   Widget build(BuildContext context) {
     return Wrap(
+      alignment: WrapAlignment.center,
       children: _buildChoiceList(),
     );
   }

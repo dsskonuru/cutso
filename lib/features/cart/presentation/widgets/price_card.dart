@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../login/presentation/provider/user_firestore_provider.dart';
+import '../../../login/presentation/provider/user_actions_provider.dart';
 
 class PriceCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     double value = 0.0;
-    watch(userProvider)
-        .cart
-        .orderItems
-        .forEach((orderItem) => value += orderItem.price);
+    for (final orderItem in watch(userActionsProvider).cart.orderItems) {
+      value += orderItem.price;
+    }
 
     return Padding(
       padding: const EdgeInsets.all(9.0),
@@ -21,15 +20,14 @@ class PriceCard extends ConsumerWidget {
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   'Cart Value',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(
                   '\u{20B9} ${value.toString()}',
-                  style: TextStyle(fontSize: 18.0),
+                  style: const TextStyle(fontSize: 18.0),
                 ),
               ],
             ),
