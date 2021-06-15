@@ -4,21 +4,20 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/providers/user_actions_provider.dart';
 import '../../../../core/router/router.gr.dart';
 import '../../../home/data/models/item.dart';
 import '../../../home/presentation/widgets/chips.dart';
-import '../../../login/data/models/cart.dart';
-import '../../../login/data/models/order_item.dart';
-import '../../../login/presentation/provider/user_actions_provider.dart';
+import '../../../login/data/models/user.dart';
 
-class OrderItemCard extends StatelessWidget {
+class OrderItemCard extends ConsumerWidget {
   final Item item;
   final OrderItem orderItem;
 
   const OrderItemCard(this.item, this.orderItem);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Dismissible(
@@ -97,16 +96,11 @@ class OrderItemCard extends StatelessWidget {
                         "Delete",
                         style: TextStyle(color: Colors.red),
                       ),
-                      onPressed: () async {
-                        context
-                            .read(userActionsProvider)
-                            .cart
-                            .orderItems
-                            .removeWhere(
-                                (_item) => _item.itemId == orderItem.itemId);
-                        final Cart _cart =
-                            context.read(userActionsProvider).cart;
-                        await context.read(userActionsProvider).setCart(_cart);
+                      onPressed: () {
+                        watch(userActionsProvider).cart.orderItems.removeWhere(
+                            (_item) => _item.itemId == orderItem.itemId);
+                        final Cart _cart = watch(userActionsProvider).cart;
+                        watch(userActionsProvider).cart = _cart;
                         Navigator.of(context).pop();
                       },
                     ),
@@ -206,7 +200,10 @@ class OrderItemCard extends StatelessWidget {
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             )
                           ]),
-                      DisplayChip(orderItem.tags.toList()),
+                      if (orderItem.sizeTags != null)
+                        DisplayChip(orderItem.sizeTags!.toList()),
+                      if (orderItem.preferenceTags != null)
+                        DisplayChip(orderItem.preferenceTags!.toList()),
                       if (orderItem.guidelines != null)
                         Text(orderItem.guidelines!),
                     ],

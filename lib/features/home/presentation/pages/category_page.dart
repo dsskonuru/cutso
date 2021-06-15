@@ -9,7 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/router/router.gr.dart';
 import '../../data/models/item.dart';
-import '../provider/items_provider.dart';
+import '../../data/sources/items_repository.dart';
 
 class CategoryListView extends StatelessWidget {
   final String category;
@@ -20,12 +20,11 @@ class CategoryListView extends StatelessWidget {
     return Consumer(
       builder: (context, watch, child) {
         final Future<dz.Either<ServerFailure, List<Item>>> futureItems =
-            watch(itemsProvider).getItems();
+            watch(itemsRepositoryProvider).getItemsList();
         return FutureBuilder<dz.Either<ServerFailure, List<Item>>>(
             future: futureItems,
             builder: (BuildContext context,
-                AsyncSnapshot<dz.Either<ServerFailure, List<Item>>>
-                    snapshot) {
+                AsyncSnapshot<dz.Either<ServerFailure, List<Item>>> snapshot) {
               late Widget _widget;
               if (snapshot.hasData) {
                 _widget = snapshot.data!.fold(
@@ -91,30 +90,32 @@ class CategoryListView extends StatelessWidget {
                                 const SizedBox(
                                   width: 12,
                                 ),
-                                if (item.discountedPrice!.isNotEmpty) Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "\$${item.discountedPrice!}",
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16),
-                                          ),
-                                          Text(
-                                            "\$${item.price}",
-                                            style: const TextStyle(
-                                                decoration:
-                                                    TextDecoration.lineThrough,
-                                                fontSize: 10.00),
-                                          )
-                                        ],
-                                      ) else Text(
-                                        "\$${item.price}",
+                                if (item.discountedPrice!.isNotEmpty)
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "\$${item.discountedPrice!}",
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16),
+                                      ),
+                                      Text(
+                                        "\$${item.price}",
+                                        style: const TextStyle(
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                            fontSize: 10.00),
                                       )
+                                    ],
+                                  )
+                                else
+                                  Text(
+                                    "\$${item.price}",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  )
                               ],
                             ),
                           ),

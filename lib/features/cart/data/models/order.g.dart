@@ -6,8 +6,8 @@ part of 'order.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Order _$OrderFromJson(Map<String, dynamic> json) {
-  return Order(
+_$_Order _$_$_OrderFromJson(Map<String, dynamic> json) {
+  return _$_Order(
     uid: json['uid'] as String,
     orderId: json['orderId'] as String,
     orderItems: Cart.fromJson(json['orderItems'] as Map<String, dynamic>),
@@ -19,7 +19,7 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
+Map<String, dynamic> _$_$_OrderToJson(_$_Order instance) => <String, dynamic>{
       'uid': instance.uid,
       'orderId': instance.orderId,
       'orderItems': instance.orderItems.toJson(),
@@ -74,8 +74,8 @@ const _$StatusEnumMap = {
   Status.delivered: 'delivered',
 };
 
-Coupon _$CouponFromJson(Map<String, dynamic> json) {
-  return Coupon(
+_$_Coupon _$_$_CouponFromJson(Map<String, dynamic> json) {
+  return _$_Coupon(
     code: json['code'] as String,
     applicableItemIds: (json['applicableItemIds'] as List<dynamic>)
         .map((e) => e as int)
@@ -87,7 +87,7 @@ Coupon _$CouponFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$CouponToJson(Coupon instance) => <String, dynamic>{
+Map<String, dynamic> _$_$_CouponToJson(_$_Coupon instance) => <String, dynamic>{
       'code': instance.code,
       'applicableItemIds': instance.applicableItemIds,
       'minCartValue': instance.minCartValue,

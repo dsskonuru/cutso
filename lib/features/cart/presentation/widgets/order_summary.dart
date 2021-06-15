@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/error/failures.dart';
+import '../../../../core/providers/user_actions_provider.dart';
 import '../../../home/data/models/item.dart';
-import '../../../home/presentation/provider/items_provider.dart';
-import '../../../login/data/models/cart.dart';
-import '../../../login/data/models/order_item.dart';
-import '../../../login/presentation/provider/user_actions_provider.dart';
+import '../../../home/data/sources/items_repository.dart';
+import '../../../login/data/models/user.dart';
 import 'order_item_card.dart';
 
 class OrderSummary extends ConsumerWidget {
@@ -19,7 +18,7 @@ class OrderSummary extends ConsumerWidget {
     for (int i = 0; i < cart.orderItems.length; i++) {
       final OrderItem orderItem = cart.orderItems[i];
       final Future<dz.Either<ServerFailure, Item>> futureItem =
-          watch(itemsProvider).getItem(orderItem.itemId);
+          watch(itemsRepositoryProvider).getItem(orderItem.itemId);
       orderItemList.add(
         FutureBuilder(
           future: futureItem,

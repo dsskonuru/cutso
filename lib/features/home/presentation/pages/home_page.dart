@@ -7,7 +7,8 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../core/router/router.gr.dart';
 import '../widgets/category_tiles.dart';
 
-class CartNotifier extends ChangeNotifier {
+class CartNotifier extends ChangeNotifier { 
+  //TODO: Navigation to orders and cart pages from home
   int _value = 0;
   int get value => _value;
 

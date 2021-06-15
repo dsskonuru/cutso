@@ -1,51 +1,25 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+part 'item.freezed.dart';
 part 'item.g.dart';
 
-@JsonSerializable(explicitToJson: true)
-class Item extends Equatable {
-   final int id;
-  final String name;
-  final String category;
-  final String subCategory;
-  final String? description;
-  final bool availability;
-  final String? discountedPrice;
-  final String price;
-  final String? sizes;
-  final String? preferredPieces;
-
-  const Item({
-    required this.id,
-    required this.name,
-    required this.category,
-    required this.subCategory,
-    required this.description,
-    required this.availability,
-    required this.discountedPrice,
-    required this.price,
-    required this.sizes,
-    required this.preferredPieces,
-  });
-
-  @override
-  List<Object?> get props => [
-        name,
-        category,
-        subCategory,
-        description,
-        availability,
-        discountedPrice,
-        price,
-        sizes,
-        preferredPieces,
-      ];
-
-  factory Item.fromJson(Map<String, dynamic> json) =>
-      _$ItemFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ItemToJson(this);
+@freezed
+class Item with _$Item {
+  @JsonSerializable(explicitToJson: true)
+  factory Item({
+    required int id,
+    required String name,
+    required String category,
+    required String subCategory,
+    required bool availability,
+    required String price,
+    required String? description,
+    required String? discountedPrice,
+    required String? sizes,
+    required String? preferredPieces,
+  }) = _Item;
+  factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 }
 
 const Map<String, Map<String, dynamic>> categories = {

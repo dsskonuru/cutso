@@ -37,3 +37,5 @@ final couponsProvider = Provider<CollectionReference<Coupon>>(
             toFirestore: (coupon, _) => coupon.toJson(),
           ),
 );
+
+

@@ -1,30 +1,32 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../login/data/models/order_item.dart';
+import '../../../login/data/models/user.dart';
 
 final orderItemProvider =
     ChangeNotifierProvider.autoDispose((ref) => OrderItemNotifier());
 
 class OrderItemNotifier extends ChangeNotifier {
-  //TODO: create orders page
   int? _itemId;
   double _quantity = 0.5;
-  Set<String> _tags = {}; // includes sizes and preferences
+  Set<String>? _sizeTags = {};
+  Set<String>? _preferenceTags = {};
   String? _guidelines;
   double? _price;
   bool _orderItemSet = false;
 
   int? get itemId => _itemId;
   double get quantity => _quantity;
-  Set<String> get tags => _tags;
+  Set<String>? get sizeTags => _sizeTags;
+  Set<String>? get preferenceTags => _preferenceTags;
   String? get guidelines => _guidelines;
   double? get price => _price;
 
   OrderItem? get orderItem => OrderItem(
       itemId: _itemId!,
       quantity: _quantity,
-      tags: _tags,
+      sizeTags: _sizeTags,
+      preferenceTags: _preferenceTags,
       guidelines: _guidelines,
       price: _price!);
 
@@ -32,7 +34,8 @@ class OrderItemNotifier extends ChangeNotifier {
     if (!_orderItemSet) {
       _itemId = orderItem.itemId;
       _quantity = orderItem.quantity;
-      _tags = orderItem.tags;
+      _sizeTags = orderItem.sizeTags;
+      _preferenceTags = orderItem.preferenceTags;
       _guidelines = orderItem.guidelines;
       _price = orderItem.price;
       _orderItemSet = true;
@@ -68,8 +71,13 @@ class OrderItemNotifier extends ChangeNotifier {
     setQuantity(_quantity - 0.5);
   }
 
-  void addTags(List<String> tags) {
-    _tags.addAll(tags);
+  void addSizeTags(List<String> tags) {
+    _sizeTags!.addAll(tags);
+    notifyListeners();
+  }
+
+  void addPreferenceTags(List<String> tags) {
+    _preferenceTags!.addAll(tags);
     notifyListeners();
   }
 

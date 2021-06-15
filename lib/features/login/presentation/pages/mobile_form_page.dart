@@ -1,6 +1,5 @@
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:cutso/features/login/presentation/widgets/sign_in_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -8,7 +7,8 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../core/router/router.gr.dart';
 import '../../../../core/theme/theme_data.dart';
-import '../provider/mobile_form_provider.dart';
+import '../provider/mobile_otp_form_provider.dart';
+import '../widgets/sign_in_widgets.dart';
 
 class MobileFormPage extends ConsumerWidget {
   MobileFormPage({Key? key}) : super(key: key);
@@ -59,9 +59,9 @@ class MobileFormPage extends ConsumerWidget {
                     hintText: '9876543210',
                   ),
                   autocorrect: false,
-                  initialValue: watch(mobileFormProvider).mobileNo?.toString(),
+                  initialValue: watch(mobileFormProvider).mobileNo,
                   onChanged: (number) =>
-                      watch(mobileFormProvider).setMobileNo(number),
+                      watch(mobileFormProvider).mobileNo =number,
                   validator: (value) {
                     value = value.toString();
                     if (value.length != 10 ||
@@ -94,12 +94,12 @@ class MobileFormPage extends ConsumerWidget {
                 if (btnState == ButtonState.Idle &&
                     _mobileFormKey.currentState!.validate()) {
                   startLoading();
-                  final String number = watch(mobileFormProvider).mobileNo!;
+                  final String number = watch(mobileFormProvider).mobileNo;
                   debugPrint(number);
                   await watch(mobileFormProvider)
                       .verifyPhone(context, "+91$number");
-                  await context.router.navigate(const OtpFormRoute());
                   stopLoading();
+                  await context.router.navigate(const OtpFormRoute());
                 }
               },
               child: Text(

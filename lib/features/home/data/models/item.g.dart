@@ -6,30 +6,30 @@ part of 'item.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Item _$ItemFromJson(Map<String, dynamic> json) {
-  return Item(
+_$_Item _$_$_ItemFromJson(Map<String, dynamic> json) {
+  return _$_Item(
     id: json['id'] as int,
     name: json['name'] as String,
     category: json['category'] as String,
     subCategory: json['subCategory'] as String,
-    description: json['description'] as String?,
     availability: json['availability'] as bool,
-    discountedPrice: json['discountedPrice'] as String?,
     price: json['price'] as String,
+    description: json['description'] as String?,
+    discountedPrice: json['discountedPrice'] as String?,
     sizes: json['sizes'] as String?,
     preferredPieces: json['preferredPieces'] as String?,
   );
 }
 
-Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
+Map<String, dynamic> _$_$_ItemToJson(_$_Item instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'category': instance.category,
       'subCategory': instance.subCategory,
-      'description': instance.description,
       'availability': instance.availability,
-      'discountedPrice': instance.discountedPrice,
       'price': instance.price,
+      'description': instance.description,
+      'discountedPrice': instance.discountedPrice,
       'sizes': instance.sizes,
       'preferredPieces': instance.preferredPieces,
     };

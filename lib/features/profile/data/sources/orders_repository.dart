@@ -4,10 +4,10 @@ import 'package:riverpod/riverpod.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/providers/firebase_provider.dart';
 import '../../../../main.dart';
-import '../models/order.dart';
+import '../../../cart/data/models/order.dart';
 
 abstract class OrderDataSource {
-  Future<dz.Either<Failure, void>> pushOrder(Order order); // returns orderId
+  Future<dz.Either<Failure, void>> pushOrder(Order order); 
   // Future<dz.Either<Failure, void>> initatePayment(String orderId);
 }
 

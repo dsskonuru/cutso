@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod/riverpod.dart';
 
+import '../../../../core/providers/user_actions_provider.dart';
 import '../../../../core/router/router.gr.dart';
-import '../../../login/data/models/address.dart';
 import '../../../login/data/models/user.dart';
-import '../../../login/presentation/provider/user_actions_provider.dart';
 
 class AddressCard extends ConsumerWidget {
   @override

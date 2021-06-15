@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class OrdersPage extends ConsumerWidget {
+class OrdersPage extends ConsumerWidget { //TODO: profile orders page
   const OrdersPage({ Key? key }) : super(key: key);
 
   @override
@@ -11,3 +11,4 @@ class OrdersPage extends ConsumerWidget {
     );
   }
 }
+

@@ -39,7 +39,7 @@ class AppRouter extends _i1.RootStackRouter {
     OtpFormRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return const _i5.OtpFormPage();
+          return _i5.OtpFormPage();
         }),
     RegistrationFormRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,

@@ -44,7 +44,7 @@ ThemeData themeData(BuildContext context) => ThemeData(
         button: TextStyle(
           // ALL CAPS
           fontFamily: 'PT Sans',
-          fontSize: 15.sp,
+          fontSize: 14.sp,
           letterSpacing: 1.25.sp,
           fontStyle: FontStyle.normal,
           fontWeight: FontWeight.w700, // Medium

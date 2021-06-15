@@ -8,7 +8,7 @@ import '../../../../main.dart';
 import '../models/item.dart';
 
 abstract class ItemsDataSource {
-  Future<Either<ServerFailure, List<Item>>> getItems();
+  Future<Either<ServerFailure, List<Item>>> getItemsList();
   Future<Either<ServerFailure, Item>> getItem(int itemId);
 }
 
@@ -23,7 +23,7 @@ class ItemsRepository implements ItemsDataSource {
           );
 
   @override
-  Future<Either<ServerFailure, List<Item>>> getItems() async {
+  Future<Either<ServerFailure, List<Item>>> getItemsList() async {
     try {
       final List<Item> _items = [];
       await _itemsRef.get().then((QuerySnapshot<Item> itemQuerySnapshot) {

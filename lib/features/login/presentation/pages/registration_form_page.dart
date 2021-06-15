@@ -1,13 +1,16 @@
+import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:cutso/features/login/presentation/provider/mobile_form_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../../../core/providers/user_actions_provider.dart';
 import '../../../../core/router/router.gr.dart';
 import '../../../../core/theme/theme_data.dart';
+import '../provider/mobile_otp_form_provider.dart';
 import '../provider/registration_form_provider.dart';
-import 'onboarding_page.dart';
+import '../widgets/sign_in_widgets.dart';
 
 final emailValidation = RegExp(
     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
@@ -20,22 +23,43 @@ class RegistrationFormPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
+    watch(mobileFormProvider).displayNotifier();
     return Scaffold(
-      body: Form(
-        key: _registrationFormKey,
-        child: SingleChildScrollView(
+      backgroundColor: kCream,
+      body: SingleChildScrollView(
+        child: Form(
+          key: _registrationFormKey,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Header(),
-              SizedBox(height: 4.h), //24
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  CustomPaint(
+                    size: Size(100.w, 27.h),
+                    painter: TopPainter(),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 9.h),
+                    child: Hero(
+                      tag: "cutso_logo",
+                      child: Image(
+                        height: 18.h,
+                        image: const AssetImage('assets/images/logo-white.png'),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8.h),
               Text(
                 asUpdate ? "Edit Detials" : "Registration",
                 style: Theme.of(context).textTheme.subtitle1,
               ),
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 12.00, right: 12.00, top: 12.00),
+                padding: EdgeInsets.only(top: 2.h, left: 10.w, right: 10.w),
                 child: TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   style: Theme.of(context).textTheme.bodyText2,
                   decoration: const InputDecoration(
                     floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -45,6 +69,7 @@ class RegistrationFormPage extends ConsumerWidget {
                     labelText: "Name",
                   ),
                   autocorrect: false,
+                  initialValue: watch(registrationFormProvider).name,
                   onChanged: (name) =>
                       watch(registrationFormProvider).setName(name),
                   validator: (value) {
@@ -56,9 +81,9 @@ class RegistrationFormPage extends ConsumerWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 12.00, right: 12.00, top: 12.00),
+                padding: EdgeInsets.only(top: 2.h, left: 10.w, right: 10.w),
                 child: TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   style: Theme.of(context).textTheme.bodyText2,
                   decoration: const InputDecoration(
                     floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -69,6 +94,7 @@ class RegistrationFormPage extends ConsumerWidget {
                     labelText: "Email",
                   ),
                   autocorrect: false,
+                  initialValue: watch(registrationFormProvider).email,
                   onChanged: (email) =>
                       watch(registrationFormProvider).setEmail(email),
                   validator: (email) {
@@ -83,9 +109,9 @@ class RegistrationFormPage extends ConsumerWidget {
               ),
               if (asUpdate)
                 Padding(
-                  padding: const EdgeInsets.only(
-                      left: 12.00, right: 12.00, top: 12.00),
+                  padding: EdgeInsets.only(top: 2.h, left: 10.w, right: 10.w),
                   child: TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     style: Theme.of(context).textTheme.bodyText2,
                     textAlign: TextAlign.center,
                     keyboardType: TextInputType.phone,
@@ -95,9 +121,8 @@ class RegistrationFormPage extends ConsumerWidget {
                       hintText: 'Mobile Number',
                     ),
                     autocorrect: false,
-                    onChanged: (number) => context
-                        .read(registrationFormProvider)
-                        .setMobileNo(number),
+                    onChanged: (number) =>
+                        watch(registrationFormProvider).setMobileNo(number),
                     validator: (value) {
                       value = value.toString();
                       if (value.length != 10 ||
@@ -109,19 +134,36 @@ class RegistrationFormPage extends ConsumerWidget {
                   ),
                 ),
               SizedBox(height: 2.h),
-              ElevatedButton(
-                onPressed: () async {
-                  if (_registrationFormKey.currentState!.validate()) {
+              ArgonButton(
+                height: 10.w,
+                width: 36.w,
+                color: kOrange,
+                borderRadius: 0.5.w,
+                loader: Container(
+                  padding: const EdgeInsets.all(10),
+                  child: const SpinKitRotatingCircle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: (startLoading, stopLoading, btnState) async {
+                  if (btnState == ButtonState.Idle &&
+                      _registrationFormKey.currentState!.validate()) {
+                    startLoading();
                     if (asUpdate) {
-                      //TODO: Update Detials
+                      watch(userActionsProvider).updateDetails(
+                        watch(registrationFormProvider).name!,
+                        watch(registrationFormProvider).email!,
+                        watch(registrationFormProvider).mobileNo!,
+                      );
+                      stopLoading();
                       await context.router.pop();
                     } else {
+                      stopLoading();
                       await context.router
                           .navigate(AddressFormRoute(asUpdate: false));
                     }
                   }
                 },
-                style: buttonStyle,
                 child: Text(
                   asUpdate ? "UPDATE" : "CONTINUE",
                   style: Theme.of(context).textTheme.button,

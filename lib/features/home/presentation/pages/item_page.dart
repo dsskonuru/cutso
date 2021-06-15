@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../login/data/models/cart.dart';
-import '../../../login/data/models/order_item.dart';
-import '../../../login/presentation/provider/user_actions_provider.dart';
+import '../../../../core/providers/user_actions_provider.dart';
+import '../../../login/data/models/user.dart';
 import '../../data/models/item.dart';
-import '../provider/order_items_provider.dart';
+import '../provider/order_item_form_provider.dart';
 import '../widgets/chips.dart';
 
 const Map<String, double> _quantityAdditives = {
@@ -127,7 +126,7 @@ class ItemPage extends ConsumerWidget {
                           MultiSelectChip(
                             _itemSizes,
                             onSelectionChanged: (selectedChips) =>
-                                orderItemNotifier.addTags(selectedChips),
+                                orderItemNotifier.addSizeTags(selectedChips),
                           ),
                           const SizedBox(
                             height: 12.00,
@@ -141,7 +140,7 @@ class ItemPage extends ConsumerWidget {
                           MultiSelectChip(
                             _itemPreferences,
                             onSelectionChanged: (selectedChips) =>
-                                orderItemNotifier.addTags(selectedChips),
+                                orderItemNotifier.addPreferenceTags(selectedChips),
                           ),
                           const SizedBox(
                             height: 12.00,
@@ -164,12 +163,12 @@ class ItemPage extends ConsumerWidget {
                       height: 12.00,
                     ),
                     ElevatedButton(
-                        //TODO: seperate tags for sizes and prefered pieces
                         onPressed: () async {
                           final OrderItem _orderItem = OrderItem(
                             itemId: _item.id,
                             quantity: orderItemNotifier.quantity,
-                            tags: orderItemNotifier.tags,
+                            sizeTags: orderItemNotifier.sizeTags,
+                            preferenceTags: orderItemNotifier.preferenceTags,
                             guidelines: orderItemNotifier.guidelines,
                             price: double.parse(_item.price) *
                                 2 *

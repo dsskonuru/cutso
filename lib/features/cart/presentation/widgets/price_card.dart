@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../login/presentation/provider/user_actions_provider.dart';
+import '../../../../core/providers/user_actions_provider.dart';
 
 class PriceCard extends ConsumerWidget {
   @override

@@ -1,17 +1,17 @@
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:cutso/core/providers/firebase_provider.dart';
-import 'package:cutso/core/theme/theme_data.dart';
-import 'package:cutso/features/login/data/models/cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
-import '../../../../core/router/router.gr.dart';
 
-import '../../../login/presentation/provider/user_actions_provider.dart';
+import '../../../../core/providers/firebase_provider.dart';
+import '../../../../core/providers/user_actions_provider.dart';
+import '../../../../core/router/router.gr.dart';
+import '../../../../core/theme/theme_data.dart';
+import '../../../login/data/models/user.dart';
 import '../widgets/address_card.dart';
 import '../widgets/order_summary.dart';
 import '../widgets/payment_card.dart';
@@ -117,7 +117,7 @@ class _CartPageState extends State<CartPage> {
                                 ),
                               );
                               watch(userActionsProvider)
-                                  .updateCart(Cart.empty());
+                                  .updateCart(Cart(orderItems: []));
                             },
                           );
                           stopLoading();

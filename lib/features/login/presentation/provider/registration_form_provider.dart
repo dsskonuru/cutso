@@ -2,13 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../main.dart';
-import 'mobile_form_provider.dart';
+import 'mobile_otp_form_provider.dart';
 
 final registrationFormProvider =
     ChangeNotifierProvider((ref) => RegistrationFormNotifier());
 
 class RegistrationFormNotifier extends ChangeNotifier {
-  RegistrationFormNotifier();
   String? _name;
   String? _email;
   String? _mobileNo = container.read(mobileFormProvider).mobileNo;
@@ -31,4 +30,6 @@ class RegistrationFormNotifier extends ChangeNotifier {
     _mobileNo = mobileNo;
     notifyListeners();
   }
+
+  
 }

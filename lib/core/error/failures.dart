@@ -11,6 +11,11 @@ class ServerFailure extends Failure {
   ServerFailure([this.messsage]);
 }
 
+class AuthFailure extends Failure {
+  final String? messsage;
+  AuthFailure([this.messsage]);
+}
+
 class UserNotLoggedInFailure extends Failure {
   final String? messsage;
   UserNotLoggedInFailure([this.messsage]);

@@ -1,9 +1,9 @@
-import 'package:cutso/core/theme/theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 
-import '../provider/mobile_form_provider.dart';
+import '../../../../core/theme/theme_data.dart';
+import '../provider/mobile_otp_form_provider.dart';
 
 // Painters
 
@@ -52,7 +52,7 @@ class _PinInputFieldState extends State<PinInputField> {
       followingFieldDecoration: pinPutDecoration,
       pinAnimationType: PinAnimationType.scale,
       textStyle: Theme.of(context).textTheme.bodyText2,
-      onChanged: (pin) => context.read(mobileFormProvider).setSmsCode(pin),
+      onChanged: (pin) => context.read(mobileFormProvider).smsCode = pin,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please provide the PIN';

@@ -1,21 +1,24 @@
+import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:location/location.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 import '../../../../core/error/failures.dart';
+import '../../../../core/providers/firebase_provider.dart';
+import '../../../../core/providers/user_actions_provider.dart';
 import '../../../../core/router/router.gr.dart';
 import '../../../../core/theme/theme_data.dart';
-import '../../data/models/cart.dart';
 import '../../data/models/user.dart';
-import '../../data/sources/user_repository.dart';
+import '../../data/sources/user_auth_repository.dart';
 import '../provider/address_form_provider.dart';
-import '../provider/mobile_form_provider.dart';
+import '../provider/mobile_otp_form_provider.dart';
 import '../provider/registration_form_provider.dart';
-import 'onboarding_page.dart';
+import '../widgets/sign_in_widgets.dart';
 
 class AddressFormPage extends ConsumerWidget {
   final bool asUpdate;
@@ -25,15 +28,35 @@ class AddressFormPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    bool _isSelected = false;
+    watch(mobileFormProvider).displayNotifier();
     return Scaffold(
-      body: Form(
-        key: _addressFormKey,
-        child: SingleChildScrollView(
+      backgroundColor: kCream,
+      body: SingleChildScrollView(
+        child: Form(
+          key: _addressFormKey,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Header(),
-              SizedBox(height: 4.h), //24
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  CustomPaint(
+                    size: Size(100.w, 27.h),
+                    painter: TopPainter(),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 9.h),
+                    child: Hero(
+                      tag: "cutso_logo",
+                      child: Image(
+                        height: 18.h,
+                        image: const AssetImage('assets/images/logo-white.png'),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8.h),
               Text(
                 "Address",
                 style: Theme.of(context).textTheme.subtitle1,
@@ -110,83 +133,99 @@ class AddressFormPage extends ConsumerWidget {
                 ),
               ),
               SizedBox(height: 2.h),
-              ElevatedButton(
-                  onPressed: () async {
-                    if (!_isSelected) {
-                      final Location location = Location();
-                      late bool _serviceEnabled;
-                      late PermissionStatus _permissionGranted;
-                      late LocationData _locationData;
+              ArgonButton(
+                height: 10.w,
+                width: 64.w,
+                color: kOrange,
+                borderRadius: 0.5.w,
+                loader: Container(
+                  padding: const EdgeInsets.all(10),
+                  child: const SpinKitRotatingCircle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: (startLoading, stopLoading, btnState) async {
+                  if (btnState == ButtonState.Idle) {
+                    startLoading();
+                    await watch(addressFormProvider).getLocation();
 
-                      _serviceEnabled = await location.serviceEnabled();
-                      if (!_serviceEnabled) {
-                        _serviceEnabled = await location.requestService();
-                        if (!_serviceEnabled) {
-                          return;
-                        }
-                      }
-                      _permissionGranted = await location.hasPermission();
-                      if (_permissionGranted == PermissionStatus.denied) {
-                        _permissionGranted = await location.requestPermission();
-                        if (_permissionGranted != PermissionStatus.granted) {
-                          return;
-                        }
-                      }
-                      _locationData = await location.getLocation();
-                      context.read(addressFormProvider).setLocation(GeoPoint(
-                          _locationData.latitude!, _locationData.longitude!));
-
-                      _isSelected = true;
-                    }
-                  },
-                  style: buttonStyle,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (!_isSelected)
-                        const Icon(Icons.check_circle_rounded)
-                      else
-                        const Icon(
-                          Icons.gps_fixed_rounded,
-                        ),
-                      SizedBox(width: 10.w),
-                      Text(
-                        "GET LOCATION",
-                        style: Theme.of(context).textTheme.button,
-                      ),
-                    ],
-                  )),
-              SizedBox(height: 2.h),
-              ElevatedButton(
-                onPressed: () async {
-                  if (_addressFormKey.currentState!.validate()) {
-                    final dz.Either<ServerFailure, User> _user = await context
-                        .read(userRepositoryProvider)
-                        .registerUser(
-                          User(
-                            uid: context.read(mobileFormProvider).uid!,
-                            fullName:
-                                context.read(registrationFormProvider).name!,
-                            phone: context.read(mobileFormProvider).mobileNo!,
-                            email:
-                                context.read(registrationFormProvider).email!,
-                            address:
-                                context.read(addressFormProvider).getAddress(),
-                            cart: Cart.empty(),
-                          ),
-                        );
-                    _user.fold((l) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Server Side Error')));
-                    }, (user) async {
-                      debugPrint(user.toJson().toString());
-                      await context.router.navigate(const HomeRoute());
-                    });
+                    stopLoading();
                   }
                 },
-                style: buttonStyle,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.gps_fixed_rounded),
+                    SizedBox(width: 7.w),
+                    Text(
+                      "GET LOCATION",
+                      style: Theme.of(context).textTheme.button,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 2.h),
+              ArgonButton(
+                height: 10.w,
+                width: 36.w,
+                color: kOrange,
+                borderRadius: 0.5.w,
+                loader: Container(
+                  padding: const EdgeInsets.all(10),
+                  child: const SpinKitRotatingCircle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: (startLoading, stopLoading, btnState) async {
+                  if (btnState == ButtonState.Idle &&
+                      _addressFormKey.currentState!.validate()) {
+                    startLoading();
+                    if (asUpdate) {
+                      watch(userActionsProvider).updateAddress(
+                        watch(addressFormProvider).getAddress(),
+                      );
+                      stopLoading();
+                      await context.router.pop();
+                    } else {
+                      final dz.Either<AuthFailure, void> userRunner =
+                          await watch(userAuthRepositoryProvider).registerUser(
+                        User(
+                          uid: watch(mobileFormProvider).uid,
+                          fullName: watch(registrationFormProvider).name!,
+                          phone: watch(mobileFormProvider).mobileNo,
+                          email: watch(registrationFormProvider).email!,
+                          address: watch(addressFormProvider).getAddress(),
+                          cart: Cart(orderItems: []),
+                        ),
+                      );
+                      stopLoading();
+                      userRunner.fold(
+                        (failure) {
+                          watch(crashlyticsProvider)
+                              .log(failure.messsage.toString());
+                          showTopSnackBar(
+                            context,
+                            const CustomSnackBar.error(
+                              message:
+                                  "Unable to register the user, please try again later",
+                            ),
+                          );
+                        },
+                        (_) async {
+                          showTopSnackBar(
+                            context,
+                            const CustomSnackBar.success(
+                              message: "User registration successfull !",
+                            ),
+                          );
+                          await context.router.navigate(const HomeRoute());
+                        },
+                      );
+                    }
+                  }
+                },
                 child: Text(
-                  "SUBMIT",
+                  asUpdate ? "UPDATE" : "SUBMIT",
                   style: Theme.of(context).textTheme.button,
                 ),
               ),

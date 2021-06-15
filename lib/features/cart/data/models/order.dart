@@ -1,8 +1,8 @@
-import 'package:equatable/equatable.dart';
+import 'package:cutso/features/login/data/models/user.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../login/data/models/cart.dart';
-
+part 'order.freezed.dart';
 part 'order.g.dart';
 
 enum Status {
@@ -14,68 +14,30 @@ enum Status {
   delivered,
 }
 
-@JsonSerializable(explicitToJson: true)
-class Order extends Equatable {
-  final String uid;
-  final String orderId;
-  final Cart orderItems;
-  final double value;
-  final Coupon? coupon;
-  final Status? status;
-
-  const Order({
-    required this.uid,
-    required this.orderId,
-    required this.orderItems,
-    required this.value,
-    this.coupon,
-    this.status,
-  });
-
-  @override
-  List<Object?> get props => [
-        uid,
-        orderId,
-        orderItems,
-        value,
-        coupon,
-        status,
-      ];
-
+@freezed
+class Order with _$Order {
+  @JsonSerializable(explicitToJson: true)
+  factory Order({
+    required String uid,
+    required String orderId,
+    required Cart orderItems,
+    required double value,
+    required Coupon? coupon,
+    required Status? status,
+  }) = _Order;
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
-
-  Map<String, dynamic> toJson() => _$OrderToJson(this);
 }
 
-@JsonSerializable(explicitToJson: true)
-class Coupon extends Equatable {
-  final String code;
-  final List<int> applicableItemIds;
-  final double minCartValue;
-  final String name;
-  final String? description;
-  final bool isActive;
-
-  const Coupon({
-    required this.code,
-    required this.applicableItemIds,
-    required this.minCartValue,
-    required this.name,
-    required this.description,
-    required this.isActive,
-  });
-
-  @override
-  List<Object?> get props => [
-        code,
-        applicableItemIds,
-        minCartValue,
-        name,
-        description,
-        isActive,
-      ];
-
+@freezed
+class Coupon with _$Coupon {
+  @JsonSerializable(explicitToJson: true)
+  factory Coupon({
+    required String code,
+    required List<int> applicableItemIds,
+    required double minCartValue,
+    required String name,
+    required String? description,
+    required bool isActive,
+  }) = _Coupon;
   factory Coupon.fromJson(Map<String, dynamic> json) => _$CouponFromJson(json);
-
-  Map<String, dynamic> toJson() => _$CouponToJson(this);
 }
