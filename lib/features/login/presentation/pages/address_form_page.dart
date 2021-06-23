@@ -18,7 +18,7 @@ import '../../data/sources/user_auth_repository.dart';
 import '../provider/address_form_provider.dart';
 import '../provider/mobile_otp_form_provider.dart';
 import '../provider/registration_form_provider.dart';
-import '../widgets/sign_in_widgets.dart';
+import '../widgets/top_painter_widget.dart';
 
 class AddressFormPage extends ConsumerWidget {
   final bool asUpdate;
@@ -28,7 +28,6 @@ class AddressFormPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    watch(mobileFormProvider).displayNotifier();
     return Scaffold(
       backgroundColor: kCream,
       body: SingleChildScrollView(
@@ -50,7 +49,7 @@ class AddressFormPage extends ConsumerWidget {
                       tag: "cutso_logo",
                       child: Image(
                         height: 18.h,
-                        image: const AssetImage('assets/images/logo-white.png'),
+                        image: const AssetImage('assets/images/cutso-logo.png'),
                       ),
                     ),
                   ),
@@ -73,10 +72,10 @@ class AddressFormPage extends ConsumerWidget {
                     ),
                     labelText: 'Name',
                   ),
+                  initialValue: watch(addressFormProvider).name,
                   autocorrect: false,
-                  onChanged: (addressName) => context
-                      .read(addressFormProvider)
-                      .setAddressName(addressName),
+                  onChanged: (name) =>
+                      context.read(addressFormProvider).name = name,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the address name';
@@ -98,8 +97,9 @@ class AddressFormPage extends ConsumerWidget {
                     labelText: 'Line',
                   ),
                   autocorrect: false,
+                  initialValue: watch(addressFormProvider).line,
                   onChanged: (address) =>
-                      context.read(addressFormProvider).setAddressLine(address),
+                      context.read(addressFormProvider).line = address,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the address line';
@@ -120,10 +120,10 @@ class AddressFormPage extends ConsumerWidget {
                     ),
                     labelText: 'Landmark',
                   ),
+                  initialValue: watch(addressFormProvider).landmark,
                   autocorrect: false,
-                  onChanged: (landmark) => context
-                      .read(addressFormProvider)
-                      .setAddressLandmark(landmark),
+                  onChanged: (landmark) =>
+                      context.read(addressFormProvider).landmark = landmark,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter some landmark';
@@ -134,42 +134,52 @@ class AddressFormPage extends ConsumerWidget {
               ),
               SizedBox(height: 2.h),
               ArgonButton(
-                height: 10.w,
-                width: 64.w,
-                color: kOrange,
-                borderRadius: 0.5.w,
-                loader: Container(
-                  padding: const EdgeInsets.all(10),
-                  child: const SpinKitRotatingCircle(
-                    color: Colors.white,
-                  ),
-                ),
-                onTap: (startLoading, stopLoading, btnState) async {
-                  if (btnState == ButtonState.Idle) {
-                    startLoading();
-                    await watch(addressFormProvider).getLocation();
-
-                    stopLoading();
-                  }
-                },
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.gps_fixed_rounded),
-                    SizedBox(width: 7.w),
-                    Text(
-                      "GET LOCATION",
-                      style: Theme.of(context).textTheme.button,
+                  height: 10.w,
+                  width: 64.w,
+                  color: kOrange,
+                  borderRadius: 5.w,
+                  loader: Container(
+                    padding: const EdgeInsets.all(10),
+                    child: const SpinKitRotatingCircle(
+                      color: Colors.white,
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                  onTap: (startLoading, stopLoading, btnState) async {
+                    if (btnState == ButtonState.Idle) {
+                      startLoading();
+                      await watch(addressFormProvider).getLocation();
+                      stopLoading();
+                    }
+                  },
+                  child: watch(addressFormProvider).hasGotLocation
+                      ? Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.check_circle_rounded),
+                            SizedBox(width: 7.w),
+                            Text(
+                              "LOCATION SET",
+                              style: Theme.of(context).textTheme.button,
+                            ),
+                          ],
+                        )
+                      : Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.gps_fixed_rounded),
+                            SizedBox(width: 7.w),
+                            Text(
+                              "GET LOCATION",
+                              style: Theme.of(context).textTheme.button,
+                            ),
+                          ],
+                        )),
               SizedBox(height: 2.h),
               ArgonButton(
                 height: 10.w,
                 width: 36.w,
                 color: kOrange,
-                borderRadius: 0.5.w,
+                borderRadius: 5.w,
                 loader: Container(
                   padding: const EdgeInsets.all(10),
                   child: const SpinKitRotatingCircle(
@@ -195,6 +205,7 @@ class AddressFormPage extends ConsumerWidget {
                           phone: watch(mobileFormProvider).mobileNo,
                           email: watch(registrationFormProvider).email!,
                           address: watch(addressFormProvider).getAddress(),
+                          orders: MyOrders(orderIds: []),
                           cart: Cart(orderItems: []),
                         ),
                       );

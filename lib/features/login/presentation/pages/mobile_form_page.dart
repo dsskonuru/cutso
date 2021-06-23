@@ -8,7 +8,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../core/router/router.gr.dart';
 import '../../../../core/theme/theme_data.dart';
 import '../provider/mobile_otp_form_provider.dart';
-import '../widgets/sign_in_widgets.dart';
+import '../widgets/top_painter_widget.dart';
 
 class MobileFormPage extends ConsumerWidget {
   MobileFormPage({Key? key}) : super(key: key);
@@ -35,7 +35,7 @@ class MobileFormPage extends ConsumerWidget {
                     tag: "cutso_logo",
                     child: Image(
                       height: 18.h,
-                      image: const AssetImage('assets/images/logo-white.png'),
+                      image: const AssetImage('assets/images/cutso-logo.png'),
                     ),
                   ),
                 ),
@@ -51,7 +51,6 @@ class MobileFormPage extends ConsumerWidget {
               child: Form(
                 key: _mobileFormKey,
                 child: TextFormField(
-                  textAlign: TextAlign.center,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   style: Theme.of(context).textTheme.bodyText2,
                   keyboardType: TextInputType.phone,
@@ -61,7 +60,7 @@ class MobileFormPage extends ConsumerWidget {
                   autocorrect: false,
                   initialValue: watch(mobileFormProvider).mobileNo,
                   onChanged: (number) =>
-                      watch(mobileFormProvider).mobileNo =number,
+                      watch(mobileFormProvider).mobileNo = number,
                   validator: (value) {
                     value = value.toString();
                     if (value.length != 10 ||
@@ -83,7 +82,7 @@ class MobileFormPage extends ConsumerWidget {
               height: 9.w,
               width: 36.w,
               color: kOrange,
-              borderRadius: 0.5.w,
+              borderRadius: 5.w,
               loader: Container(
                 padding: const EdgeInsets.all(10),
                 child: const SpinKitRotatingCircle(

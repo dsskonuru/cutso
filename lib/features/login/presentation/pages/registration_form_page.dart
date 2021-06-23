@@ -10,7 +10,7 @@ import '../../../../core/router/router.gr.dart';
 import '../../../../core/theme/theme_data.dart';
 import '../provider/mobile_otp_form_provider.dart';
 import '../provider/registration_form_provider.dart';
-import '../widgets/sign_in_widgets.dart';
+import '../widgets/top_painter_widget.dart';
 
 final emailValidation = RegExp(
     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
@@ -23,7 +23,6 @@ class RegistrationFormPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    watch(mobileFormProvider).displayNotifier();
     return Scaffold(
       backgroundColor: kCream,
       body: SingleChildScrollView(
@@ -45,7 +44,7 @@ class RegistrationFormPage extends ConsumerWidget {
                       tag: "cutso_logo",
                       child: Image(
                         height: 18.h,
-                        image: const AssetImage('assets/images/logo-white.png'),
+                        image: const AssetImage('assets/images/cutso-logo.png'),
                       ),
                     ),
                   ),
@@ -71,7 +70,7 @@ class RegistrationFormPage extends ConsumerWidget {
                   autocorrect: false,
                   initialValue: watch(registrationFormProvider).name,
                   onChanged: (name) =>
-                      watch(registrationFormProvider).setName(name),
+                      watch(registrationFormProvider).name = name,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter some text';
@@ -96,7 +95,7 @@ class RegistrationFormPage extends ConsumerWidget {
                   autocorrect: false,
                   initialValue: watch(registrationFormProvider).email,
                   onChanged: (email) =>
-                      watch(registrationFormProvider).setEmail(email),
+                      watch(registrationFormProvider).email = email,
                   validator: (email) {
                     final bool _isValid =
                         emailValidation.hasMatch(email.toString());
@@ -117,12 +116,16 @@ class RegistrationFormPage extends ConsumerWidget {
                     keyboardType: TextInputType.phone,
                     initialValue: watch(mobileFormProvider).mobileNo,
                     decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Mobile Number',
+                      floatingLabelBehavior: FloatingLabelBehavior.auto,
+                      border: OutlineInputBorder(
+                        gapPadding: 8.00,
+                        borderSide: BorderSide(color: Colors.white, width: 5),
+                      ),
+                      labelText: "Mobile Number",
                     ),
                     autocorrect: false,
                     onChanged: (number) =>
-                        watch(registrationFormProvider).setMobileNo(number),
+                        watch(registrationFormProvider).mobileNo = number,
                     validator: (value) {
                       value = value.toString();
                       if (value.length != 10 ||
@@ -138,7 +141,7 @@ class RegistrationFormPage extends ConsumerWidget {
                 height: 10.w,
                 width: 36.w,
                 color: kOrange,
-                borderRadius: 0.5.w,
+                borderRadius: 5.w,
                 loader: Container(
                   padding: const EdgeInsets.all(10),
                   child: const SpinKitRotatingCircle(

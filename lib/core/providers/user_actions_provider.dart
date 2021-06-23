@@ -11,6 +11,9 @@ import '../../features/profile/data/sources/orders_repository.dart';
 import '../../main.dart';
 import '../error/failures.dart';
 import 'firebase_provider.dart';
+import 'shared_preferences_provider.dart';
+
+// TODO: use SharedPreferences to save login state go to home page directly
 
 final userActionsProvider = ChangeNotifierProvider((ref) => UserNotifier());
 
@@ -24,15 +27,26 @@ class UserNotifier extends ChangeNotifier {
   set user(User? user) {
     _user = user;
     if (user != null) {
-      _cart = user.cart;
-      container.read(registrationFormProvider).setName(user.fullName);
-      container.read(registrationFormProvider).setEmail(user.email);
-      container.read(registrationFormProvider).setMobileNo(user.phone);
-      container.read(addressFormProvider).setAddressName(user.address.name);
-      container.read(addressFormProvider).setAddressLine(user.address.line);
+      cart = user.cart;
       container
-          .read(addressFormProvider)
-          .setAddressLandmark(user.address.landmark);
+          .read(sharedPreferencesProvider)
+          .then((prefs) => prefs.setString("uid", user.uid));
+      container.read(usersProvider).doc(user.uid).update(user.toJson());
+      container.read(registrationFormProvider).name = user.fullName;
+      container.read(registrationFormProvider).email = user.email;
+      container.read(registrationFormProvider).mobileNo = user.phone;
+      container.read(addressFormProvider).name = user.address.name;
+      container.read(addressFormProvider).line = user.address.line;
+      container.read(addressFormProvider).landmark = user.address.landmark;
+    } else {
+      cart = Cart(orderItems: []);
+      container.read(sharedPreferencesProvider).then((prefs) => prefs.clear());
+      container.read(registrationFormProvider).name = null;
+      container.read(registrationFormProvider).email = null;
+      container.read(registrationFormProvider).mobileNo = null;
+      container.read(addressFormProvider).name = null;
+      container.read(addressFormProvider).line = null;
+      container.read(addressFormProvider).landmark = null;
     }
     notifyListeners();
   }
@@ -75,6 +89,12 @@ class UserNotifier extends ChangeNotifier {
         status: Status.paymentPending,
       );
       container.read(orderRepositoryProvider).pushOrder(order);
+      _user!.orders.add(order.orderId);
+      await container
+          .read(usersProvider)
+          .doc(user!.uid)
+          .update({'orders': user!.orders.toJson()});
+      updateCart(Cart(orderItems: []));
       return const dz.Right(null);
     } on Exception {
       return dz.Left(ServerFailure());

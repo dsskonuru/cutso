@@ -16,20 +16,18 @@ class RegistrationFormNotifier extends ChangeNotifier {
   String? get email => _email;
   String? get mobileNo => _mobileNo;
 
-  void setName(String name) {
+  set name(String? name) {
     _name = name;
     notifyListeners();
   }
 
-  void setEmail(String email) {
+  set email(String? email) {
     _email = email;
     notifyListeners();
   }
 
-  void setMobileNo(String mobileNo) {
+  set mobileNo(String? mobileNo) {
     _mobileNo = mobileNo;
     notifyListeners();
   }
-
-  
 }

@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cutso/features/login/data/models/user.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fauth;
 import 'package:flutter/material.dart';
@@ -11,6 +10,7 @@ import '../../../../core/providers/firebase_provider.dart';
 import '../../../../core/providers/user_actions_provider.dart';
 import '../../../../core/router/router.gr.dart';
 import '../../../../main.dart';
+import '../../data/models/user.dart';
 import '../../data/sources/user_auth_repository.dart';
 
 enum AuthStatus {
@@ -39,38 +39,23 @@ class MobileFormNotifier extends ChangeNotifier {
 
   set verificationId(String verificationId) {
     _verificationId = verificationId;
-    displayNotifier();
     notifyListeners();
   }
 
   set smsCode(String smsCode) {
     _smsCode = smsCode;
-    displayNotifier();
     notifyListeners();
   }
 
   set mobileNo(String number) {
     _mobileNo = number;
-    displayNotifier();
     notifyListeners();
   }
 
   set uid(String uid) {
     _uid = uid;
     container.read(crashlyticsProvider).setUserIdentifier(_uid);
-    displayNotifier();
     notifyListeners();
-  }
-
-  void displayNotifier() {
-    debugPrint("""
-    {
-      "mobile": $_mobileNo,
-      "smsCode": $_smsCode,
-      "uid": $_uid,
-      "verificationID": $_verificationId,
-    }
-    """);
   }
 
   Future<void> verifyPhone(BuildContext context, String mobileNo) async =>
@@ -117,8 +102,9 @@ class MobileFormNotifier extends ChangeNotifier {
                   container
                       .read(crashlyticsProvider)
                       .log('User requires registration');
-                  await context.router
-                      .navigate(RegistrationFormRoute(asUpdate: false));
+                  await context.router.navigate(
+                    RegistrationFormRoute(asUpdate: false),
+                  );
                 }
               },
             );

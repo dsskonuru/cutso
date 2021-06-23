@@ -11,13 +11,13 @@ import '../../../../core/providers/firebase_provider.dart';
 import '../../../../core/providers/user_actions_provider.dart';
 import '../../../../core/router/router.gr.dart';
 import '../../../../core/theme/theme_data.dart';
-import '../../../login/data/models/user.dart';
-import '../widgets/address_card.dart';
-import '../widgets/order_summary.dart';
-import '../widgets/payment_card.dart';
-import '../widgets/price_card.dart';
+import '../widgets/address_card_widget.dart';
+import '../widgets/order_summary_card_widget.dart';
+import '../widgets/payment_card_widget.dart';
+import '../widgets/price_card_widget.dart';
 
 class CartPage extends StatefulWidget {
+  //TODO: Fix the UI
   @override
   State<CartPage> createState() => _CartPageState();
 }
@@ -26,6 +26,7 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kCream,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -36,53 +37,65 @@ class _CartPageState extends State<CartPage> {
                     onPressed: () => context.router.pop(),
                     icon: const Icon(Icons.arrow_back_rounded),
                   ),
-                  Center(
-                    child: Text(
-                      'Checkout',
-                      style: Theme.of(context).textTheme.headline6,
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.shopping_cart_rounded),
+                        Text(
+                          ' Checkout',
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
+              const Divider(),
               Padding(
-                padding: EdgeInsets.all(8.w),
+                padding: EdgeInsets.symmetric(vertical: 2.h),
                 child: Text(
                   'Order Summary',
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),
               OrderSummary(),
+              const Divider(),
               Padding(
-                padding: EdgeInsets.all(8.w),
+                padding: EdgeInsets.symmetric(vertical: 2.h),
                 child: Text(
                   'Address Details',
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),
               AddressCard(),
+              const Divider(),
               Padding(
-                padding: EdgeInsets.all(8.w),
+                padding: EdgeInsets.symmetric(vertical: 2.h),
                 child: Text(
                   'Price Details',
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),
               PriceCard(),
+              const Divider(),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.w),
+                padding: EdgeInsets.symmetric(vertical: 2.h),
                 child: Text(
                   'Payment Details',
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),
               PaymentCard(),
+              SizedBox(height: 2.h),
               Consumer(
                 builder: (context, watch, child) {
                   return ArgonButton(
                     height: 9.w,
-                    width: 36.w,
+                    width: 45.w,
                     color: kOrange,
-                    borderRadius: 0.5.w,
+                    borderRadius: 5.w,
                     loader: Container(
                       padding: const EdgeInsets.all(10),
                       child: const SpinKitRotatingCircle(
@@ -116,8 +129,6 @@ class _CartPageState extends State<CartPage> {
                                   message: "Order was placed successfully !",
                                 ),
                               );
-                              watch(userActionsProvider)
-                                  .updateCart(Cart(orderItems: []));
                             },
                           );
                           stopLoading();
@@ -127,17 +138,14 @@ class _CartPageState extends State<CartPage> {
                         }
                       }
                     },
-                    // color: Color(0xFF7866FE),
                     child: Text(
-                      'Place Order',
+                      'PLACE ORDER',
                       style: Theme.of(context).textTheme.button,
                     ),
                   );
                 },
               ),
-              SizedBox(
-                height: 8.w,
-              )
+              SizedBox(height: 2.h),
             ],
           ),
         ),

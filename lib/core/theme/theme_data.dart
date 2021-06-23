@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 const kOrange = Color(0xFFff8800);
@@ -15,52 +16,52 @@ final buttonStyle = ButtonStyle(
   backgroundColor: MaterialStateProperty.all<Color>(kOrange),
 );
 
+final textTheme = TextTheme(
+  headline1: GoogleFonts.quicksand(
+      fontSize: 98.sp, fontWeight: FontWeight.w300, letterSpacing: -1.5),
+  headline2: GoogleFonts.quicksand(
+      fontSize: 61.sp, fontWeight: FontWeight.w300, letterSpacing: -0.5),
+  headline3:
+      GoogleFonts.quicksand(fontSize: 49.sp, fontWeight: FontWeight.w400),
+  headline4: GoogleFonts.quicksand(
+      fontSize: 35.sp, fontWeight: FontWeight.w400, letterSpacing: 0.25),
+  headline5:
+      GoogleFonts.quicksand(fontSize: 24.sp, fontWeight: FontWeight.w400),
+  headline6: GoogleFonts.quicksand(
+      fontSize: 20.sp, fontWeight: FontWeight.w500, letterSpacing: 0.15),
+  subtitle1: GoogleFonts.quicksand(
+      fontSize: 16.sp, fontWeight: FontWeight.w400, letterSpacing: 0.15),
+  subtitle2: GoogleFonts.quicksand(
+      fontSize: 14.sp, fontWeight: FontWeight.w500, letterSpacing: 0.1),
+  bodyText1: GoogleFonts.ptSans(
+      fontSize: 17.sp, fontWeight: FontWeight.w400, letterSpacing: 0.5),
+  bodyText2: GoogleFonts.ptSans(
+      fontSize: 15.sp, fontWeight: FontWeight.w400, letterSpacing: 0.25),
+  button: GoogleFonts.ptSans(
+      fontSize: 15.sp, fontWeight: FontWeight.w500, letterSpacing: 1.25),
+  caption: GoogleFonts.ptSans(
+      fontSize: 13.sp, fontWeight: FontWeight.w400, letterSpacing: 0.4),
+  overline: GoogleFonts.ptSans(
+      fontSize: 11.sp, fontWeight: FontWeight.w400, letterSpacing: 1.5),
+);
+
+final colorScheme = const ColorScheme.light().copyWith(
+  primary: kOrange,
+  primaryVariant: kOrangeDark,
+  secondary: kCreamLight,
+  secondaryVariant: kCreamDark,
+  surface: kOrangeLight,
+  background: kCream,
+  error: kErrorRed,
+);
+
 ThemeData themeData(BuildContext context) => ThemeData(
-      brightness: Brightness.light,
-      textTheme: TextTheme(
-        // Headline
-        headline6: TextStyle(
-            fontFamily: 'Quicksand',
-            fontSize: 20.sp,
-            letterSpacing: 0.15.sp,
-            fontStyle: FontStyle.normal,
-            fontWeight: FontWeight.w700 // Medium
-            ),
-        // Subtitle
-        subtitle1: TextStyle(
-          fontFamily: 'Quicksand',
-          fontSize: 16.sp,
-          letterSpacing: 0.15.sp,
-          fontStyle: FontStyle.normal,
-        ),
-        // Body
-        bodyText2: TextStyle(
-          fontFamily: 'PT Sans',
-          fontSize: 15.sp,
-          letterSpacing: 0.25.sp,
-          fontStyle: FontStyle.normal,
-        ),
-        // Button
-        button: TextStyle(
-          // ALL CAPS
-          fontFamily: 'PT Sans',
-          fontSize: 14.sp,
-          letterSpacing: 1.25.sp,
-          fontStyle: FontStyle.normal,
-          fontWeight: FontWeight.w700, // Medium
-        ),
-        caption: TextStyle(
-          fontFamily: 'PT Sans',
-          fontSize: 13.sp,
-          letterSpacing: 0.4.sp,
-          fontStyle: FontStyle.normal,
-        ),
-        overline: TextStyle(
-          // ALL CAPS
-          fontFamily: 'PT Sans',
-          fontSize: 11.sp,
-          letterSpacing: 1.5.sp,
-          fontStyle: FontStyle.normal,
-        ),
+      textTheme: textTheme,
+      colorScheme: colorScheme,
+    ).copyWith(
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: <TargetPlatform, PageTransitionsBuilder>{
+          TargetPlatform.android: ZoomPageTransitionsBuilder(),
+        },
       ),
     );

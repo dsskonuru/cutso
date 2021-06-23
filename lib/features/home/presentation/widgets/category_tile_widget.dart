@@ -4,18 +4,19 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../core/router/router.gr.dart';
+import '../../../../core/theme/theme_data.dart';
 
-class CategoryWidget extends StatelessWidget {
+class CategoryTileWidget extends StatelessWidget {
   final String itemCategory;
-  const CategoryWidget({required this.itemCategory});
+  const CategoryTileWidget({required this.itemCategory});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         InkWell(
-          onTap: () => AutoRouter.of(context)
-              .push(CategoryRoute(category: itemCategory)),
+          onTap: () =>
+              context.router.push(CategoryRoute(category: itemCategory)),
           child: Center(
             child: Container(
               height: 30.w,
@@ -23,7 +24,7 @@ class CategoryWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
+                    color: kOrangeLight.withOpacity(0.5),
                     spreadRadius: 5,
                     blurRadius: 7,
                     offset: const Offset(0, 3),

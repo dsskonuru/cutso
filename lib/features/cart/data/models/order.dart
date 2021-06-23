@@ -1,6 +1,7 @@
-import 'package:cutso/features/login/data/models/user.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../../../login/data/models/user.dart';
 
 part 'order.freezed.dart';
 part 'order.g.dart';

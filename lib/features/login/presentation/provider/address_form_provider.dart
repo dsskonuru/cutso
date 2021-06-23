@@ -11,72 +11,73 @@ final addressFormProvider =
     ChangeNotifierProvider((ref) => AddressFormNotifier());
 
 class AddressFormNotifier extends ChangeNotifier {
-  String? _addressName;
-  String? _addressLine;
-  String? _addressLandmark;
-  GeoPoint? _addressLocation;
+  String? _name;
+  String? _line;
+  String? _landmark;
+  GeoPoint? _location;
 
-  String? get addressName => _addressName;
-  String? get addressLine => _addressLine;
-  String? get addressLandmark => _addressLandmark;
-  GeoPoint? get location => _addressLocation;
+  String? get name => _name;
+  String? get line => _line;
+  String? get landmark => _landmark;
+  GeoPoint? get location => _location;
+  
+  bool hasGotLocation = false;
 
-  void setAddressName(String? addressName) {
-    _addressName = addressName;
+  set name(String? name) {
+    _name = name;
     notifyListeners();
   }
 
-  void setAddressLine(String? addressLine) {
-    _addressLine = addressLine;
+  set line(String? line) {
+    _line = line;
     notifyListeners();
   }
 
-  void setAddressLandmark(String? addressLandmark) {
-    _addressLandmark = addressLandmark;
+  set landmark(String? landmark) {
+    _landmark = landmark;
     notifyListeners();
   }
 
-  void setLocation(GeoPoint? addressLocation) {
-    _addressLocation = addressLocation;
+  set location(GeoPoint? location) {
+    _location = location;
     notifyListeners();
   }
 
   Address getAddress() {
     return Address(
-      name: _addressName!,
-      location: _addressLocation!,
-      line: _addressLine!,
-      landmark: _addressLandmark!,
+      name: _name!,
+      location: _location!,
+      line: _line!,
+      landmark: _landmark!,
     );
   }
 
   Future<void> getLocation() async {
     try {
-      final Location location = Location();
+      final Location _location = Location();
       late bool _serviceEnabled;
       late PermissionStatus _permissionGranted;
       late LocationData _locationData;
 
-      _serviceEnabled = await location.serviceEnabled();
+      _serviceEnabled = await _location.serviceEnabled();
       if (!_serviceEnabled) {
-        _serviceEnabled = await location.requestService();
+        _serviceEnabled = await _location.requestService();
         if (!_serviceEnabled) {
           return;
         }
       }
 
-      _permissionGranted = await location.hasPermission();
+      _permissionGranted = await _location.hasPermission();
       if (_permissionGranted == PermissionStatus.denied) {
-        _permissionGranted = await location.requestPermission();
+        _permissionGranted = await _location.requestPermission();
         if (_permissionGranted != PermissionStatus.granted) {
           return;
         }
       }
 
-      _locationData = await location.getLocation();
-      setLocation(
-        GeoPoint(_locationData.latitude!, _locationData.longitude!),
-      );
+      _locationData = await _location.getLocation();
+      location = GeoPoint(_locationData.latitude!, _locationData.longitude!);
+      hasGotLocation = true;
     } catch (error, stackTrace) {
       container.read(crashlyticsProvider).recordError(error, stackTrace);
     }

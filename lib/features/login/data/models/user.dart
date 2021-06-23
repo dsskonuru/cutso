@@ -15,6 +15,7 @@ class User with _$User {
     required String email,
     required Address address,
     required Cart cart,
+    required MyOrders orders,
   }) = _User;
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
@@ -53,7 +54,8 @@ class OrderItem with _$OrderItem {
     required String? guidelines,
     required double price,
   }) = _OrderItem;
-  factory OrderItem.fromJson(Map<String, dynamic> json) => _$OrderItemFromJson(json);
+  factory OrderItem.fromJson(Map<String, dynamic> json) =>
+      _$OrderItemFromJson(json);
 }
 
 @freezed
@@ -75,4 +77,24 @@ class Cart with _$Cart {
   }
 
   factory Cart.fromJson(Map<String, dynamic> json) => _$CartFromJson(json);
+}
+
+@freezed
+class MyOrders with _$MyOrders {
+  @JsonSerializable(explicitToJson: true)
+  factory MyOrders({
+    required List<String> orderIds,
+  }) = _MyOrders;
+  const MyOrders._();
+
+  void add(String orderId) {
+    orderIds.add(orderId);
+  }
+
+  void remove(String orderId) {
+    orderIds.remove(orderId);
+  }
+
+  factory MyOrders.fromJson(Map<String, dynamic> json) =>
+      _$MyOrdersFromJson(json);
 }

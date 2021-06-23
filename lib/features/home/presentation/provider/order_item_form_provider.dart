@@ -1,6 +1,9 @@
+import 'package:cutso/core/providers/firebase_provider.dart';
+import 'package:cutso/features/home/data/sources/items_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../main.dart';
 import '../../../login/data/models/user.dart';
 
 final orderItemProvider =
@@ -22,6 +25,20 @@ class OrderItemNotifier extends ChangeNotifier {
   String? get guidelines => _guidelines;
   double? get price => _price;
 
+  double getOrderItemPrice() {
+    double _value = 0.0;
+    container.read(itemsRepositoryProvider).getItem(_itemId!).then(
+      (itemRunner) {
+        itemRunner.fold(
+            (failure) =>
+                container.read(crashlyticsProvider).log("Unable to fetch data"),
+            (item) => _value +=
+                (int.parse(item.discountedPrice ?? item.price)) * _quantity);
+      },
+    );
+    return _value;
+  }
+
   OrderItem? get orderItem => OrderItem(
       itemId: _itemId!,
       quantity: _quantity,
@@ -34,8 +51,8 @@ class OrderItemNotifier extends ChangeNotifier {
     if (!_orderItemSet) {
       _itemId = orderItem.itemId;
       _quantity = orderItem.quantity;
-      _sizeTags = orderItem.sizeTags;
-      _preferenceTags = orderItem.preferenceTags;
+      _sizeTags = {};
+      _preferenceTags = {};
       _guidelines = orderItem.guidelines;
       _price = orderItem.price;
       _orderItemSet = true;

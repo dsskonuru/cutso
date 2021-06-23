@@ -7,7 +7,7 @@
 import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i2;
 
-import '../../features/cart/presentation/pages/cart_page.dart' as _i11;
+import '../../features/cart/presentation/pages/cart_page.dart' as _i12;
 import '../../features/home/presentation/pages/category_page.dart' as _i9;
 import '../../features/home/presentation/pages/home_page.dart' as _i8;
 import '../../features/home/presentation/pages/item_page.dart' as _i10;
@@ -17,6 +17,7 @@ import '../../features/login/presentation/pages/onboarding_page.dart' as _i3;
 import '../../features/login/presentation/pages/otp_form_page.dart' as _i5;
 import '../../features/login/presentation/pages/registration_form_page.dart'
     as _i6;
+import '../../features/profile/presentation/pages/profile_page.dart' as _i11;
 
 class AppRouter extends _i1.RootStackRouter {
   AppRouter([_i2.GlobalKey<_i2.NavigatorState>? navigatorKey])
@@ -62,7 +63,7 @@ class AppRouter extends _i1.RootStackRouter {
     HomeRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return const _i8.HomePage();
+          return _i8.HomePage();
         }),
     CategoryRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
@@ -86,10 +87,15 @@ class AppRouter extends _i1.RootStackRouter {
               orderItemJson: args.orderItemJson,
               key: args.key);
         }),
+    ProfileRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return const _i11.ProfilePage();
+        }),
     CartRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i11.CartPage();
+          return _i12.CartPage();
         })
   };
 
@@ -103,9 +109,8 @@ class AppRouter extends _i1.RootStackRouter {
         _i1.RouteConfig(HomeRoute.name, path: '/home'),
         _i1.RouteConfig(CategoryRoute.name, path: '/category'),
         _i1.RouteConfig(ItemRoute.name, path: '/item'),
-        _i1.RouteConfig(CartRoute.name, path: '/cart'),
-        _i1.RouteConfig('*#redirect',
-            path: '*', redirectTo: '/', fullMatch: true)
+        _i1.RouteConfig(ProfileRoute.name, path: '/profile'),
+        _i1.RouteConfig(CartRoute.name, path: '/cart')
       ];
 }
 
@@ -206,6 +211,12 @@ class ItemRouteArgs {
   final String? orderItemJson;
 
   final _i2.Key? key;
+}
+
+class ProfileRoute extends _i1.PageRouteInfo {
+  const ProfileRoute() : super(name, path: '/profile');
+
+  static const String name = 'ProfileRoute';
 }
 
 class CartRoute extends _i1.PageRouteInfo {

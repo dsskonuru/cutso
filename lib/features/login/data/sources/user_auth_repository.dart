@@ -61,6 +61,7 @@ class UserAuthRepository implements UserAuthRepositoryDataSource {
   Future<Either<AuthFailure, void>> signOut() async {
     try {
       await container.read(authProvider).signOut();
+      container.read(userActionsProvider).user = null;
       return const Right(null);
     } catch (error, stackTrace) {
       container.read(crashlyticsProvider).recordError(error, stackTrace);

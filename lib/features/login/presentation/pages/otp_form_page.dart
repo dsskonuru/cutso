@@ -11,7 +11,8 @@ import '../../../../core/error/failures.dart';
 import '../../../../core/theme/theme_data.dart';
 import '../../data/sources/user_auth_repository.dart';
 import '../provider/mobile_otp_form_provider.dart';
-import '../widgets/sign_in_widgets.dart';
+import '../widgets/pin_input_widget.dart';
+import '../widgets/top_painter_widget.dart';
 
 class OtpFormPage extends ConsumerWidget {
   final _otpFormKey = GlobalKey<FormState>();
@@ -37,7 +38,7 @@ class OtpFormPage extends ConsumerWidget {
                     tag: "cutso_logo",
                     child: Image(
                       height: 18.h,
-                      image: const AssetImage('assets/images/logo-white.png'),
+                      image: const AssetImage('assets/images/cutso-logo.png'),
                     ),
                   ),
                 ),
@@ -63,7 +64,7 @@ class OtpFormPage extends ConsumerWidget {
                   width: 45.w,
                   minWidth: 35.w,
                   color: kOrange,
-                  borderRadius: 5.0,
+                  borderRadius: 5.w,
                   child: Text(
                     "Resend OTP",
                     style: Theme.of(context).textTheme.button,
@@ -87,7 +88,7 @@ class OtpFormPage extends ConsumerWidget {
                   height: 10.w,
                   width: 36.w,
                   color: kOrange,
-                  borderRadius: 0.5.w,
+                  borderRadius: 5.w,
                   loader: Container(
                     padding: const EdgeInsets.all(10),
                     child: const SpinKitRotatingCircle(

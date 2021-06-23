@@ -14,6 +14,7 @@ _$_User _$_$_UserFromJson(Map<String, dynamic> json) {
     email: json['email'] as String,
     address: Address.fromJson(json['address'] as Map<String, dynamic>),
     cart: Cart.fromJson(json['cart'] as Map<String, dynamic>),
+    orders: MyOrders.fromJson(json['orders'] as Map<String, dynamic>),
   );
 }
 
@@ -24,6 +25,7 @@ Map<String, dynamic> _$_$_UserToJson(_$_User instance) => <String, dynamic>{
       'email': instance.email,
       'address': instance.address.toJson(),
       'cart': instance.cart.toJson(),
+      'orders': instance.orders.toJson(),
     };
 
 _$_Address _$_$_AddressFromJson(Map<String, dynamic> json) {
@@ -77,4 +79,16 @@ _$_Cart _$_$_CartFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$_$_CartToJson(_$_Cart instance) => <String, dynamic>{
       'orderItems': instance.orderItems.map((e) => e.toJson()).toList(),
+    };
+
+_$_MyOrders _$_$_MyOrdersFromJson(Map<String, dynamic> json) {
+  return _$_MyOrders(
+    orderIds:
+        (json['orderIds'] as List<dynamic>).map((e) => e as String).toList(),
+  );
+}
+
+Map<String, dynamic> _$_$_MyOrdersToJson(_$_MyOrders instance) =>
+    <String, dynamic>{
+      'orderIds': instance.orderIds,
     };

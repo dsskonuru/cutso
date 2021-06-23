@@ -1,13 +1,18 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/providers/firebase_provider.dart';
+import 'core/providers/shared_preferences_provider.dart';
+import 'core/providers/user_actions_provider.dart';
 import 'core/router/router.gr.dart';
 import 'core/theme/theme_data.dart';
+import 'features/login/data/models/user.dart';
 
 final container = ProviderContainer(observers: [Logger()]);
 
@@ -15,6 +20,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FlutterError.onError = container.read(crashlyticsProvider).recordFlutterError;
+  await setupUser();
   runApp(CutsoApp());
 }
 
@@ -60,5 +66,32 @@ class Logger extends ProviderObserver {
   "newValue": "$newValue"
 }''',
     );
+  }
+}
+
+Future<void> setupUser() async {
+  try {
+    final SharedPreferences prefs =
+        await container.read(sharedPreferencesProvider);
+    // prefs.clear();
+    final uid = prefs.getString("uid");
+    if (uid != null) {
+      await container.read(usersProvider).doc(uid).get().then(
+        (DocumentSnapshot<User> userSnapshot) async {
+          if (userSnapshot.exists) {
+            container.read(crashlyticsProvider).log('User is signed in');
+            container.read(userActionsProvider).user = userSnapshot.data();
+          } else {
+            container
+                .read(crashlyticsProvider)
+                .log('User requires registration');
+            container.read(userActionsProvider).user = null;
+          }
+        },
+      );
+    }
+  } catch (exception, stack) {
+    debugPrint(exception.toString());
+    container.read(crashlyticsProvider).recordError(exception, stack);
   }
 }

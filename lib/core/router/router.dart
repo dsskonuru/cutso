@@ -9,11 +9,15 @@ import '../../features/login/presentation/pages/mobile_form_page.dart';
 import '../../features/login/presentation/pages/onboarding_page.dart';
 import '../../features/login/presentation/pages/otp_form_page.dart';
 import '../../features/login/presentation/pages/registration_form_page.dart';
+import '../../features/profile/presentation/pages/profile_page.dart';
+
+//TODO: Fix routing -dont navigate - push pop and replace as needed
+// Simplify the router and make authentication work
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
   routes: <AutoRoute>[
-    AutoRoute(path: '/', page: OnboardingPage),
+    AutoRoute(path: '/', page: OnboardingPage, initial: true),
     AutoRoute(path: '/mobileForm', page: MobileFormPage),
     AutoRoute(path: '/otpForm', page: OtpFormPage),
     AutoRoute(path: '/registrationForm', page: RegistrationFormPage),
@@ -21,8 +25,8 @@ import '../../features/login/presentation/pages/registration_form_page.dart';
     AutoRoute(path: '/home', page: HomePage),
     AutoRoute(path: '/category', page: CategoryPage),
     AutoRoute(path: '/item', page: ItemPage),
+    AutoRoute(path: '/profile', page: ProfilePage),
     AutoRoute(path: '/cart', page: CartPage),
-    RedirectRoute(path: '*', redirectTo: '/'),
   ],
 )
 class $AppRouter {}
