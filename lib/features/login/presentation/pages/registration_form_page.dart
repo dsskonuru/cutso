@@ -112,7 +112,7 @@ class RegistrationFormPage extends ConsumerWidget {
                   child: TextFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     style: Theme.of(context).textTheme.bodyText2,
-                    textAlign: TextAlign.center,
+                    
                     keyboardType: TextInputType.phone,
                     initialValue: watch(mobileFormProvider).mobileNo,
                     decoration: const InputDecoration(

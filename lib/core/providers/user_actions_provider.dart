@@ -53,15 +53,17 @@ class UserNotifier extends ChangeNotifier {
 
   set cart(Cart cart) {
     _cart = cart;
-    updateCart(cart).then(
-      (value) {
-        if (value.isLeft()) {
-          container
-              .read(crashlyticsProvider)
-              .log("Cart could not be updated to Firestore");
-        }
-      },
-    );
+    if (user != null) {
+      updateCart(cart).then(
+        (value) {
+          if (value.isLeft()) {
+            container
+                .read(crashlyticsProvider)
+                .log("Cart could not be updated to Firestore");
+          }
+        },
+      );
+    }
     notifyListeners();
   }
 

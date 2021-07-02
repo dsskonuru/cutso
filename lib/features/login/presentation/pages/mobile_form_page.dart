@@ -51,6 +51,7 @@ class MobileFormPage extends ConsumerWidget {
               child: Form(
                 key: _mobileFormKey,
                 child: TextFormField(
+                  textAlign: TextAlign.center,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   style: Theme.of(context).textTheme.bodyText2,
                   keyboardType: TextInputType.phone,
