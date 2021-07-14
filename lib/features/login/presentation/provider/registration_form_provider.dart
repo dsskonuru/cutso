@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../main.dart';
+import '../../../../main_common.dart';
 import 'mobile_otp_form_provider.dart';
 
 final registrationFormProvider =

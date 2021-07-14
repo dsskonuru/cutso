@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paytm_allinonesdk/paytm_allinonesdk.dart';
 
 import '../../features/cart/data/models/order.dart';
-import '../../main.dart';
+import '../../main_common.dart';
 import '../error/failures.dart';
 import 'firebase_provider.dart';
 

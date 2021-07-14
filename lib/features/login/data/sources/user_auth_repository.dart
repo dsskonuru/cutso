@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/providers/firebase_provider.dart';
 import '../../../../core/providers/user_actions_provider.dart';
-import '../../../../main.dart';
+import '../../../../main_common.dart';
 import '../models/user.dart';
 
 abstract class UserAuthRepositoryDataSource {

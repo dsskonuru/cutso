@@ -7,20 +7,37 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'config_reader.dart';
 import 'core/providers/firebase_provider.dart';
 import 'core/providers/shared_preferences_provider.dart';
 import 'core/providers/user_actions_provider.dart';
 import 'core/router/router.gr.dart';
 import 'core/theme/theme_data.dart';
+import 'environment.dart';
 import 'features/login/data/models/user.dart';
 
 final container = ProviderContainer(observers: [Logger()]);
 
-Future<void> main() async {
+Future<void> mainCommon(String env) async {
   WidgetsFlutterBinding.ensureInitialized();
+  await ConfigReader.initialize();
+
+  String myEnv;
+  switch (env) {
+    case Environment.dev:
+      myEnv = "This is dev env !";
+      debugPrint(myEnv);
+      break;
+    case Environment.prod:
+      myEnv = "This is prod env !";
+      debugPrint(myEnv);
+      break;
+  }
+
   await Firebase.initializeApp();
   FlutterError.onError = container.read(crashlyticsProvider).recordFlutterError;
   await setupUser();
+
   runApp(CutsoApp());
 }
 

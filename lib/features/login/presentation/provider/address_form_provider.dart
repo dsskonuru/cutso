@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:location/location.dart';
 
 import '../../../../core/providers/firebase_provider.dart';
-import '../../../../main.dart';
+import '../../../../main_common.dart';
 import '../../data/models/user.dart';
 
 final addressFormProvider =

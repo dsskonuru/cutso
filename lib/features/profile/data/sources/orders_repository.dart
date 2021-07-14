@@ -3,7 +3,7 @@ import 'package:riverpod/riverpod.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/providers/firebase_provider.dart';
-import '../../../../main.dart';
+import '../../../../main_common.dart';
 import '../../../cart/data/models/order.dart';
 import '../../../login/data/models/user.dart';
 

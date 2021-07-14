@@ -9,7 +9,7 @@ import '../../../../core/error/failures.dart';
 import '../../../../core/providers/firebase_provider.dart';
 import '../../../../core/providers/user_actions_provider.dart';
 import '../../../../core/router/router.gr.dart';
-import '../../../../main.dart';
+import '../../../../main_common.dart';
 import '../../data/models/user.dart';
 import '../../data/sources/user_auth_repository.dart';
 

@@ -9,7 +9,7 @@ import '../../features/login/data/models/user.dart';
 import '../../features/login/presentation/provider/address_form_provider.dart';
 import '../../features/login/presentation/provider/registration_form_provider.dart';
 import '../../features/profile/data/sources/orders_repository.dart';
-import '../../main.dart';
+import '../../main_common.dart';
 import '../error/failures.dart';
 import 'firebase_provider.dart';
 import 'shared_preferences_provider.dart';

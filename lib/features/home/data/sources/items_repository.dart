@@ -4,7 +4,7 @@ import 'package:riverpod/riverpod.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/providers/firebase_provider.dart';
-import '../../../../main.dart';
+import '../../../../main_common.dart';
 import '../models/item.dart';
 
 abstract class ItemsDataSource {
