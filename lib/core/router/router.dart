@@ -11,9 +11,6 @@ import '../../features/login/presentation/pages/otp_form_page.dart';
 import '../../features/login/presentation/pages/registration_form_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 
-//TODO: Fix routing -dont navigate - push pop and replace as needed
-// Simplify the router and make authentication work
-
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
   routes: <AutoRoute>[

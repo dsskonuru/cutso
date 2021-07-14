@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_annotation_target
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -49,7 +51,7 @@ class OrderItem with _$OrderItem {
   factory OrderItem({
     required int itemId,
     required double quantity,
-    required Set<String>? sizeTags,
+    required String? sizeTag,
     required Set<String>? preferenceTags,
     required String? guidelines,
     required double price,

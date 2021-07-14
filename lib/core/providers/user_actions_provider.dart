@@ -1,3 +1,4 @@
+import 'package:cutso/core/providers/paytm_provider.dart';
 import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,8 +14,6 @@ import '../error/failures.dart';
 import 'firebase_provider.dart';
 import 'shared_preferences_provider.dart';
 
-// TODO: use SharedPreferences to save login state go to home page directly
-
 final userActionsProvider = ChangeNotifierProvider((ref) => UserNotifier());
 
 class UserNotifier extends ChangeNotifier {
@@ -27,7 +26,11 @@ class UserNotifier extends ChangeNotifier {
   set user(User? user) {
     _user = user;
     if (user != null) {
-      cart = user.cart;
+      if (cart.orderItems.isNotEmpty) {
+        cart = _cart;
+      } else {
+        cart = user.cart;
+      }
       container
           .read(sharedPreferencesProvider)
           .then((prefs) => prefs.setString("uid", user.uid));
@@ -39,6 +42,7 @@ class UserNotifier extends ChangeNotifier {
       container.read(addressFormProvider).line = user.address.line;
       container.read(addressFormProvider).landmark = user.address.landmark;
     } else {
+      // ! when the user is signed out
       cart = Cart(orderItems: []);
       container.read(sharedPreferencesProvider).then((prefs) => prefs.clear());
       container.read(registrationFormProvider).name = null;
@@ -70,26 +74,38 @@ class UserNotifier extends ChangeNotifier {
   Future<dz.Either<ServerFailure, void>> updateCart(Cart cart) async {
     try {
       _cart = cart;
-      await container
-          .read(usersProvider)
-          .doc(_user!.uid)
-          .update({'cart': cart.toJson()});
+      if (user != null) {
+        await container
+            .read(usersProvider)
+            .doc(_user!.uid)
+            .update({'cart': cart.toJson()});
+      }
       return const dz.Right(null);
-    } on Exception {
-      return dz.Left(ServerFailure());
+    } catch (exception, stack) {
+      container.read(crashlyticsProvider).recordError(exception, stack);
+      return dz.Left(ServerFailure(exception.toString()));
     }
   }
 
   Future<dz.Either<ServerFailure, void>> placeOrder(Cart cart) async {
+    // TODO: Setup cloud functions for iOS
     try {
       final order = Order(
         uid: _user!.uid,
         orderId: await nanoid(10),
         orderItems: cart,
-        value: getCartValue(cart),
+        value: getCartValue(),
         coupon: null,
         status: Status.paymentPending,
       );
+
+      final dz.Either<ServerFailure, void> paymentRunner =
+          await container.read(paytmProvider).initiatePayment(order);
+      paymentRunner.fold(
+        (failure) => debugPrint("Payment failed!"),
+        (success) => debugPrint("Payment was successful!"),
+      );
+
       container.read(orderRepositoryProvider).pushOrder(order);
       _user!.orders.add(order.orderId);
       await container
@@ -98,7 +114,9 @@ class UserNotifier extends ChangeNotifier {
           .update({'orders': user!.orders.toJson()});
       updateCart(Cart(orderItems: []));
       return const dz.Right(null);
-    } on Exception {
+    } catch (exception, stack) {
+      container.read(crashlyticsProvider).recordError(exception, stack);
+      debugPrint(exception.toString() + stack.toString());
       return dz.Left(ServerFailure());
     }
   }
@@ -131,12 +149,12 @@ class UserNotifier extends ChangeNotifier {
       return dz.Left(AuthFailure(error.toString()));
     }
   }
-}
 
-double getCartValue(Cart cart) {
-  double _value = 0.0;
-  for (final orderItem in cart.orderItems) {
-    _value += orderItem.price;
+  double getCartValue() {
+    double _value = 0.0;
+    for (final orderItem in cart.orderItems) {
+      _value += orderItem.price;
+    }
+    return _value;
   }
-  return _value;
 }

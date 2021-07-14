@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_annotation_target
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -22,6 +24,7 @@ class Item with _$Item {
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 }
 
+// ! Update when sub_categories change
 const Map<String, Map<String, dynamic>> categories = {
   "sea-food": {
     "name": "Sea Food",

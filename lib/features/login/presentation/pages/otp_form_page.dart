@@ -11,8 +11,8 @@ import '../../../../core/error/failures.dart';
 import '../../../../core/theme/theme_data.dart';
 import '../../data/sources/user_auth_repository.dart';
 import '../provider/mobile_otp_form_provider.dart';
+import '../widgets/cutso_header_widget.dart';
 import '../widgets/pin_input_widget.dart';
-import '../widgets/top_painter_widget.dart';
 
 class OtpFormPage extends ConsumerWidget {
   final _otpFormKey = GlobalKey<FormState>();
@@ -25,25 +25,7 @@ class OtpFormPage extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                CustomPaint(
-                  size: Size(100.w, 27.h),
-                  painter: TopPainter(),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 9.h),
-                  child: Hero(
-                    tag: "cutso_logo",
-                    child: Image(
-                      height: 18.h,
-                      image: const AssetImage('assets/images/cutso-logo.png'),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            const CutsoHeader(),
             SizedBox(height: 8.h),
             Text(
               "Enter OTP",

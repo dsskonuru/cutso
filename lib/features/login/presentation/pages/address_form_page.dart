@@ -1,5 +1,6 @@
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:cutso/features/login/presentation/widgets/cutso_header_widget.dart';
 import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,7 +19,6 @@ import '../../data/sources/user_auth_repository.dart';
 import '../provider/address_form_provider.dart';
 import '../provider/mobile_otp_form_provider.dart';
 import '../provider/registration_form_provider.dart';
-import '../widgets/top_painter_widget.dart';
 
 class AddressFormPage extends ConsumerWidget {
   final bool asUpdate;
@@ -36,25 +36,7 @@ class AddressFormPage extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  CustomPaint(
-                    size: Size(100.w, 27.h),
-                    painter: TopPainter(),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 9.h),
-                    child: Hero(
-                      tag: "cutso_logo",
-                      child: Image(
-                        height: 18.h,
-                        image: const AssetImage('assets/images/cutso-logo.png'),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              const CutsoHeader(),
               SizedBox(height: 8.h),
               Text(
                 "Address",

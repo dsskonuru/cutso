@@ -49,8 +49,7 @@ _$_OrderItem _$_$_OrderItemFromJson(Map<String, dynamic> json) {
   return _$_OrderItem(
     itemId: json['itemId'] as int,
     quantity: (json['quantity'] as num).toDouble(),
-    sizeTags:
-        (json['sizeTags'] as List<dynamic>?)?.map((e) => e as String).toSet(),
+    sizeTag: json['sizeTag'] as String?,
     preferenceTags: (json['preferenceTags'] as List<dynamic>?)
         ?.map((e) => e as String)
         .toSet(),
@@ -63,7 +62,7 @@ Map<String, dynamic> _$_$_OrderItemToJson(_$_OrderItem instance) =>
     <String, dynamic>{
       'itemId': instance.itemId,
       'quantity': instance.quantity,
-      'sizeTags': instance.sizeTags?.toList(),
+      'sizeTag': instance.sizeTag,
       'preferenceTags': instance.preferenceTags?.toList(),
       'guidelines': instance.guidelines,
       'price': instance.price,

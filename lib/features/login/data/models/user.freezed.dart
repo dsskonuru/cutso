@@ -603,14 +603,14 @@ class _$OrderItemTearOff {
   _OrderItem call(
       {required int itemId,
       required double quantity,
-      required Set<String>? sizeTags,
+      required String? sizeTag,
       required Set<String>? preferenceTags,
       required String? guidelines,
       required double price}) {
     return _OrderItem(
       itemId: itemId,
       quantity: quantity,
-      sizeTags: sizeTags,
+      sizeTag: sizeTag,
       preferenceTags: preferenceTags,
       guidelines: guidelines,
       price: price,
@@ -629,7 +629,7 @@ const $OrderItem = _$OrderItemTearOff();
 mixin _$OrderItem {
   int get itemId => throw _privateConstructorUsedError;
   double get quantity => throw _privateConstructorUsedError;
-  Set<String>? get sizeTags => throw _privateConstructorUsedError;
+  String? get sizeTag => throw _privateConstructorUsedError;
   Set<String>? get preferenceTags => throw _privateConstructorUsedError;
   String? get guidelines => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
@@ -647,7 +647,7 @@ abstract class $OrderItemCopyWith<$Res> {
   $Res call(
       {int itemId,
       double quantity,
-      Set<String>? sizeTags,
+      String? sizeTag,
       Set<String>? preferenceTags,
       String? guidelines,
       double price});
@@ -665,7 +665,7 @@ class _$OrderItemCopyWithImpl<$Res> implements $OrderItemCopyWith<$Res> {
   $Res call({
     Object? itemId = freezed,
     Object? quantity = freezed,
-    Object? sizeTags = freezed,
+    Object? sizeTag = freezed,
     Object? preferenceTags = freezed,
     Object? guidelines = freezed,
     Object? price = freezed,
@@ -679,10 +679,10 @@ class _$OrderItemCopyWithImpl<$Res> implements $OrderItemCopyWith<$Res> {
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as double,
-      sizeTags: sizeTags == freezed
-          ? _value.sizeTags
-          : sizeTags // ignore: cast_nullable_to_non_nullable
-              as Set<String>?,
+      sizeTag: sizeTag == freezed
+          ? _value.sizeTag
+          : sizeTag // ignore: cast_nullable_to_non_nullable
+              as String?,
       preferenceTags: preferenceTags == freezed
           ? _value.preferenceTags
           : preferenceTags // ignore: cast_nullable_to_non_nullable
@@ -708,7 +708,7 @@ abstract class _$OrderItemCopyWith<$Res> implements $OrderItemCopyWith<$Res> {
   $Res call(
       {int itemId,
       double quantity,
-      Set<String>? sizeTags,
+      String? sizeTag,
       Set<String>? preferenceTags,
       String? guidelines,
       double price});
@@ -727,7 +727,7 @@ class __$OrderItemCopyWithImpl<$Res> extends _$OrderItemCopyWithImpl<$Res>
   $Res call({
     Object? itemId = freezed,
     Object? quantity = freezed,
-    Object? sizeTags = freezed,
+    Object? sizeTag = freezed,
     Object? preferenceTags = freezed,
     Object? guidelines = freezed,
     Object? price = freezed,
@@ -741,10 +741,10 @@ class __$OrderItemCopyWithImpl<$Res> extends _$OrderItemCopyWithImpl<$Res>
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as double,
-      sizeTags: sizeTags == freezed
-          ? _value.sizeTags
-          : sizeTags // ignore: cast_nullable_to_non_nullable
-              as Set<String>?,
+      sizeTag: sizeTag == freezed
+          ? _value.sizeTag
+          : sizeTag // ignore: cast_nullable_to_non_nullable
+              as String?,
       preferenceTags: preferenceTags == freezed
           ? _value.preferenceTags
           : preferenceTags // ignore: cast_nullable_to_non_nullable
@@ -768,7 +768,7 @@ class _$_OrderItem with DiagnosticableTreeMixin implements _OrderItem {
   _$_OrderItem(
       {required this.itemId,
       required this.quantity,
-      required this.sizeTags,
+      required this.sizeTag,
       required this.preferenceTags,
       required this.guidelines,
       required this.price});
@@ -781,7 +781,7 @@ class _$_OrderItem with DiagnosticableTreeMixin implements _OrderItem {
   @override
   final double quantity;
   @override
-  final Set<String>? sizeTags;
+  final String? sizeTag;
   @override
   final Set<String>? preferenceTags;
   @override
@@ -791,7 +791,7 @@ class _$_OrderItem with DiagnosticableTreeMixin implements _OrderItem {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'OrderItem(itemId: $itemId, quantity: $quantity, sizeTags: $sizeTags, preferenceTags: $preferenceTags, guidelines: $guidelines, price: $price)';
+    return 'OrderItem(itemId: $itemId, quantity: $quantity, sizeTag: $sizeTag, preferenceTags: $preferenceTags, guidelines: $guidelines, price: $price)';
   }
 
   @override
@@ -801,7 +801,7 @@ class _$_OrderItem with DiagnosticableTreeMixin implements _OrderItem {
       ..add(DiagnosticsProperty('type', 'OrderItem'))
       ..add(DiagnosticsProperty('itemId', itemId))
       ..add(DiagnosticsProperty('quantity', quantity))
-      ..add(DiagnosticsProperty('sizeTags', sizeTags))
+      ..add(DiagnosticsProperty('sizeTag', sizeTag))
       ..add(DiagnosticsProperty('preferenceTags', preferenceTags))
       ..add(DiagnosticsProperty('guidelines', guidelines))
       ..add(DiagnosticsProperty('price', price));
@@ -816,9 +816,9 @@ class _$_OrderItem with DiagnosticableTreeMixin implements _OrderItem {
             (identical(other.quantity, quantity) ||
                 const DeepCollectionEquality()
                     .equals(other.quantity, quantity)) &&
-            (identical(other.sizeTags, sizeTags) ||
+            (identical(other.sizeTag, sizeTag) ||
                 const DeepCollectionEquality()
-                    .equals(other.sizeTags, sizeTags)) &&
+                    .equals(other.sizeTag, sizeTag)) &&
             (identical(other.preferenceTags, preferenceTags) ||
                 const DeepCollectionEquality()
                     .equals(other.preferenceTags, preferenceTags)) &&
@@ -834,7 +834,7 @@ class _$_OrderItem with DiagnosticableTreeMixin implements _OrderItem {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(itemId) ^
       const DeepCollectionEquality().hash(quantity) ^
-      const DeepCollectionEquality().hash(sizeTags) ^
+      const DeepCollectionEquality().hash(sizeTag) ^
       const DeepCollectionEquality().hash(preferenceTags) ^
       const DeepCollectionEquality().hash(guidelines) ^
       const DeepCollectionEquality().hash(price);
@@ -854,7 +854,7 @@ abstract class _OrderItem implements OrderItem {
   factory _OrderItem(
       {required int itemId,
       required double quantity,
-      required Set<String>? sizeTags,
+      required String? sizeTag,
       required Set<String>? preferenceTags,
       required String? guidelines,
       required double price}) = _$_OrderItem;
@@ -867,7 +867,7 @@ abstract class _OrderItem implements OrderItem {
   @override
   double get quantity => throw _privateConstructorUsedError;
   @override
-  Set<String>? get sizeTags => throw _privateConstructorUsedError;
+  String? get sizeTag => throw _privateConstructorUsedError;
   @override
   Set<String>? get preferenceTags => throw _privateConstructorUsedError;
   @override

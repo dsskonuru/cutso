@@ -3,39 +3,40 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/theme_data.dart';
 
 class MultiSelectChip extends StatefulWidget {
-  // !: The tags get reset everytime one tries to edit
-  final List<String> tagsList;
-  final Function(List<String>)? onSelectionChanged;
+  final Set<String> tags;
+  final Set<String>? selectedTags;
+  final Function(Set<String>)? onSelectionChanged;
 
-  const MultiSelectChip(this.tagsList, {this.onSelectionChanged});
+  const MultiSelectChip(this.tags,
+      {this.onSelectionChanged, this.selectedTags});
 
   @override
   _MultiSelectChipState createState() => _MultiSelectChipState();
 }
 
 class _MultiSelectChipState extends State<MultiSelectChip> {
-  List<String> selectedChoices = [];
+  Set<String> selectedChoices = {};
 
   List<Widget> _buildChoiceList() {
+    if (widget.selectedTags != null) {
+      selectedChoices.addAll(widget.selectedTags!);
+    }
     final List<Widget> choices = [];
-    for (final item in widget.tagsList) {
+    for (final String tag in widget.tags) {
       choices.add(
         Container(
           padding: const EdgeInsets.all(2.00),
           child: ChoiceChip(
             selectedColor: kOrange,
             backgroundColor: kOrangeLight,
-            label: Text(
-              item,
-              style: Theme.of(context).textTheme.overline,
-            ),
-            selected: selectedChoices.contains(item),
+            label: Text(tag, style: Theme.of(context).textTheme.overline),
+            selected: selectedChoices.contains(tag),
             onSelected: (selected) {
               setState(
                 () {
-                  selectedChoices.contains(item)
-                      ? selectedChoices.remove(item)
-                      : selectedChoices.add(item);
+                  selectedChoices.contains(tag)
+                      ? selectedChoices.remove(tag)
+                      : selectedChoices.add(tag);
                   widget.onSelectionChanged!(selectedChoices);
                 },
               );
@@ -50,31 +51,53 @@ class _MultiSelectChipState extends State<MultiSelectChip> {
   @override
   Widget build(BuildContext context) {
     return Wrap(
+      alignment: WrapAlignment.spaceAround,
       children: _buildChoiceList(),
     );
   }
 }
 
 class SelectChip extends StatefulWidget {
-  final List<String> keys;
-  final Function(String)? onSelection;
-  const SelectChip(this.keys, {this.onSelection});
+  final List<String> tags;
+  final String? selectedTag;
+  final Function(String?)? onSelectionChanged;
+
+  const SelectChip(this.tags, {this.onSelectionChanged, this.selectedTag});
+
   @override
   _SelectChipState createState() => _SelectChipState();
 }
 
 class _SelectChipState extends State<SelectChip> {
+  String? selectedChip;
+
   List<Widget> _buildChoiceList() {
+    selectedChip = widget.selectedTag;
     final List<Widget> choices = [];
-    for (final key in widget.keys) {
-      choices.add(Container(
-        padding: const EdgeInsets.all(2.00),
-        child: ActionChip(
-          backgroundColor: kOrangeLight,
-          label: Text(key, style: Theme.of(context).textTheme.overline),
-          onPressed: () => widget.onSelection!(key),
+    for (final String tag in widget.tags) {
+      choices.add(
+        Container(
+          padding: const EdgeInsets.all(2.00),
+          child: ChoiceChip(
+            selectedColor: kOrange,
+            backgroundColor: kOrangeLight,
+            label: Text(tag, style: Theme.of(context).textTheme.overline),
+            selected: selectedChip == tag,
+            onSelected: (selected) {
+              setState(
+                () {
+                  if (selectedChip == tag) {
+                    selectedChip = null;
+                  } else {
+                    selectedChip = tag;
+                  }
+                  widget.onSelectionChanged!(selectedChip);
+                },
+              );
+            },
+          ),
         ),
-      ));
+      );
     }
     return choices;
   }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fauth;
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:riverpod/riverpod.dart';
@@ -14,6 +15,9 @@ final firestoreProvider =
 
 final authProvider =
     Provider<fauth.FirebaseAuth>((ref) => fauth.FirebaseAuth.instance);
+
+final functionsProvider =
+    Provider<FirebaseFunctions>((ref) => FirebaseFunctions.instance);
 
 final usersProvider = Provider<CollectionReference<User>>(
   (ref) => ref.read(firestoreProvider).collection('users').withConverter<User>(
@@ -37,5 +41,3 @@ final couponsProvider = Provider<CollectionReference<Coupon>>(
             toFirestore: (coupon, _) => coupon.toJson(),
           ),
 );
-
-

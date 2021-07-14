@@ -9,11 +9,6 @@ import '../../../../core/theme/theme_data.dart';
 class PriceCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    double value = 0.0;
-    for (final orderItem in watch(userActionsProvider).cart.orderItems) {
-      value += orderItem.price;
-    }
-
     return Padding(
       padding: const EdgeInsets.all(9.0),
       child: Card(
@@ -40,7 +35,9 @@ class PriceCard extends ConsumerWidget {
                             GoogleFonts.roboto().copyWith(color: Colors.black),
                       ),
                       TextSpan(
-                        text: value.toString(),
+                        text: watch(userActionsProvider)
+                            .getCartValue()
+                            .toStringAsFixed(2),
                         style: Theme.of(context).textTheme.subtitle2,
                       ),
                     ],

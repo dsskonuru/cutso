@@ -1,8 +1,8 @@
-import 'dart:convert';
 import 'dart:ui';
 
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:cutso/features/home/presentation/provider/order_item_form_provider.dart';
 import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,6 +33,7 @@ class _OrderSummaryState extends State<OrderSummary> {
     return Consumer(
       builder: (context, watch, child) {
         final Cart cart = watch(userActionsProvider).cart;
+
         if (cart.orderItems.isEmpty) {
           return Padding(
             padding: const EdgeInsets.all(9.0),
@@ -57,7 +58,6 @@ class _OrderSummaryState extends State<OrderSummary> {
         }
 
         final List<Widget> orderItemsList = [];
-
         for (int i = 0; i < cart.orderItems.length; i++) {
           final OrderItem orderItem = cart.orderItems[i];
           final Future<dz.Either<ServerFailure, Item>> futureItem =
@@ -283,100 +283,13 @@ class _OrderItemCardState extends State<OrderItemCard> {
                             },
                           );
                         } else {
-                          await context.router.navigate(
-                            ItemRoute(
-                              itemJson: json.encode(widget.item.toJson()),
-                              orderItemJson:
-                                  json.encode(widget.orderItem.toJson()),
-                            ),
-                          );
+                          watch(orderItemProvider).orderItem = widget.orderItem;
+                          watch(orderItemProvider).item = widget.item;
+                          await context.router.navigate(const ItemRoute());
                         }
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(
-                                    width: 50.w,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${widget.item.subCategory}: ${widget.item.name}',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle1,
-                                          overflow: TextOverflow.fade,
-                                        ),
-                                        if (widget.item.description!.isNotEmpty)
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 7.00),
-                                            child: Text(
-                                              widget.item.description!,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .caption,
-                                            ),
-                                          ),
-                                        SizedBox(height: 2.h),
-                                        Text(
-                                          "${widget.orderItem.quantity.toString()} kg",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .overline!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.bold),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  RichText(
-                                    text: TextSpan(
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: "\u{20B9} ",
-                                          style: GoogleFonts.roboto()
-                                              .copyWith(color: Colors.black),
-                                        ),
-                                        TextSpan(
-                                          text:
-                                              widget.orderItem.price.toString(),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle2,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              if (widget.orderItem.sizeTags != null)
-                                DisplayChip(
-                                    widget.orderItem.sizeTags!.toList()),
-                              if (widget.orderItem.preferenceTags != null)
-                                DisplayChip(
-                                    widget.orderItem.preferenceTags!.toList()),
-                              if (widget.orderItem.guidelines != null)
-                                Container(
-                                  color: kCreamLight.withOpacity(0.5),
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    widget.orderItem.guidelines!,
-                                    style: Theme.of(context).textTheme.overline,
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      child: _SummaryContent(
+                          item: widget.item, orderItem: widget.orderItem),
                     ),
                   ],
                 ),
@@ -385,6 +298,95 @@ class _OrderItemCardState extends State<OrderItemCard> {
           ),
         );
       },
+    );
+  }
+}
+
+class _SummaryContent extends StatelessWidget {
+  const _SummaryContent({
+    Key? key,
+    required this.item,
+    required this.orderItem,
+  }) : super(key: key);
+
+  final OrderItem orderItem;
+  final Item item;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(18.0),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: 50.w,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${item.subCategory}: ${item.name}',
+                        style: Theme.of(context).textTheme.subtitle1,
+                        overflow: TextOverflow.fade,
+                      ),
+                      if (item.description!.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 7.00),
+                          child: Text(
+                            item.description!,
+                            style: Theme.of(context).textTheme.caption,
+                          ),
+                        ),
+                      SizedBox(height: 2.h),
+                      Text(
+                        "${orderItem.quantity.toString()} kg",
+                        style: Theme.of(context)
+                            .textTheme
+                            .overline!
+                            .copyWith(fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+                RichText(
+                  text: TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: "\u{20B9} ",
+                        style:
+                            GoogleFonts.roboto().copyWith(color: Colors.black),
+                      ),
+                      TextSpan(
+                        text: orderItem.price.toString(),
+                        style: Theme.of(context).textTheme.subtitle2,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            if (orderItem.sizeTag != null && orderItem.sizeTag!.isNotEmpty)
+              DisplayChip([orderItem.sizeTag!]),
+            if (orderItem.preferenceTags != null &&
+                orderItem.preferenceTags!.isNotEmpty)
+              DisplayChip(orderItem.preferenceTags!.toList()),
+            if (orderItem.guidelines != null &&
+                orderItem.guidelines!.isNotEmpty)
+              Container(
+                color: kCreamLight.withOpacity(0.5),
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  orderItem.guidelines!,
+                  style: Theme.of(context).textTheme.overline,
+                ),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

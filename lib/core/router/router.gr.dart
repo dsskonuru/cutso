@@ -76,16 +76,8 @@ class AppRouter extends _i1.RootStackRouter {
         }),
     ItemRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
-        builder: (data) {
-          final pathParams = data.pathParams;
-          final args = data.argsAs<ItemRouteArgs>(
-              orElse: () => ItemRouteArgs(
-                  itemJson: pathParams.getString('itemJson'),
-                  orderItemJson: pathParams.optString('orderItemJson')));
-          return _i10.ItemPage(
-              itemJson: args.itemJson,
-              orderItemJson: args.orderItemJson,
-              key: args.key);
+        builder: (_) {
+          return const _i10.ItemPage();
         }),
     ProfileRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
@@ -193,24 +185,10 @@ class CategoryRouteArgs {
   final _i2.Key? key;
 }
 
-class ItemRoute extends _i1.PageRouteInfo<ItemRouteArgs> {
-  ItemRoute({required String itemJson, String? orderItemJson, _i2.Key? key})
-      : super(name,
-            path: '/item',
-            args: ItemRouteArgs(
-                itemJson: itemJson, orderItemJson: orderItemJson, key: key));
+class ItemRoute extends _i1.PageRouteInfo {
+  const ItemRoute() : super(name, path: '/item');
 
   static const String name = 'ItemRoute';
-}
-
-class ItemRouteArgs {
-  const ItemRouteArgs({required this.itemJson, this.orderItemJson, this.key});
-
-  final String itemJson;
-
-  final String? orderItemJson;
-
-  final _i2.Key? key;
 }
 
 class ProfileRoute extends _i1.PageRouteInfo {
