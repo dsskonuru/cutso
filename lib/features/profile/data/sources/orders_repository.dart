@@ -46,7 +46,7 @@ class OrderRepository implements OrderDataSource {
       final List<Order> orders = [];
       await container
           .read(ordersProvider)
-          .where("orderId", whereIn: myOrders.orderIds) // TODO: Currently fails if orders are more than 10
+          .where("orderId", whereIn: myOrders.orderIds, ) // TODO: Currently fails if orders are more than 10
           .get()
           .then((queries) {
         for (final element in queries.docs) {

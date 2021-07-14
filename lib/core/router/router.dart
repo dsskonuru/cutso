@@ -14,12 +14,12 @@ import '../../features/profile/presentation/pages/profile_page.dart';
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
   routes: <AutoRoute>[
-    AutoRoute(path: '/', page: OnboardingPage, initial: true),
+    AutoRoute(path: '/', page: OnboardingPage),
     AutoRoute(path: '/mobileForm', page: MobileFormPage),
     AutoRoute(path: '/otpForm', page: OtpFormPage),
     AutoRoute(path: '/registrationForm', page: RegistrationFormPage),
     AutoRoute(path: '/addressForm', page: AddressFormPage),
-    AutoRoute(path: '/home', page: HomePage),
+    AutoRoute(path: '/home', page: HomePage, initial: true),
     AutoRoute(path: '/category', page: CategoryPage),
     AutoRoute(path: '/item', page: ItemPage),
     AutoRoute(path: '/profile', page: ProfilePage),

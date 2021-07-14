@@ -2,7 +2,7 @@
     package="com.dsskonuru.cutso">
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
    <application
-        android:label="cutso"
+        android:label="Cutso"
         android:icon="@mipmap/launcher_icon"
         android:usesCleartextTraffic="true">
         <activity
