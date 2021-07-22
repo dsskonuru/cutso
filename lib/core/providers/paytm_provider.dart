@@ -64,7 +64,7 @@ class PaytmNotifier extends ChangeNotifier {
           order.orderId, // orderId
           order.value.toString(), // amount
           txnToken, // txnToken
-          '', // callbackUrl
+          'https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=${order.orderId}', // callbackUrl
           true, // isStaging
           true, // restrictAppInvoke
         );
