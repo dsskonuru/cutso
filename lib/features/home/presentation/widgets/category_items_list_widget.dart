@@ -30,7 +30,12 @@ class CategoryItemsListView extends ConsumerWidget {
             (failure) => const Center(child: Text('Server Problem')),
             (items) {
               if (items.isEmpty) {
-                return const Center(child: Text("Coming soon!"));
+                return Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: Center(
+                      child: Text("Coming soon!",
+                          style: Theme.of(context).textTheme.headline6)),
+                );
               } else {
                 return _ItemsList(category: category, items: items);
               }
@@ -81,12 +86,12 @@ class _ItemsList extends ConsumerWidget {
                     ListTile(
                       title: Text(
                         item.name,
-                        style: Theme.of(context).textTheme.bodyText2,
+                        style: Theme.of(context).textTheme.subtitle2,
                       ),
                       subtitle: (item.description!.isNotEmpty)
                           ? Text(
                               item.description!,
-                              style: Theme.of(context).textTheme.overline,
+                              style: Theme.of(context).textTheme.bodyText2,
                             )
                           : null,
                       enabled: item.availability,
@@ -120,11 +125,11 @@ class _TrailingPriceWidget extends StatelessWidget {
     return SizedBox(
       width: 30.w,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             "500gm",
-            style:
-                Theme.of(context).textTheme.overline!.copyWith(fontSize: 7.sp),
+            style: Theme.of(context).textTheme.caption,
             textAlign: TextAlign.center,
           ),
           SizedBox(width: 5.w),
@@ -154,14 +159,14 @@ class _TrailingPriceWidget extends StatelessWidget {
                         style: GoogleFonts.roboto().copyWith(
                           color: Colors.black,
                           decoration: TextDecoration.lineThrough,
-                          fontSize: 10.sp,
+                          fontSize: 12.sp,
                         ),
                       ),
                       TextSpan(
                         text: item.price,
                         style: Theme.of(context).textTheme.subtitle2!.copyWith(
                             decoration: TextDecoration.lineThrough,
-                            fontSize: 10.sp),
+                            fontSize: 12.sp),
                       ),
                     ],
                   ),

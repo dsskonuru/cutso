@@ -888,9 +888,10 @@ Cart _$CartFromJson(Map<String, dynamic> json) {
 class _$CartTearOff {
   const _$CartTearOff();
 
-  _Cart call({required List<OrderItem> orderItems}) {
+  _Cart call({required List<OrderItem> orderItems, String? coupon}) {
     return _Cart(
       orderItems: orderItems,
+      coupon: coupon,
     );
   }
 
@@ -905,6 +906,7 @@ const $Cart = _$CartTearOff();
 /// @nodoc
 mixin _$Cart {
   List<OrderItem> get orderItems => throw _privateConstructorUsedError;
+  String? get coupon => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -915,7 +917,7 @@ mixin _$Cart {
 abstract class $CartCopyWith<$Res> {
   factory $CartCopyWith(Cart value, $Res Function(Cart) then) =
       _$CartCopyWithImpl<$Res>;
-  $Res call({List<OrderItem> orderItems});
+  $Res call({List<OrderItem> orderItems, String? coupon});
 }
 
 /// @nodoc
@@ -929,12 +931,17 @@ class _$CartCopyWithImpl<$Res> implements $CartCopyWith<$Res> {
   @override
   $Res call({
     Object? orderItems = freezed,
+    Object? coupon = freezed,
   }) {
     return _then(_value.copyWith(
       orderItems: orderItems == freezed
           ? _value.orderItems
           : orderItems // ignore: cast_nullable_to_non_nullable
               as List<OrderItem>,
+      coupon: coupon == freezed
+          ? _value.coupon
+          : coupon // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -944,7 +951,7 @@ abstract class _$CartCopyWith<$Res> implements $CartCopyWith<$Res> {
   factory _$CartCopyWith(_Cart value, $Res Function(_Cart) then) =
       __$CartCopyWithImpl<$Res>;
   @override
-  $Res call({List<OrderItem> orderItems});
+  $Res call({List<OrderItem> orderItems, String? coupon});
 }
 
 /// @nodoc
@@ -959,12 +966,17 @@ class __$CartCopyWithImpl<$Res> extends _$CartCopyWithImpl<$Res>
   @override
   $Res call({
     Object? orderItems = freezed,
+    Object? coupon = freezed,
   }) {
     return _then(_Cart(
       orderItems: orderItems == freezed
           ? _value.orderItems
           : orderItems // ignore: cast_nullable_to_non_nullable
               as List<OrderItem>,
+      coupon: coupon == freezed
+          ? _value.coupon
+          : coupon // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -973,17 +985,19 @@ class __$CartCopyWithImpl<$Res> extends _$CartCopyWithImpl<$Res>
 
 @JsonSerializable(explicitToJson: true)
 class _$_Cart extends _Cart with DiagnosticableTreeMixin {
-  _$_Cart({required this.orderItems}) : super._();
+  _$_Cart({required this.orderItems, this.coupon}) : super._();
 
   factory _$_Cart.fromJson(Map<String, dynamic> json) =>
       _$_$_CartFromJson(json);
 
   @override
   final List<OrderItem> orderItems;
+  @override
+  final String? coupon;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Cart(orderItems: $orderItems)';
+    return 'Cart(orderItems: $orderItems, coupon: $coupon)';
   }
 
   @override
@@ -991,7 +1005,8 @@ class _$_Cart extends _Cart with DiagnosticableTreeMixin {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'Cart'))
-      ..add(DiagnosticsProperty('orderItems', orderItems));
+      ..add(DiagnosticsProperty('orderItems', orderItems))
+      ..add(DiagnosticsProperty('coupon', coupon));
   }
 
   @override
@@ -1000,12 +1015,16 @@ class _$_Cart extends _Cart with DiagnosticableTreeMixin {
         (other is _Cart &&
             (identical(other.orderItems, orderItems) ||
                 const DeepCollectionEquality()
-                    .equals(other.orderItems, orderItems)));
+                    .equals(other.orderItems, orderItems)) &&
+            (identical(other.coupon, coupon) ||
+                const DeepCollectionEquality().equals(other.coupon, coupon)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(orderItems);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(orderItems) ^
+      const DeepCollectionEquality().hash(coupon);
 
   @JsonKey(ignore: true)
   @override
@@ -1019,13 +1038,16 @@ class _$_Cart extends _Cart with DiagnosticableTreeMixin {
 }
 
 abstract class _Cart extends Cart {
-  factory _Cart({required List<OrderItem> orderItems}) = _$_Cart;
+  factory _Cart({required List<OrderItem> orderItems, String? coupon}) =
+      _$_Cart;
   _Cart._() : super._();
 
   factory _Cart.fromJson(Map<String, dynamic> json) = _$_Cart.fromJson;
 
   @override
   List<OrderItem> get orderItems => throw _privateConstructorUsedError;
+  @override
+  String? get coupon => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$CartCopyWith<_Cart> get copyWith => throw _privateConstructorUsedError;

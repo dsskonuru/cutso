@@ -1,5 +1,7 @@
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:cutso/core/providers/firebase_provider.dart';
+import 'package:cutso/core/providers/user_actions_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -7,8 +9,6 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
-import '../../../../core/providers/firebase_provider.dart';
-import '../../../../core/providers/user_actions_provider.dart';
 import '../../../../core/router/router.gr.dart';
 import '../../../../core/theme/theme_data.dart';
 import '../widgets/address_card_widget.dart';
@@ -93,21 +93,22 @@ class _CartPageState extends State<CartPage> {
                         if (cart.orderItems.isNotEmpty) {
                           final orderRunner =
                               await watch(userActionsProvider).placeOrder(cart);
+                          // context.router.navigate(const PaymentRoute());
                           orderRunner.fold(
                             (failure) {
                               watch(crashlyticsProvider)
                                   .log(failure.messsage.toString());
-                              showTopSnackBar(
-                                  context,
-                                  const CustomSnackBar.error(
-                                      message: errorMessage));
-                            },
-                            (_) {
-                              setState(() {});
-                              showTopSnackBar(
-                                  context,
-                                  const CustomSnackBar.success(
-                                      message: successMessage));
+                          showTopSnackBar(
+                              context,
+                              const CustomSnackBar.error(
+                                  message: errorMessage));
+                          },
+                          (_) {
+                            setState(() {});
+                          showTopSnackBar(
+                              context,
+                              const CustomSnackBar.success(
+                                  message: successMessage));
                             },
                           );
                           stopLoading();

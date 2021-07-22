@@ -26,7 +26,7 @@ class MobileFormPage extends StatelessWidget {
             SizedBox(height: 8.h),
             Text(
               "Sign in with mobile number",
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.headline6,
             ),
             _MobileNumberField(mobileFormKey: _mobileFormKey),
             SizedBox(height: 2.h),
@@ -54,7 +54,7 @@ class _SkipSignInButton extends StatelessWidget {
       onPressed: () => context.router.root.navigate(const HomeRoute()),
       child: Text(
         "SKIP SIGN IN",
-        style: Theme.of(context).textTheme.overline,
+        style: Theme.of(context).textTheme.button,
       ),
     );
   }
@@ -119,7 +119,7 @@ class _MobileNumberField extends ConsumerWidget {
         child: TextFormField(
           textAlign: TextAlign.center,
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          style: Theme.of(context).textTheme.bodyText2,
+          style: Theme.of(context).textTheme.bodyText1,
           keyboardType: TextInputType.phone,
           decoration: const InputDecoration(
             hintText: '9876543210',

@@ -29,7 +29,7 @@ class OtpFormPage extends ConsumerWidget {
             SizedBox(height: 8.h),
             Text(
               "Enter OTP",
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.headline6,
             ),
             SizedBox(height: 4.h),
             Form(
@@ -48,12 +48,12 @@ class OtpFormPage extends ConsumerWidget {
                   color: kOrange,
                   borderRadius: 5.w,
                   child: Text(
-                    "Resend OTP",
+                    "RESEND OTP",
                     style: Theme.of(context).textTheme.button,
                   ),
                   loader: (timeLeft) {
                     return Text(
-                      "Wait | $timeLeft",
+                      "WAIT | $timeLeft",
                       style: Theme.of(context).textTheme.button,
                     );
                   },
@@ -106,7 +106,7 @@ class OtpFormPage extends ConsumerWidget {
                     }
                   },
                   child: Text(
-                    "Sign In",
+                    "SIGN IN",
                     style: Theme.of(context).textTheme.button,
                   ),
                 ),

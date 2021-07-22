@@ -65,6 +65,7 @@ class Cart with _$Cart {
   @JsonSerializable(explicitToJson: true)
   factory Cart({
     required List<OrderItem> orderItems,
+    String? coupon,
   }) = _Cart;
   const Cart._();
 

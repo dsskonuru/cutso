@@ -14,6 +14,7 @@ const kErrorRed = Color(0xFFC5032B);
 
 final buttonStyle = ButtonStyle(
   backgroundColor: MaterialStateProperty.all<Color>(kOrange),
+
 );
 
 final textTheme = TextTheme(
@@ -30,15 +31,15 @@ final textTheme = TextTheme(
   headline6: GoogleFonts.quicksand(
       fontSize: 20.sp, fontWeight: FontWeight.w500, letterSpacing: 0.15),
   subtitle1: GoogleFonts.quicksand(
-      fontSize: 16.sp, fontWeight: FontWeight.w400, letterSpacing: 0.15),
+      fontSize: 18.sp, fontWeight: FontWeight.w400, letterSpacing: 0.15),
   subtitle2: GoogleFonts.quicksand(
-      fontSize: 14.sp, fontWeight: FontWeight.w500, letterSpacing: 0.1),
+      fontSize: 17.sp, fontWeight: FontWeight.w500, letterSpacing: 0.1),
   bodyText1: GoogleFonts.ptSans(
-      fontSize: 17.sp, fontWeight: FontWeight.w400, letterSpacing: 0.5),
+      fontSize: 16.sp, fontWeight: FontWeight.w400, letterSpacing: 0.5),
   bodyText2: GoogleFonts.ptSans(
       fontSize: 15.sp, fontWeight: FontWeight.w400, letterSpacing: 0.25),
   button: GoogleFonts.ptSans(
-      fontSize: 15.sp, fontWeight: FontWeight.w500, letterSpacing: 1.25),
+      fontSize: 16.sp, fontWeight: FontWeight.w500, letterSpacing: 1.25),
   caption: GoogleFonts.ptSans(
       fontSize: 13.sp, fontWeight: FontWeight.w400, letterSpacing: 0.4),
   overline: GoogleFonts.ptSans(

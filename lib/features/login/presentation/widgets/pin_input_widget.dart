@@ -28,7 +28,7 @@ class _PinInputFieldState extends State<PinInputField> {
       selectedFieldDecoration: pinPutDecoration,
       followingFieldDecoration: pinPutDecoration,
       pinAnimationType: PinAnimationType.scale,
-      textStyle: Theme.of(context).textTheme.bodyText2,
+      textStyle: Theme.of(context).textTheme.bodyText1,
       onChanged: (pin) => context.read(mobileFormProvider).smsCode = pin,
       validator: (value) {
         if (value == null || value.isEmpty) {

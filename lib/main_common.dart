@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,20 +17,19 @@ import 'core/theme/theme_data.dart';
 import 'environment.dart';
 import 'features/login/data/models/user.dart';
 
-final container = ProviderContainer(observers: [Logger()]);
-
 Future<void> mainCommon(String env) async {
+  setupLogging();
   WidgetsFlutterBinding.ensureInitialized();
   await ConfigReader.initialize();
 
   String myEnv;
   switch (env) {
     case Environment.dev:
-      myEnv = "This is dev env !";
+      myEnv = "This is development environment !";
       debugPrint(myEnv);
       break;
     case Environment.prod:
-      myEnv = "This is prod env !";
+      myEnv = "This is production environment !";
       debugPrint(myEnv);
       break;
   }
@@ -73,17 +73,27 @@ class _CutsoAppState extends State<CutsoApp> {
   }
 }
 
-class Logger extends ProviderObserver {
+class ProviderLog extends ProviderObserver {
   @override
   void didUpdateProvider(ProviderBase provider, Object? newValue) {
     container.read(crashlyticsProvider).log(
       '''
-{
-  "provider": "${provider.name ?? provider.runtimeType}",
-  "newValue": "$newValue"
-}''',
+      "provider": "${provider.name ?? provider.runtimeType}",
+      "newValue": "$newValue"
+      ''',
     );
   }
+}
+
+final container = ProviderContainer(observers: [ProviderLog()]);
+
+void setupLogging() {
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen(
+    (event) {
+      debugPrint('${event.level.name}: ${event.time}: ${event.message}');
+    },
+  );
 }
 
 Future<void> setupUser() async {
@@ -96,19 +106,21 @@ Future<void> setupUser() async {
       await container.read(usersProvider).doc(uid).get().then(
         (DocumentSnapshot<User> userSnapshot) async {
           if (userSnapshot.exists) {
-            container.read(crashlyticsProvider).log('User is signed in');
+            Logger.root.fine('User is signed in');
             container.read(userActionsProvider).user = userSnapshot.data();
           } else {
-            container
-                .read(crashlyticsProvider)
-                .log('User requires registration');
+            Logger.root.fine('User requires Registration');
             container.read(userActionsProvider).user = null;
           }
         },
       );
+    } else {
+      Logger.root.fine('User is not signed in');
+      assert(container.read(userActionsProvider).user == null);
     }
   } catch (exception, stack) {
     debugPrint(exception.toString());
     container.read(crashlyticsProvider).recordError(exception, stack);
+    Logger.root.severe('Unable to setup user from shared preferences');
   }
 }

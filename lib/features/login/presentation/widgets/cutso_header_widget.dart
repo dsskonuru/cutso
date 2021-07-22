@@ -22,8 +22,8 @@ class CutsoHeader extends StatelessWidget {
           child: Hero(
             tag: "cutso_logo",
             child: Image(
-              height: 18.h,
-              image: const AssetImage('assets/images/cutso-logo.png'),
+              height: 16.h,
+              image: const AssetImage('assets/images/cutso-logo-x3.png'),
             ),
           ),
         ),

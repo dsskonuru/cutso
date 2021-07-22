@@ -50,7 +50,7 @@ class CategoryTileWidget extends StatelessWidget {
         Center(
           child: Text(
             itemCategory.toUpperCase().split("-").join(" "),
-            style: Theme.of(context).textTheme.overline,
+            style: Theme.of(context).textTheme.subtitle2,
           ),
         ),
       ],

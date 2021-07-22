@@ -2,6 +2,7 @@ import 'package:cutso/core/providers/paytm_provider.dart';
 import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 import 'package:nanoid/async.dart';
 
 import '../../features/cart/data/models/order.dart';
@@ -18,11 +19,7 @@ final userActionsProvider = ChangeNotifierProvider((ref) => UserNotifier());
 
 class UserNotifier extends ChangeNotifier {
   User? _user;
-  Cart _cart = Cart(orderItems: []);
-
   User? get user => _user;
-  Cart get cart => _cart;
-
   set user(User? user) {
     _user = user;
     if (user != null) {
@@ -55,6 +52,8 @@ class UserNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  Cart _cart = Cart(orderItems: []);
+  Cart get cart => _cart;
   set cart(Cart cart) {
     _cart = cart;
     if (user != null) {
@@ -73,16 +72,14 @@ class UserNotifier extends ChangeNotifier {
 
   Future<dz.Either<ServerFailure, void>> updateCart(Cart cart) async {
     try {
-      _cart = cart;
-      if (user != null) {
-        await container
-            .read(usersProvider)
-            .doc(_user!.uid)
-            .update({'cart': cart.toJson()});
-      }
+      await container
+          .read(usersProvider)
+          .doc(_user!.uid)
+          .update({'cart': cart.toJson()});
       return const dz.Right(null);
     } catch (exception, stack) {
       container.read(crashlyticsProvider).recordError(exception, stack);
+      Logger.root.severe('Unable to update the cart', exception, stack);
       return dz.Left(ServerFailure(exception.toString()));
     }
   }
@@ -92,7 +89,7 @@ class UserNotifier extends ChangeNotifier {
     try {
       final order = Order(
         uid: _user!.uid,
-        orderId: await nanoid(10),
+        orderId: await nanoid(12),
         orderItems: cart,
         value: getCartValue(),
         coupon: null,
@@ -105,6 +102,7 @@ class UserNotifier extends ChangeNotifier {
         (failure) => debugPrint("Payment failed!"),
         (success) => debugPrint("Payment was successful!"),
       );
+      
 
       container.read(orderRepositoryProvider).pushOrder(order);
       _user!.orders.add(order.orderId);
@@ -116,7 +114,7 @@ class UserNotifier extends ChangeNotifier {
       return const dz.Right(null);
     } catch (exception, stack) {
       container.read(crashlyticsProvider).recordError(exception, stack);
-      debugPrint(exception.toString() + stack.toString());
+      Logger.root.severe('Unable to update the cart', exception, stack);
       return dz.Left(ServerFailure());
     }
   }

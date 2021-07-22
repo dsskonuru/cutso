@@ -8,6 +8,7 @@ import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i2;
 
 import '../../features/cart/presentation/pages/cart_page.dart' as _i12;
+import '../../features/cart/presentation/pages/payments_page.dart' as _i13;
 import '../../features/home/presentation/pages/category_page.dart' as _i9;
 import '../../features/home/presentation/pages/home_page.dart' as _i8;
 import '../../features/home/presentation/pages/item_page.dart' as _i10;
@@ -88,6 +89,11 @@ class AppRouter extends _i1.RootStackRouter {
         routeData: routeData,
         builder: (_) {
           return _i12.CartPage();
+        }),
+    PaymentRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return const _i13.PaymentPage();
         })
   };
 
@@ -102,7 +108,8 @@ class AppRouter extends _i1.RootStackRouter {
         _i1.RouteConfig(CategoryRoute.name, path: '/category'),
         _i1.RouteConfig(ItemRoute.name, path: '/item'),
         _i1.RouteConfig(ProfileRoute.name, path: '/profile'),
-        _i1.RouteConfig(CartRoute.name, path: '/cart')
+        _i1.RouteConfig(CartRoute.name, path: '/cart'),
+        _i1.RouteConfig(PaymentRoute.name, path: '/payment')
       ];
 }
 
@@ -201,4 +208,10 @@ class CartRoute extends _i1.PageRouteInfo {
   const CartRoute() : super(name, path: '/cart');
 
   static const String name = 'CartRoute';
+}
+
+class PaymentRoute extends _i1.PageRouteInfo {
+  const PaymentRoute() : super(name, path: '/payment');
+
+  static const String name = 'PaymentRoute';
 }

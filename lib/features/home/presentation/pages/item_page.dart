@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logging/logging.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
@@ -163,6 +164,13 @@ class _QuantityWidgetState extends State<_QuantityWidget> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _controller.text =
+        container.read(orderItemProvider).quantity.toStringAsFixed(2);
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
@@ -172,11 +180,12 @@ class _QuantityWidgetState extends State<_QuantityWidget> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, watch, child) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(height: 1.h),
           Text(
             "Quantity",
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.subtitle2,
           ),
           SizedBox(height: 1.h),
           Row(
@@ -193,23 +202,33 @@ class _QuantityWidgetState extends State<_QuantityWidget> {
                 icon: const Icon(Icons.remove_rounded),
               ),
               SizedBox(
-                width: 18.w,
+                width: 36.w,
                 child: TextFormField(
+                  textAlign: TextAlign.center,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  style: Theme.of(context).textTheme.subtitle1,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
-                    suffix: Text("kg"),
+                    // suffix: Text("kg"),
+                    suffixText: 'kg',
                   ),
                   keyboardType: TextInputType.number,
-                  textAlign: TextAlign.center,
                   controller: _controller,
+                  validator: (value) {
+                    if (value != null && double.tryParse(value) == null) {
+                      return 'Enter a proper numeric value';
+                    }
+                    return null;
+                  },
                   onChanged: (value) {
-                    if (value.isNotEmpty) {
+                    try {
                       watch(orderItemProvider).quantity = double.parse(value);
-                    } else {
+                    } catch (exception, stack) {
                       watch(orderItemProvider).quantity = 0.0;
+                      Logger.root
+                          .severe('Unable to edit quantity', exception, stack);
                     }
                   },
-                  style: Theme.of(context).textTheme.bodyText2,
                 ),
               ),
               IconButton(
@@ -254,7 +273,7 @@ class _SizesWidget extends ConsumerWidget {
         SizedBox(height: 1.h),
         Text(
           'Sizes',
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context).textTheme.subtitle2,
         ),
         SelectChip(
           _itemSizes,
@@ -281,7 +300,7 @@ class _PreferredPiecesWidget extends ConsumerWidget {
         SizedBox(height: 1.h),
         Text(
           'Preferred Pieces',
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context).textTheme.subtitle2,
         ),
         MultiSelectChip(
           _itemPreferences,
@@ -306,7 +325,7 @@ class _GuidelinesWidget extends ConsumerWidget {
         SizedBox(height: 1.h),
         Text(
           'Guidelines',
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context).textTheme.subtitle2,
         ),
         Padding(
           padding: EdgeInsets.only(top: 2.h, left: 9.w, right: 9.w),

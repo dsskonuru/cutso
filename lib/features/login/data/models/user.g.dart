@@ -73,11 +73,13 @@ _$_Cart _$_$_CartFromJson(Map<String, dynamic> json) {
     orderItems: (json['orderItems'] as List<dynamic>)
         .map((e) => OrderItem.fromJson(e as Map<String, dynamic>))
         .toList(),
+    coupon: json['coupon'] as String?,
   );
 }
 
 Map<String, dynamic> _$_$_CartToJson(_$_Cart instance) => <String, dynamic>{
       'orderItems': instance.orderItems.map((e) => e.toJson()).toList(),
+      'coupon': instance.coupon,
     };
 
 _$_MyOrders _$_$_MyOrdersFromJson(Map<String, dynamic> json) {

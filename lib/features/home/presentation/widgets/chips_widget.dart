@@ -29,7 +29,7 @@ class _MultiSelectChipState extends State<MultiSelectChip> {
           child: ChoiceChip(
             selectedColor: kOrange,
             backgroundColor: kOrangeLight,
-            label: Text(tag, style: Theme.of(context).textTheme.overline),
+            label: Text(tag, style: Theme.of(context).textTheme.button),
             selected: selectedChoices.contains(tag),
             onSelected: (selected) {
               setState(
@@ -81,7 +81,7 @@ class _SelectChipState extends State<SelectChip> {
           child: ChoiceChip(
             selectedColor: kOrange,
             backgroundColor: kOrangeLight,
-            label: Text(tag, style: Theme.of(context).textTheme.overline),
+            label: Text(tag, style: Theme.of(context).textTheme.button),
             selected: selectedChip == tag,
             onSelected: (selected) {
               setState(

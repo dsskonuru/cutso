@@ -51,10 +51,11 @@ class _CategoryPageState extends State<CategoryPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
                                     "${watch(userActionsProvider).cart.orderItems.length.toString()} Items",
-                                    style: Theme.of(context).textTheme.overline,
+                                    style: Theme.of(context).textTheme.caption,
                                   ),
                                   RichText(
                                     text: TextSpan(
@@ -78,6 +79,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                 ],
                               ),
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
                                     "View Cart",
