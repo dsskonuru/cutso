@@ -5,12 +5,10 @@ import '../../../../core/error/failures.dart';
 import '../../../../core/providers/firebase_provider.dart';
 import '../../../../main_common.dart';
 import '../../../cart/data/models/order.dart';
-import '../../../login/data/models/user.dart';
 
 abstract class OrderDataSource {
   Future<dz.Either<Failure, void>> pushOrder(Order order);
-  Future<dz.Either<Failure, List<Order>>> getMyOrders(MyOrders myOrders);
-  // Future<dz.Either<Failure, void>> initatePayment(String orderId);
+  Future<dz.Either<Failure, List<Order>>> getMyOrders(List<String> myOrderIds);
 }
 
 final orderRepositoryProvider =
@@ -40,13 +38,21 @@ class OrderRepository implements OrderDataSource {
   }
 
   @override
-  Future<dz.Either<Failure, List<Order>>> getMyOrders(MyOrders myOrders) async {
+  Future<dz.Either<Failure, List<Order>>> getMyOrders(
+      List<String> myOrderIds) async {
     try {
       late dz.Either<Failure, List<Order>> _myOrdersRef;
       final List<Order> orders = [];
+      // TODO: Currently gets only last 10 orders
+      final List<String> orderIds;
+      if (myOrderIds.length >= 10) {
+        orderIds = myOrderIds.sublist(0, 10);
+      } else {
+        orderIds = myOrderIds;
+      }
       await container
           .read(ordersProvider)
-          .where("orderId", whereIn: myOrders.orderIds.sublist(0, 5))
+          .where("orderId", whereIn: orderIds)
           .get()
           .then((queries) {
         for (final element in queries.docs) {

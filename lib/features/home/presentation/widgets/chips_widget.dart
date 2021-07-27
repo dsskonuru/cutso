@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/theme_data.dart';
+import '../../../../main_common.dart';
 
 class MultiSelectChip extends StatefulWidget {
   final Set<String> tags;
@@ -45,6 +46,7 @@ class _MultiSelectChipState extends State<MultiSelectChip> {
         ),
       );
     }
+    container.read(loggerProvider).i(selectedChoices.toList());
     return choices;
   }
 

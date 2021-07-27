@@ -17,7 +17,6 @@ class PriceCard extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.all(18.0),
           child: SizedBox(
-            height: 18.h,
             width: 100.w,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -98,7 +98,7 @@ class _ItemsList extends ConsumerWidget {
                       leading: const _LeadingCircularImageWidget(),
                       trailing: _TrailingPriceWidget(item: item),
                       onTap: () async {
-                        watch(orderItemProvider).item = item;
+                        watch(cartItemProvider).item = item;
                         return context.router.navigate(const ItemRoute());
                       },
                     ),

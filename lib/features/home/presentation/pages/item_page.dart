@@ -47,9 +47,9 @@ class ItemPage extends ConsumerWidget {
               const Divider(),
               const _QuantityWidget(),
               const Divider(),
-              if (watch(orderItemProvider).item!.sizes!.isNotEmpty)
+              if (watch(cartItemProvider).item!.sizes!.isNotEmpty)
                 const _SizesWidget(),
-              if (watch(orderItemProvider).item!.preferredPieces!.isNotEmpty)
+              if (watch(cartItemProvider).item!.preferredPieces!.isNotEmpty)
                 const _PreferredPiecesWidget(),
               const _GuidelinesWidget(),
               const Divider(),
@@ -70,7 +70,7 @@ class _ItemPageHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final Item _item = watch(orderItemProvider).item!;
+    final Item _item = watch(cartItemProvider).item!;
     return Stack(
       children: [
         IconButton(
@@ -102,7 +102,7 @@ class _ItemTitle extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final Item _item = watch(orderItemProvider).item!;
+    final Item _item = watch(cartItemProvider).item!;
     return SizedBox(
       width: 100.w,
       height: 16.h,
@@ -160,14 +160,14 @@ class _QuantityWidgetState extends State<_QuantityWidget> {
   void initState() {
     super.initState();
     _controller.text =
-        container.read(orderItemProvider).quantity.toStringAsFixed(2);
+        container.read(cartItemProvider).quantity.toStringAsFixed(2);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _controller.text =
-        container.read(orderItemProvider).quantity.toStringAsFixed(2);
+        container.read(cartItemProvider).quantity.toStringAsFixed(2);
   }
 
   @override
@@ -193,9 +193,9 @@ class _QuantityWidgetState extends State<_QuantityWidget> {
             children: [
               IconButton(
                 onPressed: () {
-                  watch(orderItemProvider).decrementQuantity();
+                  watch(cartItemProvider).decrementQuantity();
                   _controller.value = TextEditingValue(
-                    text: watch(orderItemProvider).quantity.toStringAsFixed(2),
+                    text: watch(cartItemProvider).quantity.toStringAsFixed(2),
                   );
                   setState(() {});
                 },
@@ -222,9 +222,9 @@ class _QuantityWidgetState extends State<_QuantityWidget> {
                   },
                   onChanged: (value) {
                     try {
-                      watch(orderItemProvider).quantity = double.parse(value);
+                      watch(cartItemProvider).quantity = double.parse(value);
                     } catch (exception, stack) {
-                      watch(orderItemProvider).quantity = 0.0;
+                      watch(cartItemProvider).quantity = 0.0;
                       Logger.root
                           .severe('Unable to edit quantity', exception, stack);
                     }
@@ -233,9 +233,9 @@ class _QuantityWidgetState extends State<_QuantityWidget> {
               ),
               IconButton(
                 onPressed: () {
-                  watch(orderItemProvider).incrementQuantity();
+                  watch(cartItemProvider).incrementQuantity();
                   _controller.value = TextEditingValue(
-                    text: watch(orderItemProvider).quantity.toStringAsFixed(2),
+                    text: watch(cartItemProvider).quantity.toStringAsFixed(2),
                   );
                   setState(() {});
                 },
@@ -246,10 +246,10 @@ class _QuantityWidgetState extends State<_QuantityWidget> {
           SelectChip(
             _quantityAdditives.keys.toList(),
             onSelectionChanged: (selectedChip) {
-              watch(orderItemProvider)
+              watch(cartItemProvider)
                   .incrementQuantity(_quantityAdditives[selectedChip]);
               _controller.value = TextEditingValue(
-                text: watch(orderItemProvider).quantity.toStringAsFixed(2),
+                text: watch(cartItemProvider).quantity.toStringAsFixed(2),
               );
               setState(() {});
             },
@@ -267,7 +267,7 @@ class _SizesWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final List<String> _itemSizes =
-        watch(orderItemProvider).item!.sizes!.split(',').toList();
+        watch(cartItemProvider).item!.sizes!.split(',').toList();
     return Column(
       children: [
         SizedBox(height: 1.h),
@@ -278,8 +278,8 @@ class _SizesWidget extends ConsumerWidget {
         SelectChip(
           _itemSizes,
           onSelectionChanged: (selectedChip) =>
-              watch(orderItemProvider).sizeTag = selectedChip,
-          selectedTag: watch(orderItemProvider).sizeTag,
+              watch(cartItemProvider).sizeTag = selectedChip,
+          selectedTag: watch(cartItemProvider).sizeTag,
         ),
         SizedBox(height: 1.h),
         const Divider(),
@@ -294,7 +294,7 @@ class _PreferredPiecesWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final Set<String> _itemPreferences =
-        watch(orderItemProvider).item!.preferredPieces!.split(',').toSet();
+        watch(cartItemProvider).item!.preferredPieces!.split(',').toSet();
     return Column(
       children: [
         SizedBox(height: 1.h),
@@ -305,8 +305,8 @@ class _PreferredPiecesWidget extends ConsumerWidget {
         MultiSelectChip(
           _itemPreferences,
           onSelectionChanged: (selectedChips) =>
-              watch(orderItemProvider).preferenceTags = selectedChips,
-          selectedTags: watch(orderItemProvider).preferenceTags,
+              watch(cartItemProvider).preferenceTags = selectedChips,
+          selectedTags: watch(cartItemProvider).preferenceTags,
         ),
         SizedBox(height: 1.h),
         const Divider(),
@@ -331,8 +331,8 @@ class _GuidelinesWidget extends ConsumerWidget {
           padding: EdgeInsets.only(top: 2.h, left: 9.w, right: 9.w),
           child: TextFormField(
             keyboardType: TextInputType.multiline,
-            initialValue: watch(orderItemProvider).guidelines,
-            onChanged: (value) => watch(orderItemProvider).guidelines = value,
+            initialValue: watch(cartItemProvider).guidelines,
+            onChanged: (value) => watch(cartItemProvider).guidelines = value,
             textAlign: TextAlign.center,
           ),
         ),
@@ -360,7 +360,7 @@ class _ItemValueWidget extends ConsumerWidget {
                 style: GoogleFonts.roboto().copyWith(color: Colors.black),
               ),
               TextSpan(
-                text: watch(orderItemProvider).price.toStringAsFixed(2),
+                text: watch(cartItemProvider).price.toStringAsFixed(2),
                 style: Theme.of(context).textTheme.subtitle2,
               ),
             ],
@@ -391,14 +391,14 @@ class _AddToCartButton extends ConsumerWidget {
       onTap: (startLoading, stopLoading, btnState) async {
         if (btnState == ButtonState.Idle) {
           startLoading();
-          final OrderItem _orderItem = watch(orderItemProvider).orderItem;
-          final Cart _cart = watch(userActionsProvider).cart;
-          if (watch(orderItemProvider).orderItemSet) {
-            _cart.orderItems.removeWhere(
-                (orderItem) => orderItem.itemId == _orderItem.itemId);
-            watch(orderItemProvider).orderItemSet = false;
+          final CartItem _cartItem = watch(cartItemProvider).cartItem;
+          final List<CartItem> _cart = watch(userActionsProvider).cart;
+          if (watch(cartItemProvider).cartItemSet) {
+            _cart
+                .removeWhere((cartItem) => cartItem.itemId == _cartItem.itemId);
+            watch(cartItemProvider).cartItemSet = false;
           }
-          _cart.add(_orderItem);
+          _cart.add(_cartItem);
           final cartRunner = await watch(userActionsProvider).updateCart(_cart);
           cartRunner.fold(
             (failure) {

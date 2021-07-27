@@ -2,7 +2,6 @@ import 'package:cutso/core/providers/paytm_provider.dart';
 import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logging/logging.dart';
 import 'package:nanoid/async.dart';
 
 import '../../features/cart/data/models/order.dart';
@@ -17,13 +16,20 @@ import 'shared_preferences_provider.dart';
 
 final userActionsProvider = ChangeNotifierProvider((ref) => UserNotifier());
 
+// enum OrderStatus {
+//   paymentRequested,
+//   paymentProcessing,
+//   paymentSuccessful,
+//   paymentDeclined,
+// }
+
 class UserNotifier extends ChangeNotifier {
   User? _user;
   User? get user => _user;
   set user(User? user) {
     _user = user;
     if (user != null) {
-      if (cart.orderItems.isNotEmpty) {
+      if (user.cart.isNotEmpty) {
         cart = _cart;
       } else {
         cart = user.cart;
@@ -40,7 +46,7 @@ class UserNotifier extends ChangeNotifier {
       container.read(addressFormProvider).landmark = user.address.landmark;
     } else {
       // ! when the user is signed out
-      cart = Cart(orderItems: []);
+      cart = [];
       container.read(sharedPreferencesProvider).then((prefs) => prefs.clear());
       container.read(registrationFormProvider).name = null;
       container.read(registrationFormProvider).email = null;
@@ -52,17 +58,17 @@ class UserNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  Cart _cart = Cart(orderItems: []);
-  Cart get cart => _cart;
-  set cart(Cart cart) {
+  List<CartItem> _cart = [];
+  List<CartItem> get cart => _cart;
+  set cart(List<CartItem> cart) {
     _cart = cart;
     if (user != null) {
       updateCart(cart).then(
         (value) {
-          if (value.isLeft()) {
+          if (value.isRight()) {
             container
-                .read(crashlyticsProvider)
-                .log("Cart could not be updated to Firestore");
+                .read(loggerProvider)
+                .i("Cart was successfully updated to Firestore");
           }
         },
       );
@@ -70,51 +76,63 @@ class UserNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<dz.Either<ServerFailure, void>> updateCart(Cart cart) async {
+  Future<dz.Either<ServerFailure, void>> updateCart(List<CartItem> cart) async {
     try {
+      final List<Map<String, dynamic>> cartJson =
+          cart.map((e) => e.toJson()).toList();
       await container
           .read(usersProvider)
           .doc(_user!.uid)
-          .update({'cart': cart.toJson()});
+          .update({'cart': cartJson});
       return const dz.Right(null);
     } catch (exception, stack) {
       container.read(crashlyticsProvider).recordError(exception, stack);
-      Logger.root.severe('Unable to update the cart', exception, stack);
+      container
+          .read(loggerProvider)
+          .e('Unable to update the cart', exception, stack);
       return dz.Left(ServerFailure(exception.toString()));
     }
   }
 
-  Future<dz.Either<ServerFailure, void>> placeOrder(Cart cart) async {
+  Future<dz.Either<ServerFailure, bool>> placeOrder() async {
     // TODO: Setup cloud functions for iOS
     try {
       final order = Order(
         uid: _user!.uid,
         orderId: await nanoid(12),
-        orderItems: cart,
+        items: cart,
         value: getCartValue(),
         coupon: null,
         status: Status.paymentPending,
       );
 
+      bool orderPlaced = false;
+
       final dz.Either<ServerFailure, void> paymentRunner =
           await container.read(paytmProvider).initiatePayment(order);
       paymentRunner.fold(
-        (failure) => debugPrint("Payment failed!"),
-        (success) => debugPrint("Payment was successful!"),
+        (failure) => container.read(loggerProvider).i("Payment failed!"),
+        (success) async {
+          orderPlaced = true;
+          container.read(loggerProvider).i("Payment was successful!");
+          container.read(orderRepositoryProvider).pushOrder(order);
+          _user!.orders.add(order.orderId);
+          await container
+              .read(usersProvider)
+              .doc(user!.uid)
+              .update({'orders': user!.orders});
+          _cart = [];
+        },
       );
-      
 
-      container.read(orderRepositoryProvider).pushOrder(order);
-      _user!.orders.add(order.orderId);
-      await container
-          .read(usersProvider)
-          .doc(user!.uid)
-          .update({'orders': user!.orders.toJson()});
-      updateCart(Cart(orderItems: []));
-      return const dz.Right(null);
+      // TODO: If payment is successful set up delivery
+
+      return dz.Right(orderPlaced);
     } catch (exception, stack) {
       container.read(crashlyticsProvider).recordError(exception, stack);
-      Logger.root.severe('Unable to update the cart', exception, stack);
+      container
+          .read(loggerProvider)
+          .e('Unable to update the cart', exception, stack);
       return dz.Left(ServerFailure());
     }
   }
@@ -150,8 +168,8 @@ class UserNotifier extends ChangeNotifier {
 
   double getCartValue() {
     double _value = 0.0;
-    for (final orderItem in cart.orderItems) {
-      _value += orderItem.price;
+    for (final CartItem item in cart) {
+      _value += item.price;
     }
     return _value;
   }

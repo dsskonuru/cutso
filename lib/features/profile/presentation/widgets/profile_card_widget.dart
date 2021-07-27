@@ -22,13 +22,15 @@ class ProfileCard extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.all(18.0),
             child: SizedBox(
-              height: 18.h,
               width: 100.w,
               child: Center(
                 child: TextButton(
-                    onPressed: () =>
-                        context.router.navigate(MobileFormRoute()),
-                    child: const Text("Click here to Login")),
+                  onPressed: () => context.router.navigate(MobileFormRoute()),
+                  child: Text(
+                    "Click here to Login",
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                ),
               ),
             ),
           ),
@@ -47,20 +49,32 @@ class ProfileCard extends ConsumerWidget {
             borderRadius: BorderRadius.circular(5.0),
             child: SizedBox(
               width: 100.w,
-              height: 20.h,
               child: Column(
                 children: [
-                  Text(
-                    "Hi! ${_user.fullName}",
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Hi! ${_user.fullName}",
+                        style: Theme.of(context).textTheme.subtitle1),
                   ),
-                  Text(_user.email),
-                  Text(_user.phone),
+                  Text(
+                    _user.email,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  Text(
+                    _user.phone,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
                   TextButton(
                     onPressed: () async => context.router.navigate(
                       RegistrationFormRoute(asUpdate: true),
                     ),
-                    child: const Text('Edit Details'),
+                    child: Text(
+                      'EDIT DETAILS',
+                      style: Theme.of(context)
+                          .textTheme
+                          .button!
+                          .copyWith(color: kOrange),
+                    ),
                   ),
                 ],
               ),

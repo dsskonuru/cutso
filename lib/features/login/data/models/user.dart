@@ -16,9 +16,28 @@ class User with _$User {
     required String phone,
     required String email,
     required Address address,
-    required Cart cart,
-    required MyOrders orders,
+    required List<CartItem> cart,
+    required List<String> orders,
   }) = _User;
+
+  const User._();
+
+  void addOrder(String orderId) {
+    orders.add(orderId);
+  }
+
+  void removeOrder(String orderId) {
+    orders.remove(orderId);
+  }
+
+  void addToCart(CartItem cartItem) {
+    cart.add(cartItem);
+  }
+
+  void removeFromCart(CartItem cartItem) {
+    cart.remove(cartItem);
+  }
+
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
 
@@ -46,58 +65,17 @@ GeoPoint _toJsonGeoPoint(GeoPoint geoPoint) {
 }
 
 @freezed
-class OrderItem with _$OrderItem {
+class CartItem with _$CartItem {
   @JsonSerializable(explicitToJson: true)
-  factory OrderItem({
+  factory CartItem({
     required int itemId,
     required double quantity,
     required String? sizeTag,
     required Set<String>? preferenceTags,
     required String? guidelines,
     required double price,
-  }) = _OrderItem;
-  factory OrderItem.fromJson(Map<String, dynamic> json) =>
-      _$OrderItemFromJson(json);
+  }) = _CartItem;
+  factory CartItem.fromJson(Map<String, dynamic> json) =>
+      _$CartItemFromJson(json);
 }
 
-@freezed
-class Cart with _$Cart {
-  @JsonSerializable(explicitToJson: true)
-  factory Cart({
-    required List<OrderItem> orderItems,
-    String? coupon,
-  }) = _Cart;
-  const Cart._();
-
-  // Cart.empty() = Cart(orderItems: []);
-
-  void add(OrderItem orderItem) {
-    orderItems.add(orderItem);
-  }
-
-  void remove(OrderItem orderItem) {
-    orderItems.remove(orderItem);
-  }
-
-  factory Cart.fromJson(Map<String, dynamic> json) => _$CartFromJson(json);
-}
-
-@freezed
-class MyOrders with _$MyOrders {
-  @JsonSerializable(explicitToJson: true)
-  factory MyOrders({
-    required List<String> orderIds,
-  }) = _MyOrders;
-  const MyOrders._();
-
-  void add(String orderId) {
-    orderIds.add(orderId);
-  }
-
-  void remove(String orderId) {
-    orderIds.remove(orderId);
-  }
-
-  factory MyOrders.fromJson(Map<String, dynamic> json) =>
-      _$MyOrdersFromJson(json);
-}

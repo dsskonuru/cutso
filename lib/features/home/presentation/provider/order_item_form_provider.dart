@@ -4,13 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../login/data/models/user.dart';
 
-final orderItemProvider =
-    ChangeNotifierProvider.autoDispose((ref) => OrderItemNotifier());
+final cartItemProvider =
+    ChangeNotifierProvider.autoDispose((ref) => CartItemNotifier());
 
-class OrderItemNotifier extends ChangeNotifier {
-  bool orderItemSet = false;
+class CartItemNotifier extends ChangeNotifier {
+  bool cartItemSet = false;
 
-  OrderItem get orderItem => OrderItem(
+  CartItem get cartItem => CartItem(
         itemId: item!.id,
         quantity: quantity,
         sizeTag: sizeTag,
@@ -18,13 +18,13 @@ class OrderItemNotifier extends ChangeNotifier {
         guidelines: guidelines,
         price: price,
       );
-  set orderItem(OrderItem myOrderItem) {
-    if (!orderItemSet) {
-      quantity = myOrderItem.quantity;
-      sizeTag = myOrderItem.sizeTag;
-      preferenceTags = myOrderItem.preferenceTags;
-      guidelines = myOrderItem.guidelines;
-      orderItemSet = true;
+  set cartItem(CartItem myCartItem) {
+    if (!cartItemSet) {
+      quantity = myCartItem.quantity;
+      sizeTag = myCartItem.sizeTag;
+      preferenceTags = myCartItem.preferenceTags;
+      guidelines = myCartItem.guidelines;
+      cartItemSet = true;
     }
   }
 

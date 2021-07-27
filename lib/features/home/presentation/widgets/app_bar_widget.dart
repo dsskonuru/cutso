@@ -40,7 +40,7 @@ class CutsoAppBar extends ConsumerWidget implements PreferredSizeWidget {
           ),
           Badge(
             badgeContent: Text(
-              watch(userActionsProvider).cart.orderItems.length.toString(),
+              watch(userActionsProvider).cart.length.toString(),
               style: Theme.of(context).textTheme.bodyText2,
             ),
             badgeColor: kOrangeLight,

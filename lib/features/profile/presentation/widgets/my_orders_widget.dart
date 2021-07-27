@@ -35,8 +35,11 @@ class _MyOrdersWidgetState extends State<MyOrdersWidget> {
               AsyncSnapshot<dz.Either<Failure, List<Order>>> snapshot) {
             if (snapshot.hasData) {
               return snapshot.data!.fold(
-                (failure) => const Center(
-                  child: Text('Server Problem'),
+                (failure) => Center(
+                  child: Text(
+                    'Server Problem',
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
                 ),
                 (orders) {
                   return OrderCards(orders);
@@ -67,27 +70,29 @@ class _OrderCardsState extends State<OrderCards> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: SizedBox(
-        height: 70.h,
+        // height: 70.h,
         child: ListView.builder(
           shrinkWrap: true,
           itemCount: widget.orders.length,
           itemBuilder: (BuildContext context, int index) {
-            return Card(
-              color: kCreamLight,
-              elevation: 7.0,
-              child: Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: SizedBox(
-                  height: 18.h,
-                  width: 100.w,
-                  child: Center(
-                      child: Column(
-                    children: [
-                      Text(widget.orders[index].orderItems.orderItems.join()),
-                      const Divider(),
-                      Text(widget.orders[index].status.toString()),
-                    ],
-                  )),
+            return Padding(
+              padding: const EdgeInsets.all(9.0),
+              child: Card(
+                color: kCreamLight,
+                elevation: 7.0,
+                child: Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: SizedBox(
+                    width: 100.w,
+                    child: Center(
+                        child: Column(
+                      children: [
+                        Text(widget.orders[index].items.join(' ')),
+                        const Divider(),
+                        Text(widget.orders[index].status.toString()),
+                      ],
+                    )),
+                  ),
                 ),
               ),
             );

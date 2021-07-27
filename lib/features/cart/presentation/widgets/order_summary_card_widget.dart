@@ -32,9 +32,9 @@ class _OrderSummaryState extends State<OrderSummary> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, watch, child) {
-        final Cart cart = watch(userActionsProvider).cart;
+        final List<CartItem> cart = watch(userActionsProvider).cart;
 
-        if (cart.orderItems.isEmpty) {
+        if (cart.isEmpty) {
           return Padding(
             padding: const EdgeInsets.all(9.0),
             child: Card(
@@ -43,13 +43,10 @@ class _OrderSummaryState extends State<OrderSummary> {
               child: Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: SizedBox(
-                  height: 9.h,
                   width: 100.h,
                   child: Center(
-                    child: Text(
-                      "Nothing here yet...",
-                      style: Theme.of(context).textTheme.overline,
-                    ),
+                    child: Text("Nothing here yet...",
+                        style: Theme.of(context).textTheme.bodyText2),
                   ),
                 ),
               ),
@@ -57,12 +54,12 @@ class _OrderSummaryState extends State<OrderSummary> {
           );
         }
 
-        final List<Widget> orderItemsList = [];
-        for (int i = 0; i < cart.orderItems.length; i++) {
-          final OrderItem orderItem = cart.orderItems[i];
+        final List<Widget> cartItemsList = [];
+        for (int i = 0; i < cart.length; i++) {
+          final CartItem cartItem = cart[i];
           final Future<dz.Either<ServerFailure, Item>> futureItem =
-              watch(itemsRepositoryProvider).getItem(orderItem.itemId);
-          orderItemsList.add(
+              watch(itemsRepositoryProvider).getItem(cartItem.itemId);
+          cartItemsList.add(
             FutureBuilder(
               future: futureItem,
               builder: (BuildContext context,
@@ -73,7 +70,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                       child: Text('Server Problem'),
                     ),
                     (item) {
-                      return OrderItemCard(item, orderItem);
+                      return CartItemCard(item, cartItem);
                     },
                   );
                 } else {
@@ -86,24 +83,24 @@ class _OrderSummaryState extends State<OrderSummary> {
           );
         }
         return Column(
-          children: orderItemsList,
+          children: cartItemsList,
         );
       },
     );
   }
 }
 
-class OrderItemCard extends StatefulWidget {
+class CartItemCard extends StatefulWidget {
   final Item item;
-  final OrderItem orderItem;
+  final CartItem cartItem;
 
-  const OrderItemCard(this.item, this.orderItem);
+  const CartItemCard(this.item, this.cartItem);
 
   @override
-  State<OrderItemCard> createState() => _OrderItemCardState();
+  State<CartItemCard> createState() => _CartItemCardState();
 }
 
-class _OrderItemCardState extends State<OrderItemCard> {
+class _CartItemCardState extends State<CartItemCard> {
   @override
   Widget build(BuildContext context) {
     return Consumer(
@@ -140,7 +137,7 @@ class _OrderItemCardState extends State<OrderItemCard> {
                       ),
                     ),
                     Dismissible(
-                      key: ValueKey(widget.orderItem.itemId),
+                      key: ValueKey(widget.cartItem.itemId),
                       background: Container(
                         color: Colors.blue.withOpacity(0.7),
                         child: Align(
@@ -235,12 +232,12 @@ class _OrderItemCardState extends State<OrderItemCard> {
                                         startLoading();
                                         watch(userActionsProvider)
                                             .cart
-                                            .orderItems
                                             .removeWhere((_item) =>
                                                 _item.itemId ==
-                                                widget.orderItem.itemId);
-                                        final Cart _cart =
+                                                widget.cartItem.itemId);
+                                        final List<CartItem> _cart =
                                             watch(userActionsProvider).cart;
+
                                         final cartRunner =
                                             await watch(userActionsProvider)
                                                 .updateCart(_cart);
@@ -283,13 +280,13 @@ class _OrderItemCardState extends State<OrderItemCard> {
                             },
                           );
                         } else {
-                          watch(orderItemProvider).orderItem = widget.orderItem;
-                          watch(orderItemProvider).item = widget.item;
+                          watch(cartItemProvider).cartItem = widget.cartItem;
+                          watch(cartItemProvider).item = widget.item;
                           await context.router.navigate(const ItemRoute());
                         }
                       },
                       child: _SummaryContent(
-                          item: widget.item, orderItem: widget.orderItem),
+                          item: widget.item, cartItem: widget.cartItem),
                     ),
                   ],
                 ),
@@ -306,10 +303,10 @@ class _SummaryContent extends StatelessWidget {
   const _SummaryContent({
     Key? key,
     required this.item,
-    required this.orderItem,
+    required this.cartItem,
   }) : super(key: key);
 
-  final OrderItem orderItem;
+  final CartItem cartItem;
   final Item item;
 
   @override
@@ -342,7 +339,7 @@ class _SummaryContent extends StatelessWidget {
                         ),
                       SizedBox(height: 2.h),
                       Text(
-                        "${orderItem.quantity.toString()} kg",
+                        "${cartItem.quantity.toString()} kg",
                         style: Theme.of(context)
                             .textTheme
                             .overline!
@@ -361,7 +358,7 @@ class _SummaryContent extends StatelessWidget {
                             GoogleFonts.roboto().copyWith(color: Colors.black),
                       ),
                       TextSpan(
-                        text: orderItem.price.toString(),
+                        text: cartItem.price.toString(),
                         style: Theme.of(context).textTheme.subtitle2,
                       ),
                     ],
@@ -369,18 +366,17 @@ class _SummaryContent extends StatelessWidget {
                 ),
               ],
             ),
-            if (orderItem.sizeTag != null && orderItem.sizeTag!.isNotEmpty)
-              DisplayChip([orderItem.sizeTag!]),
-            if (orderItem.preferenceTags != null &&
-                orderItem.preferenceTags!.isNotEmpty)
-              DisplayChip(orderItem.preferenceTags!.toList()),
-            if (orderItem.guidelines != null &&
-                orderItem.guidelines!.isNotEmpty)
+            if (cartItem.sizeTag != null && cartItem.sizeTag!.isNotEmpty)
+              DisplayChip([cartItem.sizeTag!]),
+            if (cartItem.preferenceTags != null &&
+                cartItem.preferenceTags!.isNotEmpty)
+              DisplayChip(cartItem.preferenceTags!.toList()),
+            if (cartItem.guidelines != null && cartItem.guidelines!.isNotEmpty)
               Container(
                 color: kCreamLight.withOpacity(0.5),
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  orderItem.guidelines!,
+                  cartItem.guidelines!,
                   style: Theme.of(context).textTheme.overline,
                 ),
               ),

@@ -32,7 +32,7 @@ class _CategoryPageState extends State<CategoryPage> {
               _CategoryPageHeader(widget: widget),
               const Divider(),
               CategoryItemsListView(category: widget.category!),
-              if (watch(userActionsProvider).cart.orderItems.isNotEmpty)
+              if (watch(userActionsProvider).cart.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(
                       bottom: 12.0, left: 12.0, right: 12.0),
@@ -54,7 +54,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "${watch(userActionsProvider).cart.orderItems.length.toString()} Items",
+                                    "${watch(userActionsProvider).cart.length.toString()} Items",
                                     style: Theme.of(context).textTheme.caption,
                                   ),
                                   RichText(

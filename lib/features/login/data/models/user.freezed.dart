@@ -26,8 +26,8 @@ class _$UserTearOff {
       required String phone,
       required String email,
       required Address address,
-      required Cart cart,
-      required MyOrders orders}) {
+      required List<CartItem> cart,
+      required List<String> orders}) {
     return _User(
       uid: uid,
       fullName: fullName,
@@ -54,8 +54,8 @@ mixin _$User {
   String get phone => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   Address get address => throw _privateConstructorUsedError;
-  Cart get cart => throw _privateConstructorUsedError;
-  MyOrders get orders => throw _privateConstructorUsedError;
+  List<CartItem> get cart => throw _privateConstructorUsedError;
+  List<String> get orders => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -72,12 +72,10 @@ abstract class $UserCopyWith<$Res> {
       String phone,
       String email,
       Address address,
-      Cart cart,
-      MyOrders orders});
+      List<CartItem> cart,
+      List<String> orders});
 
   $AddressCopyWith<$Res> get address;
-  $CartCopyWith<$Res> get cart;
-  $MyOrdersCopyWith<$Res> get orders;
 }
 
 /// @nodoc
@@ -122,11 +120,11 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
       cart: cart == freezed
           ? _value.cart
           : cart // ignore: cast_nullable_to_non_nullable
-              as Cart,
+              as List<CartItem>,
       orders: orders == freezed
           ? _value.orders
           : orders // ignore: cast_nullable_to_non_nullable
-              as MyOrders,
+              as List<String>,
     ));
   }
 
@@ -134,20 +132,6 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
   $AddressCopyWith<$Res> get address {
     return $AddressCopyWith<$Res>(_value.address, (value) {
       return _then(_value.copyWith(address: value));
-    });
-  }
-
-  @override
-  $CartCopyWith<$Res> get cart {
-    return $CartCopyWith<$Res>(_value.cart, (value) {
-      return _then(_value.copyWith(cart: value));
-    });
-  }
-
-  @override
-  $MyOrdersCopyWith<$Res> get orders {
-    return $MyOrdersCopyWith<$Res>(_value.orders, (value) {
-      return _then(_value.copyWith(orders: value));
     });
   }
 }
@@ -163,15 +147,11 @@ abstract class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       String phone,
       String email,
       Address address,
-      Cart cart,
-      MyOrders orders});
+      List<CartItem> cart,
+      List<String> orders});
 
   @override
   $AddressCopyWith<$Res> get address;
-  @override
-  $CartCopyWith<$Res> get cart;
-  @override
-  $MyOrdersCopyWith<$Res> get orders;
 }
 
 /// @nodoc
@@ -217,11 +197,11 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
       cart: cart == freezed
           ? _value.cart
           : cart // ignore: cast_nullable_to_non_nullable
-              as Cart,
+              as List<CartItem>,
       orders: orders == freezed
           ? _value.orders
           : orders // ignore: cast_nullable_to_non_nullable
-              as MyOrders,
+              as List<String>,
     ));
   }
 }
@@ -229,7 +209,7 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true)
-class _$_User with DiagnosticableTreeMixin implements _User {
+class _$_User extends _User with DiagnosticableTreeMixin {
   _$_User(
       {required this.uid,
       required this.fullName,
@@ -237,7 +217,8 @@ class _$_User with DiagnosticableTreeMixin implements _User {
       required this.email,
       required this.address,
       required this.cart,
-      required this.orders});
+      required this.orders})
+      : super._();
 
   factory _$_User.fromJson(Map<String, dynamic> json) =>
       _$_$_UserFromJson(json);
@@ -253,9 +234,9 @@ class _$_User with DiagnosticableTreeMixin implements _User {
   @override
   final Address address;
   @override
-  final Cart cart;
+  final List<CartItem> cart;
   @override
-  final MyOrders orders;
+  final List<String> orders;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -320,15 +301,16 @@ class _$_User with DiagnosticableTreeMixin implements _User {
   }
 }
 
-abstract class _User implements User {
+abstract class _User extends User {
   factory _User(
       {required String uid,
       required String fullName,
       required String phone,
       required String email,
       required Address address,
-      required Cart cart,
-      required MyOrders orders}) = _$_User;
+      required List<CartItem> cart,
+      required List<String> orders}) = _$_User;
+  _User._() : super._();
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
 
@@ -343,9 +325,9 @@ abstract class _User implements User {
   @override
   Address get address => throw _privateConstructorUsedError;
   @override
-  Cart get cart => throw _privateConstructorUsedError;
+  List<CartItem> get cart => throw _privateConstructorUsedError;
   @override
-  MyOrders get orders => throw _privateConstructorUsedError;
+  List<String> get orders => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$UserCopyWith<_User> get copyWith => throw _privateConstructorUsedError;
@@ -592,22 +574,22 @@ abstract class _Address implements Address {
       throw _privateConstructorUsedError;
 }
 
-OrderItem _$OrderItemFromJson(Map<String, dynamic> json) {
-  return _OrderItem.fromJson(json);
+CartItem _$CartItemFromJson(Map<String, dynamic> json) {
+  return _CartItem.fromJson(json);
 }
 
 /// @nodoc
-class _$OrderItemTearOff {
-  const _$OrderItemTearOff();
+class _$CartItemTearOff {
+  const _$CartItemTearOff();
 
-  _OrderItem call(
+  _CartItem call(
       {required int itemId,
       required double quantity,
       required String? sizeTag,
       required Set<String>? preferenceTags,
       required String? guidelines,
       required double price}) {
-    return _OrderItem(
+    return _CartItem(
       itemId: itemId,
       quantity: quantity,
       sizeTag: sizeTag,
@@ -617,16 +599,16 @@ class _$OrderItemTearOff {
     );
   }
 
-  OrderItem fromJson(Map<String, Object> json) {
-    return OrderItem.fromJson(json);
+  CartItem fromJson(Map<String, Object> json) {
+    return CartItem.fromJson(json);
   }
 }
 
 /// @nodoc
-const $OrderItem = _$OrderItemTearOff();
+const $CartItem = _$CartItemTearOff();
 
 /// @nodoc
-mixin _$OrderItem {
+mixin _$CartItem {
   int get itemId => throw _privateConstructorUsedError;
   double get quantity => throw _privateConstructorUsedError;
   String? get sizeTag => throw _privateConstructorUsedError;
@@ -636,14 +618,14 @@ mixin _$OrderItem {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $OrderItemCopyWith<OrderItem> get copyWith =>
+  $CartItemCopyWith<CartItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $OrderItemCopyWith<$Res> {
-  factory $OrderItemCopyWith(OrderItem value, $Res Function(OrderItem) then) =
-      _$OrderItemCopyWithImpl<$Res>;
+abstract class $CartItemCopyWith<$Res> {
+  factory $CartItemCopyWith(CartItem value, $Res Function(CartItem) then) =
+      _$CartItemCopyWithImpl<$Res>;
   $Res call(
       {int itemId,
       double quantity,
@@ -654,12 +636,12 @@ abstract class $OrderItemCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$OrderItemCopyWithImpl<$Res> implements $OrderItemCopyWith<$Res> {
-  _$OrderItemCopyWithImpl(this._value, this._then);
+class _$CartItemCopyWithImpl<$Res> implements $CartItemCopyWith<$Res> {
+  _$CartItemCopyWithImpl(this._value, this._then);
 
-  final OrderItem _value;
+  final CartItem _value;
   // ignore: unused_field
-  final $Res Function(OrderItem) _then;
+  final $Res Function(CartItem) _then;
 
   @override
   $Res call({
@@ -700,10 +682,9 @@ class _$OrderItemCopyWithImpl<$Res> implements $OrderItemCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$OrderItemCopyWith<$Res> implements $OrderItemCopyWith<$Res> {
-  factory _$OrderItemCopyWith(
-          _OrderItem value, $Res Function(_OrderItem) then) =
-      __$OrderItemCopyWithImpl<$Res>;
+abstract class _$CartItemCopyWith<$Res> implements $CartItemCopyWith<$Res> {
+  factory _$CartItemCopyWith(_CartItem value, $Res Function(_CartItem) then) =
+      __$CartItemCopyWithImpl<$Res>;
   @override
   $Res call(
       {int itemId,
@@ -715,13 +696,13 @@ abstract class _$OrderItemCopyWith<$Res> implements $OrderItemCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$OrderItemCopyWithImpl<$Res> extends _$OrderItemCopyWithImpl<$Res>
-    implements _$OrderItemCopyWith<$Res> {
-  __$OrderItemCopyWithImpl(_OrderItem _value, $Res Function(_OrderItem) _then)
-      : super(_value, (v) => _then(v as _OrderItem));
+class __$CartItemCopyWithImpl<$Res> extends _$CartItemCopyWithImpl<$Res>
+    implements _$CartItemCopyWith<$Res> {
+  __$CartItemCopyWithImpl(_CartItem _value, $Res Function(_CartItem) _then)
+      : super(_value, (v) => _then(v as _CartItem));
 
   @override
-  _OrderItem get _value => super._value as _OrderItem;
+  _CartItem get _value => super._value as _CartItem;
 
   @override
   $Res call({
@@ -732,7 +713,7 @@ class __$OrderItemCopyWithImpl<$Res> extends _$OrderItemCopyWithImpl<$Res>
     Object? guidelines = freezed,
     Object? price = freezed,
   }) {
-    return _then(_OrderItem(
+    return _then(_CartItem(
       itemId: itemId == freezed
           ? _value.itemId
           : itemId // ignore: cast_nullable_to_non_nullable
@@ -764,8 +745,8 @@ class __$OrderItemCopyWithImpl<$Res> extends _$OrderItemCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true)
-class _$_OrderItem with DiagnosticableTreeMixin implements _OrderItem {
-  _$_OrderItem(
+class _$_CartItem with DiagnosticableTreeMixin implements _CartItem {
+  _$_CartItem(
       {required this.itemId,
       required this.quantity,
       required this.sizeTag,
@@ -773,8 +754,8 @@ class _$_OrderItem with DiagnosticableTreeMixin implements _OrderItem {
       required this.guidelines,
       required this.price});
 
-  factory _$_OrderItem.fromJson(Map<String, dynamic> json) =>
-      _$_$_OrderItemFromJson(json);
+  factory _$_CartItem.fromJson(Map<String, dynamic> json) =>
+      _$_$_CartItemFromJson(json);
 
   @override
   final int itemId;
@@ -791,14 +772,14 @@ class _$_OrderItem with DiagnosticableTreeMixin implements _OrderItem {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'OrderItem(itemId: $itemId, quantity: $quantity, sizeTag: $sizeTag, preferenceTags: $preferenceTags, guidelines: $guidelines, price: $price)';
+    return 'CartItem(itemId: $itemId, quantity: $quantity, sizeTag: $sizeTag, preferenceTags: $preferenceTags, guidelines: $guidelines, price: $price)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'OrderItem'))
+      ..add(DiagnosticsProperty('type', 'CartItem'))
       ..add(DiagnosticsProperty('itemId', itemId))
       ..add(DiagnosticsProperty('quantity', quantity))
       ..add(DiagnosticsProperty('sizeTag', sizeTag))
@@ -810,7 +791,7 @@ class _$_OrderItem with DiagnosticableTreeMixin implements _OrderItem {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _OrderItem &&
+        (other is _CartItem &&
             (identical(other.itemId, itemId) ||
                 const DeepCollectionEquality().equals(other.itemId, itemId)) &&
             (identical(other.quantity, quantity) ||
@@ -841,26 +822,25 @@ class _$_OrderItem with DiagnosticableTreeMixin implements _OrderItem {
 
   @JsonKey(ignore: true)
   @override
-  _$OrderItemCopyWith<_OrderItem> get copyWith =>
-      __$OrderItemCopyWithImpl<_OrderItem>(this, _$identity);
+  _$CartItemCopyWith<_CartItem> get copyWith =>
+      __$CartItemCopyWithImpl<_CartItem>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_OrderItemToJson(this);
+    return _$_$_CartItemToJson(this);
   }
 }
 
-abstract class _OrderItem implements OrderItem {
-  factory _OrderItem(
+abstract class _CartItem implements CartItem {
+  factory _CartItem(
       {required int itemId,
       required double quantity,
       required String? sizeTag,
       required Set<String>? preferenceTags,
       required String? guidelines,
-      required double price}) = _$_OrderItem;
+      required double price}) = _$_CartItem;
 
-  factory _OrderItem.fromJson(Map<String, dynamic> json) =
-      _$_OrderItem.fromJson;
+  factory _CartItem.fromJson(Map<String, dynamic> json) = _$_CartItem.fromJson;
 
   @override
   int get itemId => throw _privateConstructorUsedError;
@@ -876,332 +856,6 @@ abstract class _OrderItem implements OrderItem {
   double get price => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$OrderItemCopyWith<_OrderItem> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-Cart _$CartFromJson(Map<String, dynamic> json) {
-  return _Cart.fromJson(json);
-}
-
-/// @nodoc
-class _$CartTearOff {
-  const _$CartTearOff();
-
-  _Cart call({required List<OrderItem> orderItems, String? coupon}) {
-    return _Cart(
-      orderItems: orderItems,
-      coupon: coupon,
-    );
-  }
-
-  Cart fromJson(Map<String, Object> json) {
-    return Cart.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $Cart = _$CartTearOff();
-
-/// @nodoc
-mixin _$Cart {
-  List<OrderItem> get orderItems => throw _privateConstructorUsedError;
-  String? get coupon => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $CartCopyWith<Cart> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $CartCopyWith<$Res> {
-  factory $CartCopyWith(Cart value, $Res Function(Cart) then) =
-      _$CartCopyWithImpl<$Res>;
-  $Res call({List<OrderItem> orderItems, String? coupon});
-}
-
-/// @nodoc
-class _$CartCopyWithImpl<$Res> implements $CartCopyWith<$Res> {
-  _$CartCopyWithImpl(this._value, this._then);
-
-  final Cart _value;
-  // ignore: unused_field
-  final $Res Function(Cart) _then;
-
-  @override
-  $Res call({
-    Object? orderItems = freezed,
-    Object? coupon = freezed,
-  }) {
-    return _then(_value.copyWith(
-      orderItems: orderItems == freezed
-          ? _value.orderItems
-          : orderItems // ignore: cast_nullable_to_non_nullable
-              as List<OrderItem>,
-      coupon: coupon == freezed
-          ? _value.coupon
-          : coupon // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
-}
-
-/// @nodoc
-abstract class _$CartCopyWith<$Res> implements $CartCopyWith<$Res> {
-  factory _$CartCopyWith(_Cart value, $Res Function(_Cart) then) =
-      __$CartCopyWithImpl<$Res>;
-  @override
-  $Res call({List<OrderItem> orderItems, String? coupon});
-}
-
-/// @nodoc
-class __$CartCopyWithImpl<$Res> extends _$CartCopyWithImpl<$Res>
-    implements _$CartCopyWith<$Res> {
-  __$CartCopyWithImpl(_Cart _value, $Res Function(_Cart) _then)
-      : super(_value, (v) => _then(v as _Cart));
-
-  @override
-  _Cart get _value => super._value as _Cart;
-
-  @override
-  $Res call({
-    Object? orderItems = freezed,
-    Object? coupon = freezed,
-  }) {
-    return _then(_Cart(
-      orderItems: orderItems == freezed
-          ? _value.orderItems
-          : orderItems // ignore: cast_nullable_to_non_nullable
-              as List<OrderItem>,
-      coupon: coupon == freezed
-          ? _value.coupon
-          : coupon // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
-}
-
-/// @nodoc
-
-@JsonSerializable(explicitToJson: true)
-class _$_Cart extends _Cart with DiagnosticableTreeMixin {
-  _$_Cart({required this.orderItems, this.coupon}) : super._();
-
-  factory _$_Cart.fromJson(Map<String, dynamic> json) =>
-      _$_$_CartFromJson(json);
-
-  @override
-  final List<OrderItem> orderItems;
-  @override
-  final String? coupon;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Cart(orderItems: $orderItems, coupon: $coupon)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'Cart'))
-      ..add(DiagnosticsProperty('orderItems', orderItems))
-      ..add(DiagnosticsProperty('coupon', coupon));
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is _Cart &&
-            (identical(other.orderItems, orderItems) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderItems, orderItems)) &&
-            (identical(other.coupon, coupon) ||
-                const DeepCollectionEquality().equals(other.coupon, coupon)));
-  }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(orderItems) ^
-      const DeepCollectionEquality().hash(coupon);
-
-  @JsonKey(ignore: true)
-  @override
-  _$CartCopyWith<_Cart> get copyWith =>
-      __$CartCopyWithImpl<_Cart>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$_$_CartToJson(this);
-  }
-}
-
-abstract class _Cart extends Cart {
-  factory _Cart({required List<OrderItem> orderItems, String? coupon}) =
-      _$_Cart;
-  _Cart._() : super._();
-
-  factory _Cart.fromJson(Map<String, dynamic> json) = _$_Cart.fromJson;
-
-  @override
-  List<OrderItem> get orderItems => throw _privateConstructorUsedError;
-  @override
-  String? get coupon => throw _privateConstructorUsedError;
-  @override
-  @JsonKey(ignore: true)
-  _$CartCopyWith<_Cart> get copyWith => throw _privateConstructorUsedError;
-}
-
-MyOrders _$MyOrdersFromJson(Map<String, dynamic> json) {
-  return _MyOrders.fromJson(json);
-}
-
-/// @nodoc
-class _$MyOrdersTearOff {
-  const _$MyOrdersTearOff();
-
-  _MyOrders call({required List<String> orderIds}) {
-    return _MyOrders(
-      orderIds: orderIds,
-    );
-  }
-
-  MyOrders fromJson(Map<String, Object> json) {
-    return MyOrders.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $MyOrders = _$MyOrdersTearOff();
-
-/// @nodoc
-mixin _$MyOrders {
-  List<String> get orderIds => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $MyOrdersCopyWith<MyOrders> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $MyOrdersCopyWith<$Res> {
-  factory $MyOrdersCopyWith(MyOrders value, $Res Function(MyOrders) then) =
-      _$MyOrdersCopyWithImpl<$Res>;
-  $Res call({List<String> orderIds});
-}
-
-/// @nodoc
-class _$MyOrdersCopyWithImpl<$Res> implements $MyOrdersCopyWith<$Res> {
-  _$MyOrdersCopyWithImpl(this._value, this._then);
-
-  final MyOrders _value;
-  // ignore: unused_field
-  final $Res Function(MyOrders) _then;
-
-  @override
-  $Res call({
-    Object? orderIds = freezed,
-  }) {
-    return _then(_value.copyWith(
-      orderIds: orderIds == freezed
-          ? _value.orderIds
-          : orderIds // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-    ));
-  }
-}
-
-/// @nodoc
-abstract class _$MyOrdersCopyWith<$Res> implements $MyOrdersCopyWith<$Res> {
-  factory _$MyOrdersCopyWith(_MyOrders value, $Res Function(_MyOrders) then) =
-      __$MyOrdersCopyWithImpl<$Res>;
-  @override
-  $Res call({List<String> orderIds});
-}
-
-/// @nodoc
-class __$MyOrdersCopyWithImpl<$Res> extends _$MyOrdersCopyWithImpl<$Res>
-    implements _$MyOrdersCopyWith<$Res> {
-  __$MyOrdersCopyWithImpl(_MyOrders _value, $Res Function(_MyOrders) _then)
-      : super(_value, (v) => _then(v as _MyOrders));
-
-  @override
-  _MyOrders get _value => super._value as _MyOrders;
-
-  @override
-  $Res call({
-    Object? orderIds = freezed,
-  }) {
-    return _then(_MyOrders(
-      orderIds: orderIds == freezed
-          ? _value.orderIds
-          : orderIds // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-    ));
-  }
-}
-
-/// @nodoc
-
-@JsonSerializable(explicitToJson: true)
-class _$_MyOrders extends _MyOrders with DiagnosticableTreeMixin {
-  _$_MyOrders({required this.orderIds}) : super._();
-
-  factory _$_MyOrders.fromJson(Map<String, dynamic> json) =>
-      _$_$_MyOrdersFromJson(json);
-
-  @override
-  final List<String> orderIds;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'MyOrders(orderIds: $orderIds)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'MyOrders'))
-      ..add(DiagnosticsProperty('orderIds', orderIds));
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is _MyOrders &&
-            (identical(other.orderIds, orderIds) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderIds, orderIds)));
-  }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(orderIds);
-
-  @JsonKey(ignore: true)
-  @override
-  _$MyOrdersCopyWith<_MyOrders> get copyWith =>
-      __$MyOrdersCopyWithImpl<_MyOrders>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$_$_MyOrdersToJson(this);
-  }
-}
-
-abstract class _MyOrders extends MyOrders {
-  factory _MyOrders({required List<String> orderIds}) = _$_MyOrders;
-  _MyOrders._() : super._();
-
-  factory _MyOrders.fromJson(Map<String, dynamic> json) = _$_MyOrders.fromJson;
-
-  @override
-  List<String> get orderIds => throw _privateConstructorUsedError;
-  @override
-  @JsonKey(ignore: true)
-  _$MyOrdersCopyWith<_MyOrders> get copyWith =>
+  _$CartItemCopyWith<_CartItem> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logging/logging.dart';
+import 'package:logger/logger.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,7 +18,6 @@ import 'environment.dart';
 import 'features/login/data/models/user.dart';
 
 Future<void> mainCommon(String env) async {
-  setupLogging();
   WidgetsFlutterBinding.ensureInitialized();
   await ConfigReader.initialize();
 
@@ -87,40 +86,35 @@ class ProviderLog extends ProviderObserver {
 
 final container = ProviderContainer(observers: [ProviderLog()]);
 
-void setupLogging() {
-  Logger.root.level = Level.ALL;
-  Logger.root.onRecord.listen(
-    (event) {
-      debugPrint('${event.level.name}: ${event.time}: ${event.message}');
-    },
-  );
-}
+final loggerProvider = Provider<Logger>((ref) => Logger());
 
 Future<void> setupUser() async {
   try {
     final SharedPreferences prefs =
         await container.read(sharedPreferencesProvider);
-    // prefs.clear();
+    prefs.clear();
     final uid = prefs.getString("uid");
     if (uid != null) {
       await container.read(usersProvider).doc(uid).get().then(
         (DocumentSnapshot<User> userSnapshot) async {
           if (userSnapshot.exists) {
-            Logger.root.fine('User is signed in');
+            container.read(loggerProvider).i('User is signed in');
             container.read(userActionsProvider).user = userSnapshot.data();
           } else {
-            Logger.root.fine('User requires Registration');
+            container.read(loggerProvider).i('User requires Registration');
             container.read(userActionsProvider).user = null;
           }
         },
       );
     } else {
-      Logger.root.fine('User is not signed in');
+      container.read(loggerProvider).i('User is not signed in');
       assert(container.read(userActionsProvider).user == null);
     }
   } catch (exception, stack) {
     debugPrint(exception.toString());
     container.read(crashlyticsProvider).recordError(exception, stack);
-    Logger.root.severe('Unable to setup user from shared preferences');
+    container
+        .read(loggerProvider)
+        .e('Unable to setup user from shared preferences');
   }
 }

@@ -1,7 +1,6 @@
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:cutso/core/providers/firebase_provider.dart';
-import 'package:cutso/core/providers/user_actions_provider.dart';
+import 'package:cutso/features/login/data/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -9,11 +8,13 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
+import '../../../../core/providers/user_actions_provider.dart';
 import '../../../../core/router/router.gr.dart';
 import '../../../../core/theme/theme_data.dart';
+import '../../../../main_common.dart';
 import '../widgets/address_card_widget.dart';
 import '../widgets/order_summary_card_widget.dart';
-import '../widgets/payment_card_widget.dart';
+import '../widgets/schedule_delivery_widget.dart';
 import '../widgets/price_card_widget.dart';
 
 const String errorMessage =
@@ -49,7 +50,7 @@ class _CartPageState extends State<CartPage> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 2.h),
                 child: Text(
-                  'Address Details',
+                  'Delivery Address',
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),
@@ -67,11 +68,19 @@ class _CartPageState extends State<CartPage> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 2.h),
                 child: Text(
+                  'Schedule Delivery',
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+              ),
+              ScheduleDelivery(),
+              const Divider(),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 2.h),
+                child: Text(
                   'Payment Details',
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),
-              PaymentCard(),
               SizedBox(height: 2.h),
               Consumer(
                 builder: (context, watch, child) {
@@ -89,28 +98,34 @@ class _CartPageState extends State<CartPage> {
                     onTap: (startLoading, stopLoading, btnState) async {
                       if (btnState == ButtonState.Idle) {
                         startLoading();
-                        final cart = watch(userActionsProvider).cart;
-                        if (cart.orderItems.isNotEmpty) {
+                        final List<CartItem> cart =
+                            watch(userActionsProvider).cart;
+                        if (cart.isNotEmpty) {
                           final orderRunner =
-                              await watch(userActionsProvider).placeOrder(cart);
-                          // context.router.navigate(const PaymentRoute());
+                              await watch(userActionsProvider).placeOrder();
                           orderRunner.fold(
                             (failure) {
-                              watch(crashlyticsProvider)
-                                  .log(failure.messsage.toString());
-                          showTopSnackBar(
-                              context,
-                              const CustomSnackBar.error(
-                                  message: errorMessage));
-                          },
-                          (_) {
-                            setState(() {});
-                          showTopSnackBar(
-                              context,
-                              const CustomSnackBar.success(
-                                  message: successMessage));
+                              container.read(loggerProvider).e(failure);
+                              showTopSnackBar(
+                                  context,
+                                  const CustomSnackBar.error(
+                                      message: errorMessage));
+                            },
+                            (orderPlaced) {
+                              if (orderPlaced == true) {
+                                showTopSnackBar(
+                                    context,
+                                    const CustomSnackBar.success(
+                                        message: successMessage));
+                              } else {
+                                showTopSnackBar(
+                                    context,
+                                    const CustomSnackBar.error(
+                                        message: errorMessage));
+                              }
                             },
                           );
+                          setState(() {});
                           stopLoading();
                         } else {
                           await context.router.navigate(const HomeRoute());

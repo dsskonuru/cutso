@@ -24,7 +24,7 @@ class Order with _$Order {
   factory Order({
     required String uid,
     required String orderId,
-    required Cart orderItems,
+    required List<CartItem> items,
     required double value,
     required Coupon? coupon,
     required Status? status,

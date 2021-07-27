@@ -13,8 +13,10 @@ _$_User _$_$_UserFromJson(Map<String, dynamic> json) {
     phone: json['phone'] as String,
     email: json['email'] as String,
     address: Address.fromJson(json['address'] as Map<String, dynamic>),
-    cart: Cart.fromJson(json['cart'] as Map<String, dynamic>),
-    orders: MyOrders.fromJson(json['orders'] as Map<String, dynamic>),
+    cart: (json['cart'] as List<dynamic>)
+        .map((e) => CartItem.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    orders: (json['orders'] as List<dynamic>).map((e) => e as String).toList(),
   );
 }
 
@@ -24,8 +26,8 @@ Map<String, dynamic> _$_$_UserToJson(_$_User instance) => <String, dynamic>{
       'phone': instance.phone,
       'email': instance.email,
       'address': instance.address.toJson(),
-      'cart': instance.cart.toJson(),
-      'orders': instance.orders.toJson(),
+      'cart': instance.cart.map((e) => e.toJson()).toList(),
+      'orders': instance.orders,
     };
 
 _$_Address _$_$_AddressFromJson(Map<String, dynamic> json) {
@@ -45,8 +47,8 @@ Map<String, dynamic> _$_$_AddressToJson(_$_Address instance) =>
       'location': _toJsonGeoPoint(instance.location),
     };
 
-_$_OrderItem _$_$_OrderItemFromJson(Map<String, dynamic> json) {
-  return _$_OrderItem(
+_$_CartItem _$_$_CartItemFromJson(Map<String, dynamic> json) {
+  return _$_CartItem(
     itemId: json['itemId'] as int,
     quantity: (json['quantity'] as num).toDouble(),
     sizeTag: json['sizeTag'] as String?,
@@ -58,7 +60,7 @@ _$_OrderItem _$_$_OrderItemFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$_$_OrderItemToJson(_$_OrderItem instance) =>
+Map<String, dynamic> _$_$_CartItemToJson(_$_CartItem instance) =>
     <String, dynamic>{
       'itemId': instance.itemId,
       'quantity': instance.quantity,
@@ -66,30 +68,4 @@ Map<String, dynamic> _$_$_OrderItemToJson(_$_OrderItem instance) =>
       'preferenceTags': instance.preferenceTags?.toList(),
       'guidelines': instance.guidelines,
       'price': instance.price,
-    };
-
-_$_Cart _$_$_CartFromJson(Map<String, dynamic> json) {
-  return _$_Cart(
-    orderItems: (json['orderItems'] as List<dynamic>)
-        .map((e) => OrderItem.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    coupon: json['coupon'] as String?,
-  );
-}
-
-Map<String, dynamic> _$_$_CartToJson(_$_Cart instance) => <String, dynamic>{
-      'orderItems': instance.orderItems.map((e) => e.toJson()).toList(),
-      'coupon': instance.coupon,
-    };
-
-_$_MyOrders _$_$_MyOrdersFromJson(Map<String, dynamic> json) {
-  return _$_MyOrders(
-    orderIds:
-        (json['orderIds'] as List<dynamic>).map((e) => e as String).toList(),
-  );
-}
-
-Map<String, dynamic> _$_$_MyOrdersToJson(_$_MyOrders instance) =>
-    <String, dynamic>{
-      'orderIds': instance.orderIds,
     };

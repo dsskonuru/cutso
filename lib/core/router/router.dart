@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 
 import '../../features/cart/presentation/pages/cart_page.dart';
-import '../../features/cart/presentation/pages/payments_page.dart';
 import '../../features/home/presentation/pages/category_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/home/presentation/pages/item_page.dart';
@@ -25,7 +24,6 @@ import '../../features/profile/presentation/pages/profile_page.dart';
     AutoRoute(path: '/item', page: ItemPage),
     AutoRoute(path: '/profile', page: ProfilePage),
     AutoRoute(path: '/cart', page: CartPage),
-    AutoRoute(path: '/payment', page: PaymentPage),
   ],
 )
 class $AppRouter {}

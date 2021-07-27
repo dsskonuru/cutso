@@ -50,7 +50,7 @@ class ProfilePage extends ConsumerWidget {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 2.h),
                 child: Text(
-                  'My Orders',
+                  'Previous Orders',
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),

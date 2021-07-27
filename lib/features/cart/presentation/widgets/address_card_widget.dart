@@ -22,7 +22,6 @@ class AddressCard extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.all(18.0),
             child: SizedBox(
-              height: 18.h,
               width: 100.w,
               child: Center(
                 child: TextButton(
@@ -44,7 +43,6 @@ class AddressCard extends ConsumerWidget {
           padding: const EdgeInsets.all(18.0),
           child: SizedBox(
             width: 100.w,
-            height: 20.h,
             child: Column(
               children: [
                 Text(

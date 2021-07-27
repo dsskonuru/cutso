@@ -10,7 +10,9 @@ _$_Order _$_$_OrderFromJson(Map<String, dynamic> json) {
   return _$_Order(
     uid: json['uid'] as String,
     orderId: json['orderId'] as String,
-    orderItems: Cart.fromJson(json['orderItems'] as Map<String, dynamic>),
+    items: (json['items'] as List<dynamic>)
+        .map((e) => CartItem.fromJson(e as Map<String, dynamic>))
+        .toList(),
     value: (json['value'] as num).toDouble(),
     coupon: json['coupon'] == null
         ? null
@@ -22,7 +24,7 @@ _$_Order _$_$_OrderFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$_$_OrderToJson(_$_Order instance) => <String, dynamic>{
       'uid': instance.uid,
       'orderId': instance.orderId,
-      'orderItems': instance.orderItems.toJson(),
+      'items': instance.items.map((e) => e.toJson()).toList(),
       'value': instance.value,
       'coupon': instance.coupon?.toJson(),
       'status': _$StatusEnumMap[instance.status],

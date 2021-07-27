@@ -187,8 +187,8 @@ class AddressFormPage extends ConsumerWidget {
                           phone: watch(mobileFormProvider).mobileNo,
                           email: watch(registrationFormProvider).email!,
                           address: watch(addressFormProvider).getAddress(),
-                          orders: MyOrders(orderIds: []),
-                          cart: Cart(orderItems: []),
+                          orders: [],
+                          cart: [],
                         ),
                       );
                       stopLoading();
