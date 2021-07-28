@@ -1,4 +1,3 @@
-import 'package:cutso/core/providers/paytm_provider.dart';
 import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,6 +11,7 @@ import '../../features/profile/data/sources/orders_repository.dart';
 import '../../main_common.dart';
 import '../error/failures.dart';
 import 'firebase_provider.dart';
+import 'paytm_provider.dart';
 import 'shared_preferences_provider.dart';
 
 final userActionsProvider = ChangeNotifierProvider((ref) => UserNotifier());

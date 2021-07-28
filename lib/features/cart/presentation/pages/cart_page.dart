@@ -1,8 +1,6 @@
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:cutso/features/login/data/models/user.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
@@ -12,10 +10,11 @@ import '../../../../core/providers/user_actions_provider.dart';
 import '../../../../core/router/router.gr.dart';
 import '../../../../core/theme/theme_data.dart';
 import '../../../../main_common.dart';
+import '../../../login/data/models/user.dart';
 import '../widgets/address_card_widget.dart';
 import '../widgets/order_summary_card_widget.dart';
-import '../widgets/schedule_delivery_widget.dart';
 import '../widgets/price_card_widget.dart';
+import '../widgets/schedule_delivery_widget.dart';
 
 const String errorMessage =
     "We're unable to place the order, please try again later";
@@ -82,63 +81,60 @@ class _CartPageState extends State<CartPage> {
                 ),
               ),
               SizedBox(height: 2.h),
-              Consumer(
-                builder: (context, watch, child) {
-                  return ArgonButton(
-                    height: 9.w,
-                    width: 45.w,
-                    color: kOrange,
-                    borderRadius: 5.w,
-                    loader: Container(
-                      padding: const EdgeInsets.all(10),
-                      child: const SpinKitRotatingCircle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    onTap: (startLoading, stopLoading, btnState) async {
-                      if (btnState == ButtonState.Idle) {
-                        startLoading();
-                        final List<CartItem> cart =
-                            watch(userActionsProvider).cart;
-                        if (cart.isNotEmpty) {
-                          final orderRunner =
-                              await watch(userActionsProvider).placeOrder();
-                          orderRunner.fold(
-                            (failure) {
-                              container.read(loggerProvider).e(failure);
-                              showTopSnackBar(
-                                  context,
-                                  const CustomSnackBar.error(
-                                      message: errorMessage));
-                            },
-                            (orderPlaced) {
-                              if (orderPlaced == true) {
-                                showTopSnackBar(
-                                    context,
-                                    const CustomSnackBar.success(
-                                        message: successMessage));
-                              } else {
-                                showTopSnackBar(
-                                    context,
-                                    const CustomSnackBar.error(
-                                        message: errorMessage));
-                              }
-                            },
-                          );
-                          setState(() {});
-                          stopLoading();
-                        } else {
-                          await context.router.navigate(const HomeRoute());
-                          stopLoading();
-                        }
-                      }
-                    },
-                    child: Text(
-                      'PLACE ORDER',
-                      style: Theme.of(context).textTheme.button,
-                    ),
-                  );
+              ArgonButton(
+                height: 9.w,
+                width: 45.w,
+                color: kOrange,
+                borderRadius: 5.w,
+                loader: Container(
+                  padding: const EdgeInsets.all(10),
+                  child: const SpinKitRotatingCircle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: (startLoading, stopLoading, btnState) async {
+                  if (btnState == ButtonState.Idle) {
+                    startLoading();
+                    final List<CartItem> cart =
+                        container.read(userActionsProvider).cart;
+                    if (cart.isNotEmpty) {
+                      final orderRunner = await container
+                          .read(userActionsProvider)
+                          .placeOrder();
+                      orderRunner.fold(
+                        (failure) {
+                          container.read(loggerProvider).e(failure);
+                          showTopSnackBar(
+                              context,
+                              const CustomSnackBar.error(
+                                  message: errorMessage));
+                        },
+                        (orderPlaced) {
+                          if (orderPlaced == true) {
+                            showTopSnackBar(
+                                context,
+                                const CustomSnackBar.success(
+                                    message: successMessage));
+                          } else {
+                            showTopSnackBar(
+                                context,
+                                const CustomSnackBar.error(
+                                    message: errorMessage));
+                          }
+                        },
+                      );
+                      stopLoading();
+                    } else {
+                      await context.router.navigate(const HomeRoute());
+                      stopLoading();
+                    }
+                    setState(() {}); // TODO: NOT WORKING
+                  }
                 },
+                child: Text(
+                  'PLACE ORDER',
+                  style: Theme.of(context).textTheme.button,
+                ),
               ),
               SizedBox(height: 2.h),
             ],

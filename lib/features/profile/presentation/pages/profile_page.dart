@@ -12,7 +12,6 @@ import '../widgets/my_orders_widget.dart';
 import '../widgets/profile_card_widget.dart';
 
 class ProfilePage extends ConsumerWidget {
-  //TODO: profile orders page
   const ProfilePage({Key? key}) : super(key: key);
 
   @override

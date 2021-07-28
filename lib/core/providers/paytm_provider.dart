@@ -19,7 +19,6 @@ const String websiteName = "WEBSTAGING";
 final paytmProvider = ChangeNotifierProvider((ref) => PaytmNotifier());
 
 class PaytmNotifier extends ChangeNotifier {
-  // TODO: Setup Logger
   Order? _order;
   Order? get currentOrder => _order;
   set currentOrder(Order? order) {

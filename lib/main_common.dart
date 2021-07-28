@@ -92,7 +92,7 @@ Future<void> setupUser() async {
   try {
     final SharedPreferences prefs =
         await container.read(sharedPreferencesProvider);
-    prefs.clear();
+    // prefs.clear();
     final uid = prefs.getString("uid");
     if (uid != null) {
       await container.read(usersProvider).doc(uid).get().then(
