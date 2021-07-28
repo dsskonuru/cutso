@@ -402,14 +402,16 @@ class _AddToCartButton extends ConsumerWidget {
           final cartRunner = await watch(userActionsProvider).updateCart(_cart);
           cartRunner.fold(
             (failure) {
-              watch(crashlyticsProvider).log(failure.messsage.toString());
-              showTopSnackBar(
-                context,
-                const CustomSnackBar.error(
-                  message:
-                      "We're unable to update the cart, please try again later",
-                ),
-              );
+              if (container.read(userActionsProvider).user != null) {
+                watch(crashlyticsProvider).log(failure.messsage.toString());
+                showTopSnackBar(
+                  context,
+                  const CustomSnackBar.error(
+                    message:
+                        "We're unable to update the cart, please try again later",
+                  ),
+                );
+              }
             },
             (_) {
               showTopSnackBar(

@@ -67,7 +67,7 @@ class OrderRepository implements OrderDataSource {
       return _myOrdersRef;
     } on Exception {
       return dz.Left(
-        ServerFailure("Unable to push the order"),
+        ServerFailure("Unable to get previous order"),
       );
     }
   }

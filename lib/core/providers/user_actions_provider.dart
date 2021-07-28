@@ -30,9 +30,9 @@ class UserNotifier extends ChangeNotifier {
     _user = user;
     if (user != null) {
       if (user.cart.isNotEmpty) {
-        cart = _cart;
-      } else {
         cart = user.cart;
+      } else {
+        cart = _cart;
       }
       container
           .read(sharedPreferencesProvider)
@@ -130,9 +130,7 @@ class UserNotifier extends ChangeNotifier {
       return dz.Right(orderPlaced);
     } catch (exception, stack) {
       container.read(crashlyticsProvider).recordError(exception, stack);
-      container
-          .read(loggerProvider)
-          .e('Unable to update the cart', exception, stack);
+      container.read(loggerProvider).e(exception);
       return dz.Left(ServerFailure());
     }
   }

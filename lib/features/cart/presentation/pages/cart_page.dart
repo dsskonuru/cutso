@@ -21,6 +21,8 @@ const String errorMessage =
 
 const String successMessage = "Order was placed successfully !";
 
+const String loginMessage = "Please Login to place your order";
+
 class CartPage extends StatefulWidget {
   @override
   State<CartPage> createState() => _CartPageState();
@@ -103,11 +105,18 @@ class _CartPageState extends State<CartPage> {
                           .placeOrder();
                       orderRunner.fold(
                         (failure) {
-                          container.read(loggerProvider).e(failure);
-                          showTopSnackBar(
-                              context,
-                              const CustomSnackBar.error(
-                                  message: errorMessage));
+                          if (container.read(userActionsProvider).user ==
+                              null) {
+                            showTopSnackBar(
+                                context,
+                                const CustomSnackBar.error(
+                                    message: loginMessage));
+                          } else {
+                            showTopSnackBar(
+                                context,
+                                const CustomSnackBar.error(
+                                    message: errorMessage));
+                          }
                         },
                         (orderPlaced) {
                           if (orderPlaced == true) {
@@ -116,10 +125,18 @@ class _CartPageState extends State<CartPage> {
                                 const CustomSnackBar.success(
                                     message: successMessage));
                           } else {
-                            showTopSnackBar(
-                                context,
-                                const CustomSnackBar.error(
-                                    message: errorMessage));
+                            if (container.read(userActionsProvider).user ==
+                                null) {
+                              showTopSnackBar(
+                                  context,
+                                  const CustomSnackBar.error(
+                                      message: loginMessage));
+                            } else {
+                              showTopSnackBar(
+                                  context,
+                                  const CustomSnackBar.error(
+                                      message: errorMessage));
+                            }
                           }
                         },
                       );
