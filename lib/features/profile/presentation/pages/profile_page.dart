@@ -53,7 +53,7 @@ class ProfilePage extends ConsumerWidget {
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),
-              MyOrdersWidget(),
+              const PreviousOrders(),
               const Divider(),
               ArgonButton(
                 height: 9.w,

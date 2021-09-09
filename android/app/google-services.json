@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "610990198483-1s76patr1p5aj6jmj2dheop9u04oaio9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dsskonuru.cutso",
+            "certificate_hash": "0903e53a0b651bbe38fd18bf6de8b8718046a209"
+          }
+        },
+        {
+          "client_id": "610990198483-2n3ffljp6ako7ksmsadcu5149ma875j5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dsskonuru.cutso",
+            "certificate_hash": "a9deb10859cd0fe81694b49eef7c94d76825fe50"
+          }
+        },
+        {
           "client_id": "610990198483-6pp4umki0nmm1uhapo8jt0j982ek8mg1.apps.googleusercontent.com",
           "client_type": 3
         }

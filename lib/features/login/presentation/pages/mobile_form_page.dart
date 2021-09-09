@@ -86,7 +86,7 @@ class _GetCodeButton extends ConsumerWidget {
         if (btnState == ButtonState.Idle &&
             _mobileFormKey.currentState!.validate()) {
           startLoading();
-          final String number = watch(mobileFormProvider).mobileNo;
+          final String number = watch(mobileFormProvider).mobileNo!;
           debugPrint(number);
           await watch(mobileFormProvider).verifyPhone(context, "+91$number");
           stopLoading();

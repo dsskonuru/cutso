@@ -59,7 +59,7 @@ class OtpFormPage extends ConsumerWidget {
                   },
                   onTap: (startTimer, btnState) async {
                     if (btnState == ButtonState.Idle) {
-                      final String number = watch(mobileFormProvider).mobileNo;
+                      final String number = watch(mobileFormProvider).mobileNo!;
                       await watch(mobileFormProvider)
                           .verifyPhone(context, "+91$number");
                       startTimer(30);
@@ -86,8 +86,8 @@ class OtpFormPage extends ConsumerWidget {
                       final Either<AuthFailure, void> authRunner = await context
                           .read(userAuthRepositoryProvider)
                           .signInWithOTP(
-                            watch(mobileFormProvider).smsCode,
-                            watch(mobileFormProvider).verificationId,
+                            watch(mobileFormProvider).smsCode!,
+                            watch(mobileFormProvider).verificationId!,
                           );
                       stopLoading();
                       authRunner.fold(

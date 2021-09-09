@@ -29,6 +29,7 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+  // String temp = "Variant 1";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,12 +141,15 @@ class _CartPageState extends State<CartPage> {
                           }
                         },
                       );
+                      setState(() {
+                        // temp = 'Variant 2';
+                      });
                       stopLoading();
                     } else {
                       await context.router.navigate(const HomeRoute());
                       stopLoading();
                     }
-                    setState(() {}); // TODO: NOT WORKING
+                    // container.read(loggerProvider).i(temp);
                   }
                 },
                 child: Text(
@@ -192,3 +196,7 @@ class _CheckoutHeader extends StatelessWidget {
     );
   }
 }
+
+
+// ! State is updating if slow animations is used from Widget Inspector
+// TODO: Profiling

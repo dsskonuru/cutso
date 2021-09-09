@@ -10,95 +10,101 @@ import '../../../cart/data/models/order.dart';
 import '../../../login/data/models/user.dart';
 import '../../data/sources/orders_repository.dart';
 
-class MyOrdersWidget extends StatefulWidget {
+class PreviousOrders extends ConsumerWidget {
+  const PreviousOrders({Key? key}) : super(key: key);
+
   @override
-  State<MyOrdersWidget> createState() => _MyOrdersWidgetState();
-}
+  Widget build(BuildContext context, ScopedReader watch) {
+    final User? user = watch(userActionsProvider).user;
 
-class _MyOrdersWidgetState extends State<MyOrdersWidget> {
-  @override // Rebuild here
-  Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, watch, child) {
-        final User? user = watch(userActionsProvider).user;
+    if (user == null) {
+      return Container();
+    }
 
-        if (user == null) {
-          return Container();
+    final Future<dz.Either<Failure, List<Order>>> ordersFuture =
+        watch(orderRepositoryProvider).getPreviousOrders(user.orders);
+
+    return FutureBuilder(
+      future: ordersFuture,
+      builder: (BuildContext context,
+          AsyncSnapshot<dz.Either<Failure, List<Order>>> snapshot) {
+        if (snapshot.hasData) {
+          return snapshot.data!.fold(
+            (failure) => Center(
+              child: Text(
+                'Server Problem',
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+            ),
+            (orders) {
+              return Column(
+                children: <Widget>[
+                  ...orders.map((order) => OrderCard(order: order)).toList()
+                ],
+              );
+              // return OrderCards(orders);
+            },
+          );
+        } else {
+          return const Center(
+            child: CircularProgressIndicator.adaptive(),
+          );
         }
-
-        final Future<dz.Either<Failure, List<Order>>> ordersFuture =
-            watch(orderRepositoryProvider).getMyOrders(user.orders);
-
-        return FutureBuilder(
-          future: ordersFuture,
-          builder: (BuildContext context,
-              AsyncSnapshot<dz.Either<Failure, List<Order>>> snapshot) {
-            if (snapshot.hasData) {
-              return snapshot.data!.fold(
-                (failure) => Center(
-                  child: Text(
-                    'Server Problem',
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
-                ),
-                (orders) {
-                  return OrderCards(orders);
-                },
-              );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator.adaptive(),
-              );
-            }
-          },
-        );
       },
     );
   }
 }
 
-class OrderCards extends StatefulWidget {
-  final List<Order> orders;
-  const OrderCards(this.orders);
+class OrderCard extends StatelessWidget {
+  final Order order;
+  const OrderCard({Key? key, required this.order}) : super(key: key);
 
-  @override
-  State<OrderCards> createState() => _OrderCardsState();
-}
-
-class _OrderCardsState extends State<OrderCards> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: SizedBox(
-        // height: 70.h,
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: widget.orders.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Padding(
-              padding: const EdgeInsets.all(9.0),
-              child: Card(
-                color: kCreamLight,
-                elevation: 7.0,
-                child: Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: SizedBox(
-                    width: 100.w,
-                    child: Center(
-                        child: Column(
-                      children: [
-                        Text(widget.orders[index].items.join(' ')),
-                        const Divider(),
-                        Text(widget.orders[index].status.toString()),
-                      ],
-                    )),
-                  ),
-                ),
-              ),
-            );
-          },
+    return Padding(
+      padding: const EdgeInsets.all(9.0),
+      child: Card(
+        color: kCreamLight,
+        elevation: 7.0,
+        child: Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: SizedBox(
+            width: 100.w,
+            child: Center(
+                child: Column(
+              children: [
+                Text(order.items.join(' ')),
+                const Divider(),
+                Text(order.status.toString()),
+              ],
+            )),
+          ),
         ),
       ),
     );
   }
 }
+
+// class OrderCards extends StatefulWidget {
+//   final List<Order> orders;
+//   const OrderCards(this.orders);
+
+//   @override
+//   State<OrderCards> createState() => _OrderCardsState();
+// }
+
+// class _OrderCardsState extends State<OrderCards> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return SizedBox(
+//       // height: 70.h,
+//       child: ListView.builder(
+//         shrinkWrap: true,
+//         itemCount: widget.orders.length,
+//         itemBuilder: (BuildContext context, int index) {
+//           return
+//         },
+//       ),
+//     );
+//   }
+// }

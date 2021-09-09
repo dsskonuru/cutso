@@ -22,14 +22,14 @@ class _$OrderTearOff {
 
   _Order call(
       {required String uid,
-      required String orderId,
+      required String id,
       required List<CartItem> items,
       required double value,
       required Coupon? coupon,
       required Status? status}) {
     return _Order(
       uid: uid,
-      orderId: orderId,
+      id: id,
       items: items,
       value: value,
       coupon: coupon,
@@ -48,7 +48,7 @@ const $Order = _$OrderTearOff();
 /// @nodoc
 mixin _$Order {
   String get uid => throw _privateConstructorUsedError;
-  String get orderId => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   List<CartItem> get items => throw _privateConstructorUsedError;
   double get value => throw _privateConstructorUsedError;
   Coupon? get coupon => throw _privateConstructorUsedError;
@@ -65,7 +65,7 @@ abstract class $OrderCopyWith<$Res> {
       _$OrderCopyWithImpl<$Res>;
   $Res call(
       {String uid,
-      String orderId,
+      String id,
       List<CartItem> items,
       double value,
       Coupon? coupon,
@@ -85,7 +85,7 @@ class _$OrderCopyWithImpl<$Res> implements $OrderCopyWith<$Res> {
   @override
   $Res call({
     Object? uid = freezed,
-    Object? orderId = freezed,
+    Object? id = freezed,
     Object? items = freezed,
     Object? value = freezed,
     Object? coupon = freezed,
@@ -96,9 +96,9 @@ class _$OrderCopyWithImpl<$Res> implements $OrderCopyWith<$Res> {
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      orderId: orderId == freezed
-          ? _value.orderId
-          : orderId // ignore: cast_nullable_to_non_nullable
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       items: items == freezed
           ? _value.items
@@ -138,7 +138,7 @@ abstract class _$OrderCopyWith<$Res> implements $OrderCopyWith<$Res> {
   @override
   $Res call(
       {String uid,
-      String orderId,
+      String id,
       List<CartItem> items,
       double value,
       Coupon? coupon,
@@ -160,7 +160,7 @@ class __$OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res>
   @override
   $Res call({
     Object? uid = freezed,
-    Object? orderId = freezed,
+    Object? id = freezed,
     Object? items = freezed,
     Object? value = freezed,
     Object? coupon = freezed,
@@ -171,9 +171,9 @@ class __$OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res>
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      orderId: orderId == freezed
-          ? _value.orderId
-          : orderId // ignore: cast_nullable_to_non_nullable
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       items: items == freezed
           ? _value.items
@@ -201,7 +201,7 @@ class __$OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res>
 class _$_Order implements _Order {
   _$_Order(
       {required this.uid,
-      required this.orderId,
+      required this.id,
       required this.items,
       required this.value,
       required this.coupon,
@@ -213,7 +213,7 @@ class _$_Order implements _Order {
   @override
   final String uid;
   @override
-  final String orderId;
+  final String id;
   @override
   final List<CartItem> items;
   @override
@@ -225,7 +225,7 @@ class _$_Order implements _Order {
 
   @override
   String toString() {
-    return 'Order(uid: $uid, orderId: $orderId, items: $items, value: $value, coupon: $coupon, status: $status)';
+    return 'Order(uid: $uid, id: $id, items: $items, value: $value, coupon: $coupon, status: $status)';
   }
 
   @override
@@ -234,9 +234,8 @@ class _$_Order implements _Order {
         (other is _Order &&
             (identical(other.uid, uid) ||
                 const DeepCollectionEquality().equals(other.uid, uid)) &&
-            (identical(other.orderId, orderId) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderId, orderId)) &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.items, items) ||
                 const DeepCollectionEquality().equals(other.items, items)) &&
             (identical(other.value, value) ||
@@ -251,7 +250,7 @@ class _$_Order implements _Order {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(uid) ^
-      const DeepCollectionEquality().hash(orderId) ^
+      const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(items) ^
       const DeepCollectionEquality().hash(value) ^
       const DeepCollectionEquality().hash(coupon) ^
@@ -271,7 +270,7 @@ class _$_Order implements _Order {
 abstract class _Order implements Order {
   factory _Order(
       {required String uid,
-      required String orderId,
+      required String id,
       required List<CartItem> items,
       required double value,
       required Coupon? coupon,
@@ -282,7 +281,7 @@ abstract class _Order implements Order {
   @override
   String get uid => throw _privateConstructorUsedError;
   @override
-  String get orderId => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   @override
   List<CartItem> get items => throw _privateConstructorUsedError;
   @override

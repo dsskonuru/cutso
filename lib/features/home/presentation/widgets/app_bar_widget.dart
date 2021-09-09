@@ -38,20 +38,29 @@ class CutsoAppBar extends ConsumerWidget implements PreferredSizeWidget {
             height: 7.h,
             image: const AssetImage('assets/images/cutso-text.png'),
           ),
-          Badge(
-            badgeContent: Text(
-              watch(userActionsProvider).cart.length.toString(),
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-            badgeColor: kOrangeLight,
-            animationType: BadgeAnimationType.scale,
-            child: IconButton(
+          if (watch(userActionsProvider).cart.isNotEmpty)
+            Badge(
+              badgeContent: Text(
+                watch(userActionsProvider).cart.length.toString(),
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+              badgeColor: kOrangeLight,
+              animationType: BadgeAnimationType.scale,
+              child: IconButton(
+                color: kOrangeDark,
+                onPressed: () =>
+                    context.router.root.navigate(const CartRoute()),
+                icon: const Icon(Icons.shopping_cart_rounded),
+                iconSize: 7.w,
+              ),
+            )
+          else
+            IconButton(
               color: kOrangeDark,
               onPressed: () => context.router.root.navigate(const CartRoute()),
               icon: const Icon(Icons.shopping_cart_rounded),
               iconSize: 7.w,
             ),
-          ),
         ],
       ),
     );

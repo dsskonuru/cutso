@@ -25,36 +25,34 @@ final mobileFormProvider = ChangeNotifierProvider<MobileFormNotifier>(
     name: 'MobileForm');
 
 class MobileFormNotifier extends ChangeNotifier {
-  String _verificationId = '';
-  String _smsCode = '';
-  String _mobileNo = '';
-  String _uid = '';
-
   AuthStatus status = AuthStatus.unverified;
 
-  String get verificationId => _verificationId;
-  String get smsCode => _smsCode;
-  String get mobileNo => _mobileNo;
-  String get uid => _uid;
-
-  set verificationId(String verificationId) {
+  String? _verificationId;
+  String? get verificationId => _verificationId;
+  set verificationId(String? verificationId) {
     _verificationId = verificationId;
     notifyListeners();
   }
 
-  set smsCode(String smsCode) {
+  String? _smsCode;
+  String? get smsCode => _smsCode;
+  set smsCode(String? smsCode) {
     _smsCode = smsCode;
     notifyListeners();
   }
 
-  set mobileNo(String number) {
+  String? _mobileNo;
+  String? get mobileNo => _mobileNo;
+  set mobileNo(String? number) {
     _mobileNo = number;
     notifyListeners();
   }
 
-  set uid(String uid) {
+  String? _uid = '';
+  String? get uid => _uid;
+  set uid(String? uid) {
     _uid = uid;
-    container.read(crashlyticsProvider).setUserIdentifier(_uid);
+    container.read(crashlyticsProvider).setUserIdentifier(_uid ?? '');
     notifyListeners();
   }
 

@@ -182,9 +182,9 @@ class AddressFormPage extends ConsumerWidget {
                       final dz.Either<AuthFailure, void> userRunner =
                           await watch(userAuthRepositoryProvider).registerUser(
                         User(
-                          uid: watch(mobileFormProvider).uid,
+                          uid: watch(mobileFormProvider).uid!,
                           fullName: watch(registrationFormProvider).name!,
-                          phone: watch(mobileFormProvider).mobileNo,
+                          phone: watch(mobileFormProvider).mobileNo!,
                           email: watch(registrationFormProvider).email!,
                           address: watch(addressFormProvider).getAddress(),
                           orders: [],

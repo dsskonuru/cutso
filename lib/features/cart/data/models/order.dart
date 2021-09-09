@@ -23,7 +23,7 @@ class Order with _$Order {
   @JsonSerializable(explicitToJson: true)
   factory Order({
     required String uid,
-    required String orderId,
+    required String id,
     required List<CartItem> items,
     required double value,
     required Coupon? coupon,

@@ -39,13 +39,11 @@ class PaytmNotifier extends ChangeNotifier {
       final HttpsCallable callable =
           container.read(functionsProvider).httpsCallable(
                 "initiateTransaction",
-                options: HttpsCallableOptions(
-                  timeout: const Duration(seconds: 5),
-                ),
+                options: HttpsCallableOptions(),
               );
       final HttpsCallableResult result = await callable.call(
         <String, dynamic>{
-          'orderId': order.orderId,
+          'orderId': order.id,
           'custId': order.uid,
           'value': order.value,
         },
@@ -59,23 +57,24 @@ class PaytmNotifier extends ChangeNotifier {
 
         final Future<Map?> response = AllInOneSdk.startTransaction(
           mid, // mid
-          order.orderId, // orderId
+          order.id, // orderId
           order.value.toString(), // amount
           txnToken, // txnToken
-          '$hostName/theia/paytmCallback?ORDER_ID=${order.orderId}', // callbackUrl
+          '$hostName/theia/paytmCallback?ORDER_ID=${order.id}', // callbackUrl
           true, // isStaging
           true, // restrictAppInvoke
         );
-        await response.then((responseMap) {
-          // TODO: navigate based on response
-          container.read(loggerProvider).i(responseMap);
-          if (responseMap!["STATUS"] != "TXN_SUCCESS") {
-            throw Exception('Transaction Status = $responseMap!["STATUS"]}');
-          }
-        });
+        await response.then(
+          (responseMap) {
+            container.read(loggerProvider).i(responseMap);
+            if (responseMap!["STATUS"] != "TXN_SUCCESS") {
+              throw Exception('Transaction Status = $responseMap!["STATUS"]}');
+            }
+          },
+        );
         return const dz.Right(null);
       } else {
-        return dz.Left(ServerFailure('Could not start Paytm transaction'));
+        return dz.Left(ServerFailure('Could not intiate Paytm transaction'));
       }
     } catch (exception, stack) {
       container.read(crashlyticsProvider).recordError(exception, stack);

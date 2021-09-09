@@ -22,12 +22,12 @@ class User with _$User {
 
   const User._();
 
-  void addOrder(String orderId) {
-    orders.add(orderId);
+  void addOrder(String id) {
+    orders.add(id);
   }
 
-  void removeOrder(String orderId) {
-    orders.remove(orderId);
+  void removeOrder(String id) {
+    orders.remove(id);
   }
 
   void addToCart(CartItem cartItem) {
@@ -78,4 +78,3 @@ class CartItem with _$CartItem {
   factory CartItem.fromJson(Map<String, dynamic> json) =>
       _$CartItemFromJson(json);
 }
-

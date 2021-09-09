@@ -8,7 +8,8 @@ import '../../../cart/data/models/order.dart';
 
 abstract class OrderDataSource {
   Future<dz.Either<Failure, void>> pushOrder(Order order);
-  Future<dz.Either<Failure, List<Order>>> getMyOrders(List<String> myOrderIds);
+  Future<dz.Either<Failure, List<Order>>> getPreviousOrders(
+      List<String> myOrderIds);
 }
 
 final orderRepositoryProvider =
@@ -21,7 +22,7 @@ class OrderRepository implements OrderDataSource {
       late dz.Either<Failure, void> _orderRef;
       await container
           .read(ordersProvider)
-          .doc(order.orderId)
+          .doc(order.id)
           .set(order)
           .then((value) => _orderRef = const dz.Right(null))
           .catchError(
@@ -38,7 +39,7 @@ class OrderRepository implements OrderDataSource {
   }
 
   @override
-  Future<dz.Either<Failure, List<Order>>> getMyOrders(
+  Future<dz.Either<Failure, List<Order>>> getPreviousOrders(
       List<String> myOrderIds) async {
     try {
       late dz.Either<Failure, List<Order>> _myOrdersRef;
@@ -52,7 +53,7 @@ class OrderRepository implements OrderDataSource {
       }
       await container
           .read(ordersProvider)
-          .where("orderId", whereIn: orderIds)
+          .where("id", whereIn: orderIds)
           .get()
           .then((queries) {
         for (final element in queries.docs) {

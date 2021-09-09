@@ -99,7 +99,7 @@ class UserNotifier extends ChangeNotifier {
     try {
       final order = Order(
         uid: _user!.uid,
-        orderId: await nanoid(12),
+        id: await nanoid(12),
         items: cart,
         value: getCartValue(),
         coupon: null,
@@ -116,7 +116,7 @@ class UserNotifier extends ChangeNotifier {
           orderPlaced = true;
           container.read(loggerProvider).i("Payment was successful!");
           container.read(orderRepositoryProvider).pushOrder(order);
-          _user!.orders.add(order.orderId);
+          _user!.orders.add(order.id);
           await container
               .read(usersProvider)
               .doc(user!.uid)
